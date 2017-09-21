@@ -6,8 +6,9 @@ package mancala;
  * bins per row, the initial number of seeds in each bin, and where the game comes from.
  * 
  * To add a new game, insert its name (in all caps) in the list at the top, according to the
- * shape of the game's board. Then add it to the switch statements for getColumns(), 
- * initialSeedsPerBin(), and getOriginCountry( ).
+ * shape of the game's board. (Be careful about the two different kinds of two-row games; one
+ * *with* bins to store your winnings, and one without.) Then add it to the switch statements 
+ * for getColumns(), initialSeedsPerBin(), and getOriginCountry( ).
  * 
  * @author Darrah Chavey
  */
