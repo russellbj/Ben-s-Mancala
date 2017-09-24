@@ -1,5 +1,5 @@
 package mancala;
 
-public class Rule {
+public class Rules {
 
 }
