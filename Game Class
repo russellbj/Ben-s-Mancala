@@ -1,0 +1,26 @@
+public Class Game{
+
+  moveSeeds(){
+  	Seeds.move;
+  }
+
+  public static void setup(){
+    rules();
+    board();
+  }
+
+  public static void main(){
+	  setup();
+    loop{	
+	    moveSeeds;
+      Turn.next;
+	    if(possibleMoves = false || pointsToWin){
+		    endGame();
+      }
+    }
+  }
+
+  public static void gameOver(){
+	  shutdown;
+  }
+}
