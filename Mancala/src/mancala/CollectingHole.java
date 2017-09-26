@@ -1,17 +1,30 @@
 package mancala;
 
 public class CollectingHole {
-	int numberSeeds = 0;
+	int numberSeeds;
 	
-	private int count(holes){
-		//use other method to get number of seeds and return it
-		//make in hole class
-		return numberSeeds;
+	/**
+	 * constructor, instanciates tally bin with 0 seeds in it
+	 */
+	public CollectingHole(){
+		numberSeeds = 0;
 	}
 	
-	public void displayCount(holes){
-		//print number of seeds in tally bin underneath it.
-		System.out.println(count(holes));
+	/**
+	 * prints the number of seeds in the tally bin.
+	 */
+	public void displayCount(){
+		//print number of seeds in tally bin.
+		System.out.println(numberSeeds);
+	}
+	
+	/**
+	 * method takes in the number of seeds being added to the tally bin and 
+	 * calcuates the new number of seeds in the bin.
+	 */
+	public void addSeeds(int numSeeds){
+		//adds seeds to bin
+		numberSeeds += numSeeds;
 	}
 }
 
