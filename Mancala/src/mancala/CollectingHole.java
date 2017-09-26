@@ -1,12 +1,12 @@
 package mancala;
 
 public class CollectingHole {
-	int numSeeds = 0;
+	int numberSeeds = 0;
 	
 	private int count(holes){
 		//use other method to get number of seeds and return it
 		//make in hole class
-		return numSeeds;
+		return numberSeeds;
 	}
 	
 	public void displayCount(holes){
