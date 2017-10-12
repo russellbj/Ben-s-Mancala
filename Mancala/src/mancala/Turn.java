@@ -22,4 +22,9 @@ public class Turn {
 	{
 		return currPlayer;
 	}
+	
+	public int getCurrTurn()
+	{
+		return currTurn();
+	}
 }
