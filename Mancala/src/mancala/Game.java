@@ -3,7 +3,7 @@ package mancala;
 public class Game {
 
 	moveSeeds(){
-		Seeds.move(Row(Turn.get)[clickedHole]);
+		Seeds.move(Row(Turn.getCurrPlayer)[clickedHole]);
 //		int numOfSeeds = Row(Turn.get)[clickedHole].getAmount;
 //		int nextHole = clickedHole + 1;
 //		Row(Turn.get)[clickedHole].removeAll;
@@ -22,7 +22,7 @@ public class Game {
 		setup();
 		loop{
 			moveSeeds;
-			Turn.next;
+			Turn.switchTurn;
 			if(possibleMoves = false || pointsToWin){
 				endGame();
 			}
