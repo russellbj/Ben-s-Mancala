@@ -22,7 +22,7 @@ public class Game {
 		setup();
 		loop{
 			moveSeeds;
-			Turn.switchTurn;
+			Turn.switchTurn();
 			if(possibleMoves = false || pointsToWin){
 				endGame();
 			}
