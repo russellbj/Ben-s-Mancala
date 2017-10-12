@@ -10,7 +10,7 @@ public class Seeds {
 		
 		int startingValue = getSeedsPerBin(); //Taken from Rules class
 		
-		for(int i=0; 0 < numberOfHoles; i++) {
+		for(int i=0; 0 < numberOfHoles; i++) { 
 			holes[i] = startingValue;
 		}
 	}
