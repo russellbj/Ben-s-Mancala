@@ -3,13 +3,14 @@ package mancala;
 public class Game {
 
 	moveSeeds(){
-		int numOfSeeds = Row(Turn.get)[clickedHole].getAmount;
-		int nextHole = clickedHole + 1;
-		Row(Turn.get)[clickedHole].removeAll;
-		while(numOfSeeds > 0){
-			RowX[nextHole].add;
-			nextHole++;
-		}
+		Seeds.move(Row(Turn.get)[clickedHole]);
+//		int numOfSeeds = Row(Turn.get)[clickedHole].getAmount;
+//		int nextHole = clickedHole + 1;
+//		Row(Turn.get)[clickedHole].removeAll;
+//		while(numOfSeeds > 0){
+//			RowX[nextHole].add;
+//			nextHole++;
+//		}
 	}
 
 	public static void setup(){
