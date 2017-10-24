@@ -17,7 +17,7 @@ public class GameBoard { // Basic template for gameboards
 	public Row getRowTwo(){ // Returns second row (both to be called by other classes when moving or collecting
 		return rowTwo;
 	}
-	public CollectingHole getPlayerOneBin(){ // return value in tally bin one
+	public CollectingHole getPlayerOneBin(){ // return value in tally bin one 
 		return tallyOne;
 	}
 	public CollectingHole getPlayerTwoBin(){ // return value in tally bin two (once again, subject to change per game)
