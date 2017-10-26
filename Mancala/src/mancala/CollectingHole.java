@@ -11,19 +11,20 @@ public class CollectingHole {
 	}
 	
 	/**
-	 * prints the number of seeds 2in the tally bin.
+	 * prints the number of seeds in the tally bin.
 	 */
-	public void displayCount(){
-		System.out.println(numberSeeds);
+	public int displayCount(){
+		return numberSeeds;
 	}
 	
 	/**
 	 * method takes in the number of seeds being added to the tally bin and 
-	 * calculates the new number of seeds in the bin.
+	 * calcuates the new number of seeds in the bin.
 	 */
-	public void addSeeds(int numSeeds){
+	public int addSeeds(int numSeeds){
 		//adds seeds to bin
 		numberSeeds += numSeeds;
+		return numberSeeds;
 	}
 }
 
