@@ -2,8 +2,16 @@ package mancala;
 
 public class Game {
 
-	moveSeeds(){
-		Seeds.move(Row(Turn.getCurrPlayer)[clickedHole]);
+	private static Seed seeds = new Seed();
+	public static Rules rules = new Rules();
+	
+	clickHole(){
+		
+		// Add clicking functionality that returns the index of the hole you have clicked on
+		// Pass that index into the parameter for MoveSeeds()
+		// the current parameter value of 5 is ARBITRARY AND SHOULD BE CHANGED ONCE WE CAN IDENTIFY THE CLICKED INDEX
+		
+		seeds.moveSeeds(5);
 //		int numOfSeeds = Row(Turn.get)[clickedHole].getAmount;
 //		int nextHole = clickedHole + 1;
 //		Row(Turn.get)[clickedHole].removeAll;
@@ -14,7 +22,7 @@ public class Game {
 	}
 
 	public static void setup(){
-  		rules();
+  		rules.getGameRules("WARI");
 		board();
 	}
 
