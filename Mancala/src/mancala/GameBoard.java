@@ -1,6 +1,6 @@
 package mancala;
 
-public class GameBoard { // Basic template for gameboards
+public class GameBoard { // Basic template for gameboards, compatible now with rows and holes
 	int holesPerRow;
 	Rows rowOne, rowTwo;
 	CollectingHole tallyOne, tallyTwo;
