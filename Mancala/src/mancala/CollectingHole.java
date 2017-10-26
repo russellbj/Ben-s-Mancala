@@ -14,7 +14,6 @@ public class CollectingHole {
 	 * prints the number of seeds in the tally bin.
 	 */
 	public void displayCount(){
-		//print number of seeds in tally bin.
 		System.out.println(numberSeeds);
 	}
 	
