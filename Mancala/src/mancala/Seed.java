@@ -2,7 +2,7 @@ package mancala;
 
 public class Seed {
 	
-	private static Turn turn = new Turn();
+
 	private Rules rules = Game.rules;
 	
 	int numberOfHoles = (rules.GetRowAmount() * rules.GetBinsPerRow()); //Taken from Rules class //Post-Wari: end-bins as holes/	
