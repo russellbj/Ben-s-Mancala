@@ -1,3 +1,4 @@
+
 package mancala;
 
 public class Holes {
@@ -6,3 +7,4 @@ public class Holes {
 		seeds = a;
 	}
 }
+

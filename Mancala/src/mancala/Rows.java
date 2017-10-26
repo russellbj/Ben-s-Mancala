@@ -1,6 +1,7 @@
 package mancala;
 
-package mancala;
+
+
 
 public class Rows {
 	Seed newSeed = new Seed();
@@ -15,3 +16,4 @@ public class Rows {
 
 	}
 }
+
