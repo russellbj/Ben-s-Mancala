@@ -12,7 +12,7 @@ public class GameBoard { // Basic template for gameboards, compatible now with r
 		tallyTwo=new CollectingHole();
 	}
 	public Rows getRowOne(){ // (Subject to change based on variations of game) returns the first row for moves
-		return rowOne;
+		return rowOne; // Check if fixed
 	}
 	public Rows getRowTwo(){ // Returns second row (both to be called by other classes when moving or collecting
 		return rowTwo;
