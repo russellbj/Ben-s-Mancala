@@ -1,7 +1,7 @@
 package mancala;
 
 public class Turn {
-	private Play game = new Play();
+	private Game game = new Game();
 	private int currTurn = 1;
 	private int currPlayer = 1;
 	
@@ -25,6 +25,6 @@ public class Turn {
 	
 	public int getCurrTurn()
 	{
-		return currTurn();
+		return currTurn;
 	}
 }
