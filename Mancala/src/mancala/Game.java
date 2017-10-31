@@ -23,7 +23,7 @@ public class Game {
 		return true;
 	}
 	
-	public static string determineWinner(){
+	public static string determineWinner(){ //Checks to see who has more seeds in their CollectingHole.
 		if (P1.displayCount > P2.displayCount){
 			return "Player 1 wins!"
 		}else if (P1.displayCount < P2.displayCount){
