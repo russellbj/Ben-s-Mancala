@@ -8,7 +8,7 @@ public class Game {
 	private static GameBoard board = new GameBoard();
 	public static CollectingHole P1 = new CollectingHole();
 	public static CollectingHole P2 = new CollectingHole();
-	private static boolean pointsToWin;
+	private static int pointsToWin;
 	private static boolean possibleMoves;
 	static int clickedHoleIndex;
 	
@@ -43,7 +43,7 @@ public class Game {
 			if(clickHole()){
 				seeds.moveSeeds(clickedHoleIndex);
 				turn.switchTurn();
-				if(possibleMoves == false || pointsToWin){
+				if(possibleMoves == false || (P1.displayCount || P2.displayCound >= pointsToWin)){
 					endGame();
 				}
 			}
