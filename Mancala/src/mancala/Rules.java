@@ -3,6 +3,8 @@ package mancala;
 import java.io.*;
 
 /** Takes, sets, and enforces rules.
+ * Holds all the game types.
+ * Sets the current game type.
  * 
  * @author MancalaTeam
  * 
@@ -17,6 +19,7 @@ public class Rules {
 	private int binsPerRow;
 	private int seedsPerBin;
 	private boolean hasSidebins;
+	private int pointsToWin;
 	
 	private int gameListSize = 3;
 	private GameType[] gameList;
@@ -25,10 +28,13 @@ public class Rules {
 	 * Sets up the rules class.
 	 */
 	public Rules () {
+		// open file
+		// loop through file line-by-line
+		
 		gameList = new GameType[gameListSize];
-		gameList[0] = new GameType(2,6,4,true,"WARI");
-		gameList[1] = new GameType(5,6,4,true,"5ROW");
-		gameList[2] = new GameType(2,6,4,true,"MANYSEED");
+		gameList[0] = new GameType(2,6,4,true,"WARI",25);
+		gameList[1] = new GameType(5,6,4,true,"5ROW",25);
+		gameList[2] = new GameType(2,6,4,true,"MANYSEED",25);
 		// Will set array of game types from text file
 	}
 	
@@ -53,6 +59,7 @@ public class Rules {
 		seedsPerBin = gameList[gameSelected].GetSeedsPerBin();
 		hasSidebins = gameList[gameSelected].CheckSideBins();
 		name = gameList[gameSelected].GetName();
+		pointsToWin = gameList[gameSelected].GetPointsToWin();
 	}
 	
 	/**
@@ -98,7 +105,7 @@ public class Rules {
 	}
 	
 	/**
-	 * @return True if has sideBins, false if not
+	 * @return True when has sideBins, false if not
 	 */
 	public boolean CheckSideBins() {
 		return hasSidebins;
@@ -110,6 +117,13 @@ public class Rules {
 	 */
 	public String GetName() {
 		return name;
+	}
+	
+	/**
+	 * @return points required for a player to win
+	 */
+	public int GetPointsToWin() {
+		return pointsToWin;
 	}
 	
 	private static final String FILENAME = "assets/GameList.txt";
@@ -165,19 +179,52 @@ class GameType {
 	private int binsPerRow;
 	private int seedsPerBin;
 	private boolean hasSidebins;
+	private int pointsToWin;
 	
 	/**
+	 * give parameters for a game
 	 * @param rows number of rows
 	 * @param columns number of columns
 	 * @param startBeans number of beans per hole
 	 * @param sideBins whether has sidebins or not
 	 */
 	public GameType (int rows, int columns, int startBeans, boolean sideBins, String gameName) {
+		SetUp (rows,columns,startBeans,sideBins,gameName,10000);
+	}
+	
+	/**
+	 * give parameters for game
+	 * @param rows number of rows
+	 * @param columns number of columns
+	 * @param startBeans number of beans per hole
+	 * @param sideBins whether has sidebins or not
+	 */
+	public GameType (int rows, int columns, int startBeans, boolean sideBins, String gameName, int winPoints) {
+		SetUp (rows,columns,startBeans,sideBins,gameName,winPoints);
+	}
+	
+	/**
+	 * Sets the game rules from given parameters
+	 * @param rows number of rows
+	 * @param columns number of columns
+	 * @param startBeans number of beans per hole
+	 * @param sideBins whether has sidebins or not
+	 */
+	private void SetUp (int rows, int columns, int startBeans, boolean sideBins, String gameName, int winPoints) {
 		name = gameName;
 		rowAmount = rows;
 		binsPerRow = columns;
 		seedsPerBin = startBeans;
 		hasSidebins = sideBins;
+		pointsToWin = winPoints;
+	}
+	
+	/**
+	 * Takes a line of text and creates a game type out of it.
+	 * @param textLine
+	 */
+	public GameType (String textLine) {
+		
 	}
 	
 	/**
@@ -213,5 +260,12 @@ class GameType {
 	 */
 	public String GetName() {
 		return name;
+	}
+	
+	/**
+	 * @return points required for a player to win
+	 */
+	public int GetPointsToWin() {
+		return pointsToWin;
 	}
 }
