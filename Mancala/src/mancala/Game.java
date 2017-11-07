@@ -35,7 +35,7 @@ public class Game {
 
 	public static void setup(){
   		rules.getGameRules("WARI");
-		pointsToWin = 25;
+		pointsToWin = Rules.GetPointsToWin();
 	}
 
 	public static void main(){
