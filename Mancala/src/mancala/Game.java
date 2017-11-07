@@ -35,6 +35,7 @@ public class Game {
 
 	public static void setup(){
   		rules.getGameRules("WARI");
+		pointsToWin = 25;
 	}
 
 	public static void main(){
