@@ -1,6 +1,10 @@
 package mancala;
 
+import java.awt.FlowLayout;
+import java.util.*;
+import java.awt.GridLayout;
 import java.io.*;
+import javax.swing.*;
 
 /** Takes, sets, and enforces rules.
  * Holds all the game types.
@@ -14,14 +18,12 @@ import java.io.*;
 
 public class Rules {
 	
+	// Local variables used for current game type
 	private String name;
-	private int rowAmount;
-	private int binsPerRow;
-	private int seedsPerBin;
 	private boolean hasSidebins;
-	private int pointsToWin;
+	private int pointsToWin, rowAmount, binsPerRow, seedsPerBin;
 	
-	private int gameListSize = 3;
+	private int gameListSize = 4;
 	private GameType[] gameList;
 	
 	/**
@@ -30,18 +32,67 @@ public class Rules {
 	public Rules () {
 		// open file
 		// loop through file line-by-line
-		
+		String gamesText = "2 6 4 true WARI 25;"
+				+ "5 6 4 true 5ROW 25;"
+				+ "2 6 10 true MANYSEED 25;"
+				+ "2 6 4 false BINLESS 25";
+		String[] gamesTextLines = gamesText.split(";");
+		gameListSize = gamesTextLines.length;
 		gameList = new GameType[gameListSize];
+		for (int i = 0; i< gamesTextLines.length; i++) {
+			gameList[i] = TranslateLine(gamesTextLines[i]);
+		}
+		
+		/*
+		gameList[0] = TranslateLine("2 6 4 true WARI 25");
+		gameList[1] = TranslateLine("5 6 4 true 5ROW 25");
+		gameList[2] = TranslateLine("2 6 10 true MANYSEED 25");
+		gameList[3] = TranslateLine("2 6 4 false BINLESS 25");
+		*/
+		
+		/*
 		gameList[0] = new GameType(2,6,4,true,"WARI",25);
 		gameList[1] = new GameType(5,6,4,true,"5ROW",25);
-		gameList[2] = new GameType(2,6,4,true,"MANYSEED",25);
+		gameList[2] = new GameType(2,6,10,true,"MANYSEED",25);
+		gameList[3] = new GameType(2,6,4,false,"BINLESS",25);
+		*/
 		// Will set array of game types from text file
 	}
 	
 	/**
+	 * @param toTranslate line of text to be turned into game
+	 * @return the game that has been created from toTranslate
+	 */
+	public GameType TranslateLine(String toTranslate) {
+		GameType game;
+		int numRows, numBins, numSeeds, winPoints = 0;
+		boolean sideBins = false;
+		String name = "notgame";
+		// rows, bins, seeds, sidebins, name, win
+		
+		String[] gameStuff = toTranslate.split(" ");
+		// add tests to make sure is actually of proper type
+		numRows = Integer.parseInt(gameStuff[0]);
+		numBins = Integer.parseInt(gameStuff[1]);
+		numSeeds = Integer.parseInt(gameStuff[2]);
+		if (gameStuff[3].toUpperCase().equals("TRUE")) {
+			sideBins = true;
+		}
+		name = gameStuff[4];
+		if (gameStuff.length < 6) {
+			game = new GameType(numRows,numBins,numSeeds,sideBins,name);
+		} else {
+			winPoints = Integer.parseInt(gameStuff[5]);
+			game = new GameType(numRows,numBins,numSeeds,sideBins,name,winPoints);
+		}
+		return game;
+	}
+	
+	/**
 	 * Searches through the games listed for one of a given name
+	 * and sets local variable values based on found game.
+	 * If no game is found, load default "Wari".
 	 * @param gameName name of game to find rules for
-	 * @return ruleSet
 	 */
 	public void getGameRules (String gameName) {
 		// search through array of game types for one with given name
@@ -69,11 +120,12 @@ public class Rules {
 	 * @param startBeans number of beans per hole (at start)
 	 * @param sideBins whether has side bins or not
 	 */
-	public void setCustomRules (int rows, int columns, int startBeans, boolean sideBins) {
+	public void setCustomRules (int rows, int columns, int startBeans, boolean sideBins, int winPoints) {
 		rowAmount = rows;
 		binsPerRow = columns;
 		seedsPerBin = startBeans;
 		hasSidebins = sideBins;
+		pointsToWin = winPoints;
 	}
 	
 	/**
@@ -126,23 +178,28 @@ public class Rules {
 		return pointsToWin;
 	}
 	
-	private static final String FILENAME = "assets/GameList.txt";
+	public String[] BreakText(String text) {
+		String[] gameStuff = text.split(";");
+		return gameStuff;
+	}
 	
 	/**
-	 * Under Construction
+	 * @param fileName the name of the file to be read
+	 * @return an ArrayList of the lines of text from the file
 	 */
-	public void ReadGameList() {
+	public ArrayList<String> ReadTextFile(String fileName) {
+		ArrayList<String> textLines = null;
 		BufferedReader br = null;
 		FileReader fr = null;
 		
 		try {
-			fr = new FileReader(FILENAME);
+			fr = new FileReader(fileName);
 			br = new BufferedReader(fr);
 			
 			String CurrentLine;
 			
 			while((CurrentLine = br.readLine()) != null) {
-				System.out.println(CurrentLine);
+				textLines.add(CurrentLine);
 			}
 		}
 		catch(IOException e){
@@ -161,6 +218,14 @@ public class Rules {
 				ex.printStackTrace();
 			}
 		}
+		return textLines;
+	}
+	
+	/**
+	 * Does important stuff regarding the Rules() class
+	 */
+	public void important() {
+		System.out.println("\nWhy would you call this method?\nIt doesn't do anything except print this.");
 	}
 }
 
