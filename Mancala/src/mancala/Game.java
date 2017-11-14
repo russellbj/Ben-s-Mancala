@@ -23,13 +23,13 @@ public class Game {
 		return true;
 	}
 	
-	public static string determineWinner(){ //Checks to see who has more seeds in their CollectingHole.
-		if (P1.displayCount > P2.displayCount){
-			return "Player 1 wins!"
-		}else if (P1.displayCount < P2.displayCount){
-			return "Player 2 wins!"
+	public static String determineWinner(){ //Checks to see who has more seeds in their CollectingHole.
+		if (P1.displayCount() > P2.displayCount()){
+			return "Player 1 wins!";
+		}else if (P1.displayCount() < P2.displayCount()){
+			return "Player 2 wins!";
 		}else{
-			return "It's a tie!"
+			return "It's a tie!";
 		}
 	}
 
@@ -44,7 +44,7 @@ public class Game {
 			if(clickHole()){
 				seeds.moveSeeds(clickedHoleIndex);
 				turn.switchTurn();
-				if(possibleMoves == false || (P1.displayCount || P2.displayCound >= pointsToWin)){
+				if(possibleMoves == false || (P1.displayCount() >= pointsToWin) || (P2.displayCount() >= pointsToWin)){
 					endGame();
 				}
 			}
