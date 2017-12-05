@@ -5,10 +5,6 @@ package mancala;
  * the specifications of the various games, such as the board type (e.g. number of rows), the number of
  * bins per row, the initial number of seeds in each bin, and where the game comes from.
  * 
- * To add a new game, insert its name (in all caps) in the list at the top, according to the
- * shape of the game's board. Then add it to the switch statements for getColumns(), 
- * initialSeedsPerBin(), and getOriginCountry( ).
- * 
  * @author Darrah Chavey
  */
 public enum GameVariations { 
@@ -161,7 +157,7 @@ public enum GameVariations {
 			
 			case TCHUKA_RUMA_GENERALIZED: return 0;
 			
-			default: System.out.println("Code failure in GameVariation.getColumns()");
+			default: new ErrorHandler("Code failure in GameVariation.getColumns()");
 					return 0;
 		}
 	}
@@ -254,6 +250,22 @@ public enum GameVariations {
 
 		default: return "Null"; // Should never be reached.
 		}
+	}
+	/**
+	 * 
+	 * @param playerNumber
+	 * @return
+	 */
+	public int[] getPlayerBinBoundary(int playerNumber) {
+		int[] binBoundaries = new int[2];
+		if (playerNumber == 1) {
+			binBoundaries[0] = 0;
+			binBoundaries[1] = getColumns();			
+		} else {
+			binBoundaries[0] = getColumns();
+			binBoundaries[1] = getBoardType().numberOfRows();
+		}
+		return binBoundaries;
 	}
 
 }
