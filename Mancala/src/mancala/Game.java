@@ -1,5 +1,11 @@
 package mancala;
 
+/**
+ * 
+ * @author Eric Salvi
+ *
+ */
+
 public class Game {
 
 	private static Seed seeds = new Seed();
