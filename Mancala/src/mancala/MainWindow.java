@@ -663,6 +663,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		} else if (theCommand.equals("Declare Game Over")) {
 			new ErrorHandler(theCommand + " is not implemented yet." );
 		} else {
+			//THIS IS WHERE WE WANT TO START THE GAME
 			new ErrorHandler(theCommand + " is not implemented yet." );
 		}
 	}
