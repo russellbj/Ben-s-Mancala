@@ -25,10 +25,26 @@ public class Game {
 	
 	static boolean clickHole(){
 		System.out.println("You are Player " + turn.getCurrPlayer());
-		System.out.println("You can choose from Holes 1-6 in row " + turn.getCurrPlayer());
+		System.out.println("You can choose from Holes 0-5 in row " + turn.getCurrPlayer());
+
+		boolean goThrough = false;
+		
+		while(!goThrough)
+		{
+		try{
 		System.out.print("Enter the index # of the hole you want to click: ");
 		clickedHoleIndex = input.nextInt();
+		if(clickedHoleIndex < 0 || clickedHoleIndex >= 6)
+			throw new Exception();
+		else
+			goThrough = true;
+		}
+		catch(Exception E)
+		{
+			System.out.println("Please enter a value between 0 and 5.");
+		}
 		
+	}
 		// Add clicking functionality that returns the row you clicked, as well as index of the hole you have clicked on
 		// Pass that index / row into the parameter for MoveSeeds()
 
