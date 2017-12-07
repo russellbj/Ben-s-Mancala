@@ -122,6 +122,9 @@ public class DrawingCanvas extends JPanel implements MouseListener  {
 		g2d.setStroke(penStroke);
 		g2d.setColor( currentLineColor );
 		g2d.setFont(drawFont);
+		
+		g2d.drawString("Wari", 200, 35);
+		g2d.drawRect(75, 100, 400, 100);
 	}
 	
 	/**

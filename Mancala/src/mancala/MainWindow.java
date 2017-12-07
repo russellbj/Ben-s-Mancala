@@ -4,10 +4,10 @@ package mancala;
  * Created by Darrah Chavey, Nov. 7, 2017.
  */
 import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
@@ -24,6 +24,7 @@ import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -568,6 +569,13 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		drawingPane.setLayout( new ScrollPaneLayout() );
 		drawingPane.setBackground(Color.WHITE);
 		drawingPane.setBorder(new EmptyBorder(0,0,1,1));
+		
+		//add buttons for wari
+		JButton button1 = new JButton("Hole 1 \n 4 seeds");
+		JButton button2 = new JButton("Hole 2 \n 4 seeds");
+		drawingPane.setViewportView(button1);
+		drawingPane.setViewportView(button2);
+		//borderForCanvas.add(button2);
 	}
 
 	/** A scrolling text field in which we can hold the field with instructions for playing a particular game. */
@@ -664,7 +672,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			new ErrorHandler(theCommand + " is not implemented yet." );
 		} else {
 			//THIS IS WHERE WE WANT TO START THE GAME
-			new ErrorHandler(theCommand + " is not implemented yet." );
+			//new ErrorHandler(theCommand + " is not implemented yet." );
 		}
 	}
 	
