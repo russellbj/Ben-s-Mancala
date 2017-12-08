@@ -23,12 +23,15 @@ public class Player
 		Holes[] secondaryRowArray = secondaryRow.getHoles();
 		clickedRowArray[currentHole].setNumOfSeeds(0);
 		int pointsGain = 0;
+		boolean droppedSeed = false;
 		
 		if(playerNumber == 1)
 		{
-			flip = false;
+		flip = false;
+		
 		for( int i = numOfSeeds; i > 0; i--) 
 		{
+			droppedSeed = false;
 			//System.out.println("Num of Seeds: " + numOfSeeds);
 			
 			if(!flip)
@@ -36,8 +39,9 @@ public class Player
 				if(currentHole < 5)
 				{
 				currentHole++;
-			//	System.out.println(currentHole);
+				//System.out.println(currentHole);
 				clickedRowArray[currentHole].setNumOfSeeds(clickedRowArray[currentHole].getNumOfSeeds() + 1);
+				droppedSeed = true;
 				}
 				if(currentHole >= 5)
 				{
@@ -45,7 +49,7 @@ public class Player
 				}
 			}
 			
-			if(flip)
+			if(flip && !droppedSeed)
 			{	
 				if(currentHole >= 0)
 				{
@@ -82,15 +86,17 @@ public class Player
 			flip = false;
 			for( int i = numOfSeeds; i > 0; i--) 
 			{
-			//	System.out.println("Num of Seeds: " + numOfSeeds);
+				droppedSeed = false;
+				//System.out.println("Num of Seeds: " + numOfSeeds);
 				
 				if(!flip)
 				{
 					if(currentHole > 0)
 					{
 					currentHole--;
-				//	System.out.println(currentHole);
+					//System.out.println(currentHole);
 					clickedRowArray[currentHole].setNumOfSeeds(clickedRowArray[currentHole].getNumOfSeeds() + 1);
+					droppedSeed = true;
 					}
 					if(currentHole <= 0)
 					{
@@ -98,7 +104,7 @@ public class Player
 					}
 				}
 				
-				if(flip)
+				if(flip && !droppedSeed)
 				{	
 					if(currentHole < 5)
 					{

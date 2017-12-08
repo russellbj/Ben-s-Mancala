@@ -31,7 +31,7 @@ public class Game {
 		System.out.println("Player 2 Points: " + P2.displayCount());
 		System.out.println();
 		System.out.println("You are Player " + turn.getCurrPlayer());
-		System.out.println("You can choose from Holes 0-5 in row " + turn.getCurrPlayer());
+		System.out.println("You can choose from Holes 1-6 in row " + turn.getCurrPlayer());
 
 		boolean goThrough = false;
 		
@@ -39,7 +39,7 @@ public class Game {
 		{
 		try{
 		System.out.print("Enter the index # of the hole you want to click: ");
-		clickedHoleIndex = input.nextInt();
+		clickedHoleIndex = input.nextInt() - 1;
 		if(clickedHoleIndex < 0 || clickedHoleIndex >= 6)
 			throw new Exception();
 		else
@@ -47,7 +47,7 @@ public class Game {
 		}
 		catch(Exception E)
 		{
-			System.out.println("Please enter a value between 0 and 5.");
+			System.out.println("Please enter a value between 1 and 6.");
 		}
 		
 	}
@@ -79,14 +79,14 @@ public class Game {
 	public static void setup(){
 		
 		System.out.print("{");
-		for(int i = 0 ; i < 5 ; i++)
+		for(int i = 0 ; i < 6 ; i++)
 		{
 			System.out.print(4 + ", ");
 		}
 		System.out.print("}");
 		System.out.println();
 		System.out.print("{");
-		for(int i = 0 ; i < 5 ; i++)
+		for(int i = 0 ; i < 6 ; i++)
 		{
 			System.out.print(4 + ", ");
 		}
