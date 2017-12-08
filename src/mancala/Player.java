@@ -39,7 +39,7 @@ public class Player
 			//	System.out.println(currentHole);
 				clickedRowArray[currentHole].setNumOfSeeds(clickedRowArray[currentHole].getNumOfSeeds() + 1);
 				}
-				else if(currentHole >= 5)
+				if(currentHole >= 5)
 				{
 					flip = true;
 				}
@@ -67,7 +67,7 @@ public class Player
 					}
 				currentHole--;
 				}
-				else if(currentHole < 0)
+				if(currentHole < 0)
 				{
 					flip = false;
 				}
@@ -92,7 +92,7 @@ public class Player
 				//	System.out.println(currentHole);
 					clickedRowArray[currentHole].setNumOfSeeds(clickedRowArray[currentHole].getNumOfSeeds() + 1);
 					}
-					else if(currentHole <= 0)
+					if(currentHole <= 0)
 					{
 						flip = true;
 					}
@@ -124,7 +124,7 @@ public class Player
 					}
 					currentHole++;
 					}
-					else if(currentHole >= 5)
+					if(currentHole >= 5)
 					{
 						flip = false;
 					}
