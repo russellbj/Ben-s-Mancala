@@ -1,5 +1,5 @@
 package mancala;
 
-public class Game {
+public class Holes {
 
 }
