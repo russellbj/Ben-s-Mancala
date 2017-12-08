@@ -15,13 +15,14 @@ public class Player
 
 	boolean flip = false;
 	
-	public void moveSeeds(Row clickedRow, Row secondaryRow, int currentHole) 
+	public int moveSeeds(Row clickedRow, Row secondaryRow, int currentHole) 
 	{  //method for acting upon a bin being chosen for a move
 		
 		int numOfSeeds = clickedRow.getSeedsAtIndex(currentHole);
 		Holes[] clickedRowArray = clickedRow.getHoles();
 		Holes[] secondaryRowArray = secondaryRow.getHoles();
 		clickedRowArray[currentHole].setNumOfSeeds(0);
+		int pointsGain = 0;
 		
 		if(playerNumber == 1)
 		{
@@ -46,18 +47,34 @@ public class Player
 			
 			if(flip)
 			{	
-				if(currentHole >0)
+				if(currentHole >= 0)
 				{
 				secondaryRowArray[currentHole].setNumOfSeeds(secondaryRowArray[currentHole].getNumOfSeeds() + 1);
+					if(i == 1)
+					{
+						try{
+						while(secondaryRowArray[currentHole].getNumOfSeeds() == 2 || secondaryRowArray[currentHole].getNumOfSeeds() == 3 && currentHole < 6)
+						{
+							pointsGain = pointsGain + secondaryRowArray[currentHole].getNumOfSeeds();
+							secondaryRowArray[currentHole].setNumOfSeeds(0);
+							currentHole++;
+						}
+						}
+						catch(Exception E)
+						{
+							
+						}
+					}
 				currentHole--;
 				}
-				else if(currentHole <= 0)
+				else if(currentHole < 0)
 				{
 					flip = false;
 				}
 			}
 			numOfSeeds--;
 		}
+		
 		}
 		
 		else if(playerNumber == 2)
@@ -86,6 +103,25 @@ public class Player
 					if(currentHole < 5)
 					{
 					secondaryRowArray[currentHole].setNumOfSeeds(secondaryRowArray[currentHole].getNumOfSeeds() + 1);
+					if(i == 1)
+					{
+						//int iterator = currentHole;
+						try
+						{
+							while(secondaryRowArray[currentHole].getNumOfSeeds() == 2 || secondaryRowArray[currentHole].getNumOfSeeds() == 3)
+							{
+								pointsGain = pointsGain + secondaryRowArray[currentHole].getNumOfSeeds();
+								secondaryRowArray[currentHole].setNumOfSeeds(0);
+								currentHole--;
+							}
+						}
+						
+						catch(Exception E)
+						{
+							
+						}
+						
+					}
 					currentHole++;
 					}
 					else if(currentHole >= 5)
@@ -95,7 +131,12 @@ public class Player
 				}
 				numOfSeeds--;
 			}
+			
 		}
+		
+		
+		
+		
 		if(playerNumber == 1)
 		{
 			System.out.print("{");
@@ -132,5 +173,6 @@ public class Player
 			System.out.println();
 			System.out.println();
 		}
+		return pointsGain;
 	}
 }

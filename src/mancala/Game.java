@@ -12,7 +12,7 @@ public class Game {
 	private static GameBoard board = GameBoard.getInstance();
 	public static CollectingHole P1 = new CollectingHole();
 	public static CollectingHole P2 = new CollectingHole();
-	private static int pointsToWin;
+	private static int pointsToWin = 25;
 	private static boolean possibleMoves = true;
 	
 	private static Player playerOne = new Player();
@@ -24,6 +24,12 @@ public class Game {
 	static int clickedHoleIndex;
 	
 	static boolean clickHole(){
+
+			
+		
+		System.out.println("Player 1 Points: " + P1.displayCount());
+		System.out.println("Player 2 Points: " + P2.displayCount());
+		System.out.println();
 		System.out.println("You are Player " + turn.getCurrPlayer());
 		System.out.println("You can choose from Holes 0-5 in row " + turn.getCurrPlayer());
 
@@ -50,11 +56,11 @@ public class Game {
 
 		if(turn.getCurrPlayer() == 1)
 		{
-			playerOne.moveSeeds(rowOne, rowTwo, clickedHoleIndex); // Player one can only click row one, I think (wari rules)
+			P1.addSeeds(playerOne.moveSeeds(rowOne, rowTwo, clickedHoleIndex)); // Player one can only click row one, I think (wari rules)
 		}
 		if(turn.getCurrPlayer() == 2)
 		{
-			playerTwo.moveSeeds(rowTwo, rowOne, clickedHoleIndex); // Player one can only click row one, I think (wari rules)
+			P2.addSeeds(playerTwo.moveSeeds(rowTwo, rowOne, clickedHoleIndex)); // Player one can only click row one, I think (wari rules)
 		}
 
 		return true;
@@ -71,14 +77,32 @@ public class Game {
 	}
 
 	public static void setup(){
+		
+		System.out.print("{");
+		for(int i = 0 ; i < 5 ; i++)
+		{
+			System.out.print(4 + ", ");
+		}
+		System.out.print("}");
+		System.out.println();
+		System.out.print("{");
+		for(int i = 0 ; i < 5 ; i++)
+		{
+			System.out.print(4 + ", ");
+		}
+		System.out.print("}");
+		System.out.println();
+		System.out.println();
+		
+		new MainWindow();
 		playerOne.setPlayerNumber(1);
 		playerTwo.setPlayerNumber(2);
   		rules.getGameRules("WARI");
-		//pointsToWin = rules.GetPointsToWin();
-  		pointsToWin = 5;
+		pointsToWin = 25;
 	}
 
 	public static void main(String[]args){
+	
 		setup();
 		while(true){
 			clickHole();
