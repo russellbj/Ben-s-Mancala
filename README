@@ -9,7 +9,7 @@ Did your seed land in the enemy's row?
   If so:
   Did your final seed land in a hole containing either One or Two seeds, thus causing the hole to contain either Two or Three seeds?
     If so:
-    Take all seeds from this hole and add them to your score. Check the previous holes. Do these hole now contain Two or Three seeds?
+    Take all seeds from this hole and add them to your score. Check the previous holes. Do these holes now contain Two or Three seeds?
     Move one-by one back down the line taking points until you come to a hole that has a number of seeds other than Two or Three.
     
 
