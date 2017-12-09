@@ -19,10 +19,14 @@ public class Game {
 	private static Player playerOne = new Player();
 	private static Player playerTwo = new Player();
 	
+	private static boolean isPlayerGame;
+	private static boolean isComputerGame;
+	
 	static int holesPerRow = 6;
 	private static Row rowOne=new Row(holesPerRow); // May need to add more rows based on game, currently built for Wari
 	private static Row rowTwo=new Row(holesPerRow);
 	static int clickedHoleIndex;
+	static int totalPoints;
 	
 	static boolean clickHole(){
 
@@ -78,7 +82,6 @@ public class Game {
 	}
 
 	public static void setup(){
-		
 		System.out.print("{");
 		for(int i = 0 ; i < 6 ; i++)
 		{
@@ -101,14 +104,20 @@ public class Game {
 		pointsToWin = 25;
 	}
 
-	public static void main(String[]args){
-	
+	public static void main(String[]args) throws InterruptedException{
+		totalPoints = P1.displayCount() + P2.displayCount();
 		setup();
 		while(true){
+			Thread.sleep(1);
+			if(mainWindow.isPlayer())
+			{
+		
 			clickHole();
+			
 			turn.switchTurn();
-			if(possibleMoves == false || (P1.displayCount() >= pointsToWin) || (P2.displayCount() >= pointsToWin)){
+			if(totalPoints >= 47 || (P1.displayCount() >= pointsToWin) || (P2.displayCount() >= pointsToWin)){
 				endGame();
+			}
 			}
 			}
 		}

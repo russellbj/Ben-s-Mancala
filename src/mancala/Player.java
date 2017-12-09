@@ -2,7 +2,6 @@ package mancala;
 
 public class Player 
 {
-	private static GameBoard board = GameBoard.getInstance();
 	int playerNumber;
 	
 	public int getPlayerNumber() {

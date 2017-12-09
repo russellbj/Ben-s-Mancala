@@ -7,6 +7,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Desktop.Action;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -33,6 +34,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
@@ -254,6 +256,31 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected JScrollPane infoPane;
 		
 	protected Image[] beans, hand;
+
+	private JButton computerChoice;
+	
+	private JButton playerChoice;
+
+	private boolean isPlayer;
+	
+	public boolean isPlayer() {
+		return isPlayer;
+	}
+
+	public void setPlayer(boolean isPlayer) {
+		this.isPlayer = isPlayer;
+	}
+
+	public boolean isComputer() {
+		return isComputer;
+	}
+
+	public void setComputer(boolean isComputer) {
+		this.isComputer = isComputer;
+	}
+
+
+	private boolean isComputer;
 	
     /** Forces all required images to be loaded and available. */
     public void loadImages() {
@@ -311,9 +338,13 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	public MainWindow( ) {
 		super( "Mancala Family Games" );	// For an application
 		loadImages();
-		initMenuBarPane();
+		
 		theProgram = this;
-		theProgram.initPanesAndGui( beans, hand );
+		
+
+			theProgram.initPanesAndGui( beans, hand );
+		initMenuBarPane();
+		
 	}
 
 
@@ -550,7 +581,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	 *  @param beans An array of images used to draw the beans (for sowing) on the screen.
 	 *  @param hand  An array of the two images used to draw a hand, holding beans, on the screen.
 	 */
-	protected void initDrawingPane( Image beans[], Image hand[] ) {
+	protected void initDrawingPane( final Image beans[], final Image hand[] ) {
 		// Create some borders that we will use for the components
 		Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 		Border loweredbevel = BorderFactory.createLoweredBevelBorder();
@@ -574,41 +605,63 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		drawingPane.setLayout( new GridLayout(2,6) );
 		drawingPane.setBackground(Color.WHITE);
 		
-		//add buttons for wari
-		JButton button1 = new JButton("4 Seeds");
-		JButton button2 = new JButton("4 seeds");
-		JButton button3 = new JButton("4 seeds");
-		JButton button4 = new JButton("4 seeds");
-		JButton button5 = new JButton("4 seeds");
-		JButton button6 = new JButton("4 seeds");
-		JButton button7 = new JButton("4 seeds");
-		JButton button8 = new JButton("4 seeds");
-		JButton button9 = new JButton("4 seeds");
-		JButton button10 = new JButton("4 seeds");
-		JButton button11 = new JButton("4 seeds");
-		JButton button12 = new JButton("4 seeds");
-		drawingPane.add("Button One", button1);
-		drawingPane.add("Button One", button2);
-		drawingPane.add("Button One", button3);
-		drawingPane.add("Button One", button4);
-		drawingPane.add("Button One", button5);
-		drawingPane.add("Button One", button6);
-		drawingPane.add("Button One", button7);
-		drawingPane.add("Button One", button8);
-		drawingPane.add("Button One", button9);
-		drawingPane.add("Button One", button10);
-		drawingPane.add("Button One", button11);
-		drawingPane.add("Button One", button12);
+		//add CPU or Player choice
+		computerChoice = new JButton("Click to play against the Computer");
+		playerChoice = new JButton("Click to play against another Player");
 		
+		playerChoice.addActionListener(new ActionListener()
+		{
+		  public void actionPerformed(ActionEvent e)
+	      {
+				isComputer = false;
+				isPlayer = true;
+				drawingPane.remove(computerChoice);
+				drawingPane.remove(playerChoice);
+				drawingPane.revalidate();
+				drawingPane.repaint();
+				JButton button1 = new JButton("4 Seeds");
+				JButton button2 = new JButton("4 seeds");
+				JButton button3 = new JButton("4 seeds");
+				JButton button4 = new JButton("4 seeds");
+				JButton button5 = new JButton("4 seeds");
+				JButton button6 = new JButton("4 seeds");
+				JButton button7 = new JButton("4 seeds");
+				JButton button8 = new JButton("4 seeds");
+				JButton button9 = new JButton("4 seeds");
+				JButton button10 = new JButton("4 seeds");
+				JButton button11 = new JButton("4 seeds");
+				JButton button12 = new JButton("4 seeds");
+				drawingPane.add("Button One", button1);
+				drawingPane.add("Button One", button2);
+				drawingPane.add("Button One", button3);
+				drawingPane.add("Button One", button4);
+				drawingPane.add("Button One", button5);
+				drawingPane.add("Button One", button6);
+				drawingPane.add("Button One", button7);
+				drawingPane.add("Button One", button8);
+				drawingPane.add("Button One", button9);
+				drawingPane.add("Button One", button10);
+				drawingPane.add("Button One", button11);
+				drawingPane.add("Button One", button12);
+				drawingPane.revalidate();
+				drawingPane.repaint();
+				System.out.println(isPlayer);
+	      }
+		});
 		
-		//buttonPanel.
-		//button2.setBounds(10, 10, 10, 10);
-	//	drawingPane.setViewportView(button1);
-		//ScrollPaneLayout grid = new ScrollPaneLayout();
-		//grid.addLayoutComponent(ScrollPaneConstants.LOWER_LEFT_CORNER, button2);
-		//drawingPane.setLayout(grid);
-		//borderForCanvas.add(button2);
-	}
+		computerChoice.addActionListener(new ActionListener()
+		{
+		  public void actionPerformed(ActionEvent e)
+	      {
+				isPlayer = false;
+				isComputer = true;
+				JOptionPane.showMessageDialog(null, "Coming Soon! :)");
+	      }
+		});
+		drawingPane.add(computerChoice);
+		drawingPane.add(playerChoice);
+		}
+	
 
 	/** A scrolling text field in which we can hold the field with instructions for playing a particular game. */
 	protected JScrollPane scrollPane;
