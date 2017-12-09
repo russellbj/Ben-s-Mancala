@@ -14,6 +14,7 @@ public class Game {
 	public static CollectingHole P2 = new CollectingHole();
 	private static int pointsToWin = 25;
 	private static boolean possibleMoves = true;
+	private static MainWindow mainWindow = MainWindow.getInstance();
 	
 	private static Player playerOne = new Player();
 	private static Player playerTwo = new Player();
@@ -94,7 +95,6 @@ public class Game {
 		System.out.println();
 		System.out.println();
 		
-		new MainWindow();
 		playerOne.setPlayerNumber(1);
 		playerTwo.setPlayerNumber(2);
   		rules.getGameRules("WARI");

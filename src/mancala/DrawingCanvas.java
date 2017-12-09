@@ -15,6 +15,11 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 
@@ -125,6 +130,16 @@ public class DrawingCanvas extends JPanel implements MouseListener  {
 		
 		g2d.drawString("Wari", 200, 35);
 		g2d.drawRect(75, 100, 400, 100);
+		File file = new File("src/Bean-01.gif");
+		Image img;
+		try {
+			img = ImageIO.read(file);
+			g2d.drawImage(img, 75, 20, 20, 20, Color.WHITE, this);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 	
 	/**

@@ -6,6 +6,7 @@
  */
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -26,6 +27,7 @@ import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -35,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -245,7 +248,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected JPanel gameOptions;
 
    /** A top level pane for holding the drawing canvas */
-	protected JScrollPane drawingPane;
+	protected Container drawingPane;
 	
 	/** A top level pane for holding the rules of the game */
 	protected JScrollPane infoPane;
@@ -308,6 +311,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	public MainWindow( ) {
 		super( "Mancala Family Games" );	// For an application
 		loadImages();
+		initMenuBarPane();
 		theProgram = this;
 		theProgram.initPanesAndGui( beans, hand );
 	}
@@ -566,16 +570,43 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		borderForCanvas.add(drawingCanvas, "Center");
 		
 		// Then put them into the drawingPane
-		drawingPane = new JScrollPane( borderForCanvas );
-		drawingPane.setLayout( new ScrollPaneLayout() );
+		drawingPane = new Container();
+		drawingPane.setLayout( new GridLayout(2,6) );
 		drawingPane.setBackground(Color.WHITE);
-		drawingPane.setBorder(new EmptyBorder(0,0,1,1));
 		
 		//add buttons for wari
-		JButton button1 = new JButton("Hole 1 \n 4 seeds");
-		JButton button2 = new JButton("Hole 2 \n 4 seeds");
-		drawingPane.setViewportView(button1);
-		drawingPane.setViewportView(button2);
+		JButton button1 = new JButton("4 Seeds");
+		JButton button2 = new JButton("4 seeds");
+		JButton button3 = new JButton("4 seeds");
+		JButton button4 = new JButton("4 seeds");
+		JButton button5 = new JButton("4 seeds");
+		JButton button6 = new JButton("4 seeds");
+		JButton button7 = new JButton("4 seeds");
+		JButton button8 = new JButton("4 seeds");
+		JButton button9 = new JButton("4 seeds");
+		JButton button10 = new JButton("4 seeds");
+		JButton button11 = new JButton("4 seeds");
+		JButton button12 = new JButton("4 seeds");
+		drawingPane.add("Button One", button1);
+		drawingPane.add("Button One", button2);
+		drawingPane.add("Button One", button3);
+		drawingPane.add("Button One", button4);
+		drawingPane.add("Button One", button5);
+		drawingPane.add("Button One", button6);
+		drawingPane.add("Button One", button7);
+		drawingPane.add("Button One", button8);
+		drawingPane.add("Button One", button9);
+		drawingPane.add("Button One", button10);
+		drawingPane.add("Button One", button11);
+		drawingPane.add("Button One", button12);
+		
+		
+		//buttonPanel.
+		//button2.setBounds(10, 10, 10, 10);
+	//	drawingPane.setViewportView(button1);
+		//ScrollPaneLayout grid = new ScrollPaneLayout();
+		//grid.addLayoutComponent(ScrollPaneConstants.LOWER_LEFT_CORNER, button2);
+		//drawingPane.setLayout(grid);
 		//borderForCanvas.add(button2);
 	}
 
@@ -592,7 +623,14 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		instructions = new JTextArea(5, 30);
 		instructions.setLineWrap(true);
 		instructions.setWrapStyleWord(true);
-		instructions.setText("Game instructions could appear here");
+		instructions.setText("Wari Rules:"
+				+ "\nHow to move:"
+				+ "\n\n1) Select an index on your side of the board (Player 1 is bottom half, Player 2 is top half)"
+				+ "\n\n2) The seeds in that index will be distributed counterclockwise one-by-one across the board."
+				+ "\n\nHow to score: Did your seed land in the enemy's row? "
+				+ "\n\nIf so: Did your final seed land in a hole containing either One or Two seeds, thus causing the hole to contain either Two or Three seeds? "
+				+ "\n\nIf so: Take all seeds from this hole and add them to your score. Check the previous holes. Do these holes now contain Two or Three seeds? "
+				+ "\n\nMove one-by one back down the line taking points until you come to a hole that has a number of seeds other than Two or Three.");
 		scrollPane = new JScrollPane(instructions);
 		scrollPane.setPreferredSize(new Dimension(250, 300));
 	}
@@ -711,6 +749,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	 // This object is declared here so some inner classes can get access to it
 	 private static MainWindow theProgram;
 
+
+	private static MainWindow instance = null;
+
 	 /** Intended primarily for the JUnit testing of the program, to allow
 	  *  access to this window, e.g. to send direct events imitating user events.
 	  * @return the single applet window being used by the program.
@@ -718,11 +759,13 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	public static MainWindow getTheProgram() {
 		return theProgram;
 	}
-		
-	/** The starting point for this program. Creates the main window, then calls
-	 *  the other methods needed to initialize the rest of the program.
-	 *  
-	 *  @param args Not used; only here to satisfy signature requirements.
-	 */ 
-
+	
+	public static MainWindow getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new MainWindow();
+		}
+		return instance;
+	}
 }
