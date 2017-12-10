@@ -1,5 +1,8 @@
 package mancala;
 
+/**
+ * @author melissa and robbie
+ */
 public class CollectingHole {
 	int numberSeeds;
 	
