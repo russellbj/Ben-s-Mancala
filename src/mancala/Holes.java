@@ -5,6 +5,7 @@ package mancala;
 public class Holes {
 
 	int numOfSeeds;
+	
 
 	// constructor
 	public Holes(int numOfSeeds) {

@@ -10,7 +10,7 @@ public class RowHolesTest {
 	
 	@Test
 	public void testGetSeeds() {
-		// Test the getSeedsAt
+		// Test the getSeedsAt 
 		Row test = new Row(6);
 		int numSeed = test.getSeedsAtIndex(0);
 		System.out.println("4:" + numSeed);

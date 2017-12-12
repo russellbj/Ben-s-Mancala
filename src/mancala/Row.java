@@ -12,7 +12,8 @@ public class Row {
 	public Holes[] getHoles() {
 		return holes;
 	}
-
+ 
+	
 	// setter method for number of holes
 	public void setHoles(Holes[] holes) {
 		this.holes = holes;
