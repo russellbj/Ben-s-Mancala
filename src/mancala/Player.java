@@ -4,6 +4,26 @@ public class Player
 {
 	int playerNumber;
 	
+	private int[] topRow = new int[6];
+	
+	public int[] getTopRow() {
+		return topRow;
+	}
+
+	public void setTopRow(int[] topRow) {
+		this.topRow = topRow;
+	}
+
+	public int[] getBottomRow() {
+		return bottomRow;
+	}
+
+	public void setBottomRow(int[] bottomRow) {
+		this.bottomRow = bottomRow;
+	}
+
+	private int[] bottomRow = new int[6];;
+	
 	public int getPlayerNumber() {
 		return playerNumber;
 	}
@@ -14,13 +34,15 @@ public class Player
 
 	boolean flip = false;
 	
+	private boolean clickedZero;
+	
 	public int moveSeeds(Row clickedRow, Row secondaryRow, int currentHole) 
 	{  //method for acting upon a bin being chosen for a move
-		
+		setClickedZero(false);
 		int numOfSeeds = clickedRow.getSeedsAtIndex(currentHole);
 		Holes[] clickedRowArray = clickedRow.getHoles();
 		Holes[] secondaryRowArray = secondaryRow.getHoles();
-		clickedRowArray[currentHole].setNumOfSeeds(0);
+		
 		int pointsGain = 0;
 		boolean droppedSeed = false;
 		
@@ -28,11 +50,17 @@ public class Player
 		{
 		flip = false;
 		
+		if(clickedRowArray[currentHole].getNumOfSeeds() == 0)
+		{
+			setClickedZero(true);
+		}
+		
+		else {
+		clickedRowArray[currentHole].setNumOfSeeds(0);
 		for( int i = numOfSeeds; i > 0; i--) 
 		{
 			droppedSeed = false;
 			//System.out.println("Num of Seeds: " + numOfSeeds);
-			
 			if(!flip)
 			{
 				if(currentHole < 5)
@@ -77,11 +105,17 @@ public class Player
 			}
 			numOfSeeds--;
 		}
-		
+		}
 		}
 		
 		else if(playerNumber == 2)
 		{
+			if(clickedRowArray[currentHole].getNumOfSeeds() == 0)
+			{
+				setClickedZero(true);
+			}
+			else{
+				clickedRowArray[currentHole].setNumOfSeeds(0);
 			flip = false;
 			for( int i = numOfSeeds; i > 0; i--) 
 			{
@@ -105,7 +139,7 @@ public class Player
 				
 				if(flip && !droppedSeed)
 				{	
-					if(currentHole < 5)
+					if(currentHole <= 5)
 					{
 					secondaryRowArray[currentHole].setNumOfSeeds(secondaryRowArray[currentHole].getNumOfSeeds() + 1);
 					if(i == 1)
@@ -129,7 +163,7 @@ public class Player
 					}
 					currentHole++;
 					}
-					if(currentHole >= 5)
+					if(currentHole > 5)
 					{
 						flip = false;
 					}
@@ -138,46 +172,72 @@ public class Player
 			}
 			
 		}
+		}
 		
 		
 		
-		
+		if(!getClickedZero())
+		{
+			
 		if(playerNumber == 1)
 		{
 			System.out.print("{");
-			for(int i = 0 ; i < secondaryRowArray.length ; i++)
+			for(int i = 0 ; i < secondaryRowArray.length-1 ; i++)
 			{
 				System.out.print(secondaryRowArray[i].getNumOfSeeds() + ", ");
+				topRow[i] = secondaryRowArray[i].getNumOfSeeds();
 			}
+			System.out.print(secondaryRowArray[clickedRowArray.length - 1].getNumOfSeeds());
+			topRow[5] = secondaryRowArray[clickedRowArray.length - 1].getNumOfSeeds();
 			System.out.print("}");
 			System.out.println();
 			System.out.print("{");
-			for(int i = 0 ; i < clickedRowArray.length ; i++)
+			for(int i = 0 ; i < clickedRowArray.length-1 ; i++)
 			{
 				System.out.print(clickedRowArray[i].getNumOfSeeds() + ", ");
+				bottomRow[i] = clickedRowArray[i].getNumOfSeeds();
 			}
+			System.out.print(clickedRowArray[clickedRowArray.length - 1].getNumOfSeeds());
+			bottomRow[5] = clickedRowArray[secondaryRowArray.length - 1].getNumOfSeeds();
 			System.out.print("}");
 			System.out.println();
 			System.out.println();
+			
+			
 	}
 		if(playerNumber == 2)
 		{
 			System.out.print("{");
-			for(int i = 0 ; i < clickedRowArray.length ; i++)
+			for(int i = 0 ; i < clickedRowArray.length -1; i++)
 			{
 				System.out.print(clickedRowArray[i].getNumOfSeeds() + ", ");
+				topRow[i] = clickedRowArray[i].getNumOfSeeds();
 			}
+			System.out.print(clickedRowArray[clickedRowArray.length - 1].getNumOfSeeds());
+			topRow[5] = clickedRowArray[clickedRowArray.length - 1].getNumOfSeeds();
 			System.out.print("}");
 			System.out.println();
 			System.out.print("{");
-			for(int i = 0 ; i < secondaryRowArray.length ; i++)
+			for(int i = 0 ; i < secondaryRowArray.length -1; i++)
 			{
 				System.out.print(secondaryRowArray[i].getNumOfSeeds() + ", ");
+				bottomRow[i] = secondaryRowArray[i].getNumOfSeeds();
 			}
+			System.out.print(secondaryRowArray[clickedRowArray.length - 1].getNumOfSeeds());
+			bottomRow[5] = secondaryRowArray[secondaryRowArray.length - 1].getNumOfSeeds();
 			System.out.print("}");
 			System.out.println();
 			System.out.println();
 		}
+		}
 		return pointsGain;
+	}
+
+	public boolean getClickedZero() {
+		return clickedZero;
+	}
+	
+	public void setClickedZero(boolean clickedZero) {
+		this.clickedZero = clickedZero;
 	}
 }

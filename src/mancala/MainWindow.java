@@ -10,6 +10,7 @@ import java.awt.Container;
 import java.awt.Desktop.Action;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -52,6 +53,10 @@ import javax.swing.border.EmptyBorder;
 public class MainWindow extends JFrame implements WindowListener, ActionListener {			// For an application
 	
 /* Class & object data, other than the GUI elements */
+	
+	protected static Turn turn = Turn.getInstance();
+	
+	protected static Game game = Game.getInstance();
 	
 	/**
 	 * Serial ID to allow implementation of Serializable. We don't actually
@@ -96,6 +101,21 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
      */
     protected JMenuBar menuBar;
     
+    private JButton button1;
+    private JButton button2;
+    private JButton button3;
+    private JButton button4;
+    private JButton button5;
+    private JButton button6;
+    private JButton button7;
+    private JButton button8;
+    private JButton button9;
+    private JButton button10;
+    private JButton button11;
+    private JButton button12;
+    
+    private CollectingHole P1 = Game.P1;
+    private CollectingHole P2 = Game.P2;
      /**
      * The menu gameMenu contains the user to select which game they wish
      * to play. There are a variety of ways for them to select the game.
@@ -279,6 +299,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		this.isComputer = isComputer;
 	}
 
+	private boolean buttonClicked = false;
 
 	private boolean isComputer;
 	
@@ -607,11 +628,14 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 		//add CPU or Player choice
 		computerChoice = new JButton("Click to play against the Computer");
+		computerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
 		playerChoice = new JButton("Click to play against another Player");
+		playerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
 		
 		playerChoice.addActionListener(new ActionListener()
 		{
-		  public void actionPerformed(ActionEvent e)
+
+		public void actionPerformed(ActionEvent e)
 	      {
 				isComputer = false;
 				isPlayer = true;
@@ -619,33 +643,46 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				drawingPane.remove(playerChoice);
 				drawingPane.revalidate();
 				drawingPane.repaint();
-				JButton button1 = new JButton("4 Seeds");
-				JButton button2 = new JButton("4 seeds");
-				JButton button3 = new JButton("4 seeds");
-				JButton button4 = new JButton("4 seeds");
-				JButton button5 = new JButton("4 seeds");
-				JButton button6 = new JButton("4 seeds");
-				JButton button7 = new JButton("4 seeds");
-				JButton button8 = new JButton("4 seeds");
-				JButton button9 = new JButton("4 seeds");
-				JButton button10 = new JButton("4 seeds");
-				JButton button11 = new JButton("4 seeds");
-				JButton button12 = new JButton("4 seeds");
+				button1 = new JButton("4");
+				button2 = new JButton("4");
+				button3 = new JButton("4");
+				button4 = new JButton("4");
+				button5 = new JButton("4");
+				button6 = new JButton("4");
+				button7 = new JButton("4");
+				button8 = new JButton("4");
+				button9 = new JButton("4");
+				button10 = new JButton("4");
+				button11 = new JButton("4");
+				button12 = new JButton("4");
 				drawingPane.add("Button One", button1);
-				drawingPane.add("Button One", button2);
-				drawingPane.add("Button One", button3);
-				drawingPane.add("Button One", button4);
-				drawingPane.add("Button One", button5);
-				drawingPane.add("Button One", button6);
-				drawingPane.add("Button One", button7);
-				drawingPane.add("Button One", button8);
-				drawingPane.add("Button One", button9);
-				drawingPane.add("Button One", button10);
-				drawingPane.add("Button One", button11);
-				drawingPane.add("Button One", button12);
+				button1.setFont(new Font("Arial", Font.PLAIN, 100));
+				drawingPane.add("Button Two", button2);
+				button2.setFont(new Font("Arial", Font.PLAIN, 100));
+				drawingPane.add("Button Three", button3);
+				button3.setFont(new Font("Arial", Font.PLAIN, 100));
+				drawingPane.add("Button Four", button4);
+				button4.setFont(new Font("Arial", Font.PLAIN, 100));
+				drawingPane.add("Button Five", button5);
+				button5.setFont(new Font("Arial", Font.PLAIN, 100));
+				drawingPane.add("Button Six", button6);
+				button6.setFont(new Font("Arial", Font.PLAIN, 100));
+				drawingPane.add("Button Seven", button7);
+				button7.setFont(new Font("Arial", Font.PLAIN, 100));
+				drawingPane.add("Button Eight", button8);
+				button8.setFont(new Font("Arial", Font.PLAIN, 100));
+				drawingPane.add("Button Nine", button9);
+				button9.setFont(new Font("Arial", Font.PLAIN, 100));
+				drawingPane.add("Button Ten", button10);
+				button10.setFont(new Font("Arial", Font.PLAIN, 100));
+				drawingPane.add("Button Eleven", button11);
+				button11.setFont(new Font("Arial", Font.PLAIN, 100));
+				drawingPane.add("Button Twelve", button12);
+				button12.setFont(new Font("Arial", Font.PLAIN, 100));
 				drawingPane.revalidate();
 				drawingPane.repaint();
-				System.out.println(isPlayer);
+			//	System.out.println(isPlayer);
+				playGame();
 	      }
 		});
 		
@@ -663,6 +700,568 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		}
 	
 
+	protected void playGame() {
+		
+		button1.setEnabled(false);
+		button2.setEnabled(false);
+		button3.setEnabled(false);
+		button4.setEnabled(false);
+		button5.setEnabled(false);
+		button6.setEnabled(false);
+		button7.setEnabled(true);
+		button8.setEnabled(true);
+		button9.setEnabled(true);
+		button10.setEnabled(true);
+		button11.setEnabled(true);
+		button12.setEnabled(true);
+		
+			int iterate = 0;
+			int currTurn = turn.getCurrPlayer();
+			buttonClicked = false;
+				button7.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					buttonClicked = true;
+					System.out.println("");
+					Game.clickHole(0);
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+						System.out.println("You are Player " + turn.getCurrPlayer());
+						System.out.println("Player 1 Score: " + P1.displayCount());
+						System.out.println("Player 2 Score: " + P2.displayCount());
+						instructions.setText("Player 1 Score: " + P1.displayCount()
+						+ "\nPlayer 2 Score: " + P2.displayCount());
+						button1.setEnabled(true);
+						button2.setEnabled(true);
+						button3.setEnabled(true);
+						button4.setEnabled(true);
+						button5.setEnabled(true);
+						button6.setEnabled(true);
+						button7.setEnabled(false);
+						button8.setEnabled(false);
+						button9.setEnabled(false);
+						button10.setEnabled(false);
+						button11.setEnabled(false);
+						button12.setEnabled(false);
+						int[] topRow = Game.getPlayerOne().getTopRow();
+						int[] bottomRow = Game.getPlayerOne().getBottomRow();
+						button1.setText(Integer.toString(topRow[0]));
+						button2.setText(Integer.toString(topRow[1]));
+						button3.setText(Integer.toString(topRow[2]));
+						button4.setText(Integer.toString(topRow[3]));
+						button5.setText(Integer.toString(topRow[4]));
+						button6.setText(Integer.toString(topRow[5]));
+						button7.setText(Integer.toString(bottomRow[0]));
+						button8.setText(Integer.toString(bottomRow[1]));
+						button9.setText(Integer.toString(bottomRow[2]));
+						button10.setText(Integer.toString(bottomRow[3]));
+						button11.setText(Integer.toString(bottomRow[4]));
+						button12.setText(Integer.toString(bottomRow[5]));
+					}
+					//playGame();
+					
+					return;
+				}
+			});
+				
+			button8.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					
+					System.out.println("");
+					Game.clickHole(1);
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+						System.out.println("You are Player " + turn.getCurrPlayer());
+						System.out.println("Player 1 Score: " + P1.displayCount());
+						System.out.println("Player 2 Score: " + P2.displayCount());
+						instructions.setText("Player 1 Score: " + P1.displayCount()
+						+ "\nPlayer 2 Score: " + P2.displayCount());
+						button1.setEnabled(true);
+						button2.setEnabled(true);
+						button3.setEnabled(true);
+						button4.setEnabled(true);
+						button5.setEnabled(true);
+						button6.setEnabled(true);
+						button7.setEnabled(false);
+						button8.setEnabled(false);
+						button9.setEnabled(false);
+						button10.setEnabled(false);
+						button11.setEnabled(false);
+						button12.setEnabled(false);
+						int[] topRow = Game.getPlayerOne().getTopRow();
+						int[] bottomRow = Game.getPlayerOne().getBottomRow();
+						button1.setText(Integer.toString(topRow[0]));
+						button2.setText(Integer.toString(topRow[1]));
+						button3.setText(Integer.toString(topRow[2]));
+						button4.setText(Integer.toString(topRow[3]));
+						button5.setText(Integer.toString(topRow[4]));
+						button6.setText(Integer.toString(topRow[5]));
+						button7.setText(Integer.toString(bottomRow[0]));
+						button8.setText(Integer.toString(bottomRow[1]));
+						button9.setText(Integer.toString(bottomRow[2]));
+						button10.setText(Integer.toString(bottomRow[3]));
+						button11.setText(Integer.toString(bottomRow[4]));
+						button12.setText(Integer.toString(bottomRow[5]));
+					}
+					//playGame();
+					return;
+				}
+			});
+			button9.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+			
+					System.out.println("");
+					Game.clickHole(2);
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+						System.out.println("You are Player " + turn.getCurrPlayer());
+						System.out.println("Player 1 Score: " + P1.displayCount());
+						System.out.println("Player 2 Score: " + P2.displayCount());
+						instructions.setText("Player 1 Score: " + P1.displayCount()
+						+ "\nPlayer 2 Score: " + P2.displayCount());
+						button1.setEnabled(true);
+						button2.setEnabled(true);
+						button3.setEnabled(true);
+						button4.setEnabled(true);
+						button5.setEnabled(true);
+						button6.setEnabled(true);
+						button7.setEnabled(false);
+						button8.setEnabled(false);
+						button9.setEnabled(false);
+						button10.setEnabled(false);
+						button11.setEnabled(false);
+						button12.setEnabled(false);
+						int[] topRow = Game.getPlayerOne().getTopRow();
+						int[] bottomRow = Game.getPlayerOne().getBottomRow();
+						button1.setText(Integer.toString(topRow[0]));
+						button2.setText(Integer.toString(topRow[1]));
+						button3.setText(Integer.toString(topRow[2]));
+						button4.setText(Integer.toString(topRow[3]));
+						button5.setText(Integer.toString(topRow[4]));
+						button6.setText(Integer.toString(topRow[5]));
+						button7.setText(Integer.toString(bottomRow[0]));
+						button8.setText(Integer.toString(bottomRow[1]));
+						button9.setText(Integer.toString(bottomRow[2]));
+						button10.setText(Integer.toString(bottomRow[3]));
+						button11.setText(Integer.toString(bottomRow[4]));
+						button12.setText(Integer.toString(bottomRow[5]));
+					}
+					//playGame();
+					return;
+				}
+			});
+			button10.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+			
+					System.out.println("");
+					Game.clickHole(3);
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+						System.out.println("You are Player " + turn.getCurrPlayer());
+						System.out.println("Player 1 Score: " + P1.displayCount());
+						System.out.println("Player 2 Score: " + P2.displayCount());
+						instructions.setText("Player 1 Score: " + P1.displayCount()
+						+ "\nPlayer 2 Score: " + P2.displayCount());
+						button1.setEnabled(true);
+						button2.setEnabled(true);
+						button3.setEnabled(true);
+						button4.setEnabled(true);
+						button5.setEnabled(true);
+						button6.setEnabled(true);
+						button7.setEnabled(false);
+						button8.setEnabled(false);
+						button9.setEnabled(false);
+						button10.setEnabled(false);
+						button11.setEnabled(false);
+						button12.setEnabled(false);
+						int[] topRow = Game.getPlayerOne().getTopRow();
+						int[] bottomRow = Game.getPlayerOne().getBottomRow();
+						button1.setText(Integer.toString(topRow[0]));
+						button2.setText(Integer.toString(topRow[1]));
+						button3.setText(Integer.toString(topRow[2]));
+						button4.setText(Integer.toString(topRow[3]));
+						button5.setText(Integer.toString(topRow[4]));
+						button6.setText(Integer.toString(topRow[5]));
+						button7.setText(Integer.toString(bottomRow[0]));
+						button8.setText(Integer.toString(bottomRow[1]));
+						button9.setText(Integer.toString(bottomRow[2]));
+						button10.setText(Integer.toString(bottomRow[3]));
+						button11.setText(Integer.toString(bottomRow[4]));
+						button12.setText(Integer.toString(bottomRow[5]));
+					}
+					//playGame();
+					return;
+				}
+			});
+			button11.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+		
+					System.out.println("");
+					Game.clickHole(4);
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+						System.out.println("You are Player " + turn.getCurrPlayer());
+						System.out.println("Player 1 Score: " + P1.displayCount());
+						System.out.println("Player 2 Score: " + P2.displayCount());		
+						instructions.setText("Player 1 Score: " + P1.displayCount()
+						+ "\nPlayer 2 Score: " + P2.displayCount());
+						button1.setEnabled(true);
+						button2.setEnabled(true);
+						button3.setEnabled(true);
+						button4.setEnabled(true);
+						button5.setEnabled(true);
+						button6.setEnabled(true);
+						button7.setEnabled(false);
+						button8.setEnabled(false);
+						button9.setEnabled(false);
+						button10.setEnabled(false);
+						button11.setEnabled(false);
+						button12.setEnabled(false);
+						int[] topRow = Game.getPlayerOne().getTopRow();
+						int[] bottomRow = Game.getPlayerOne().getBottomRow();
+						button1.setText(Integer.toString(topRow[0]));
+						button2.setText(Integer.toString(topRow[1]));
+						button3.setText(Integer.toString(topRow[2]));
+						button4.setText(Integer.toString(topRow[3]));
+						button5.setText(Integer.toString(topRow[4]));
+						button6.setText(Integer.toString(topRow[5]));
+						button7.setText(Integer.toString(bottomRow[0]));
+						button8.setText(Integer.toString(bottomRow[1]));
+						button9.setText(Integer.toString(bottomRow[2]));
+						button10.setText(Integer.toString(bottomRow[3]));
+						button11.setText(Integer.toString(bottomRow[4]));
+						button12.setText(Integer.toString(bottomRow[5]));
+					}
+					//playGame();
+					return;
+				}
+			});
+			button12.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					System.out.println("");
+					Game.clickHole(5);
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+						System.out.println("You are Player " + turn.getCurrPlayer());
+						System.out.println("Player 1 Score: " + P1.displayCount());
+						System.out.println("Player 2 Score: " + P2.displayCount());
+						instructions.setText("Player 1 Score: " + P1.displayCount()
+						+ "\nPlayer 2 Score: " + P2.displayCount());
+						button1.setEnabled(true);
+						button2.setEnabled(true);
+						button3.setEnabled(true);
+						button4.setEnabled(true);
+						button5.setEnabled(true);
+						button6.setEnabled(true);
+						button7.setEnabled(false);
+						button8.setEnabled(false);
+						button9.setEnabled(false);
+						button10.setEnabled(false);
+						button11.setEnabled(false);
+						button12.setEnabled(false);
+						int[] topRow = Game.getPlayerOne().getTopRow();
+						int[] bottomRow = Game.getPlayerOne().getBottomRow();
+						button1.setText(Integer.toString(topRow[0]));
+						button2.setText(Integer.toString(topRow[1]));
+						button3.setText(Integer.toString(topRow[2]));
+						button4.setText(Integer.toString(topRow[3]));
+						button5.setText(Integer.toString(topRow[4]));
+						button6.setText(Integer.toString(topRow[5]));
+						button7.setText(Integer.toString(bottomRow[0]));
+						button8.setText(Integer.toString(bottomRow[1]));
+						button9.setText(Integer.toString(bottomRow[2]));
+						button10.setText(Integer.toString(bottomRow[3]));
+						button11.setText(Integer.toString(bottomRow[4]));
+						button12.setText(Integer.toString(bottomRow[5]));
+					}
+					//playGame();
+					return;
+				}
+				
+			});
+
+			button1.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					buttonClicked = true;
+					Game.clickHole(0);
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+						System.out.println("You are Player " + turn.getCurrPlayer());
+						System.out.println("Player 1 Score: " + P1.displayCount());
+						System.out.println("Player 2 Score: " + P2.displayCount());
+						instructions.setText("Player 1 Score: " + P1.displayCount()
+						+ "\nPlayer 2 Score: " + P2.displayCount());
+						button1.setEnabled(false);
+						button2.setEnabled(false);
+						button3.setEnabled(false);
+						button4.setEnabled(false);
+						button5.setEnabled(false);
+						button6.setEnabled(false);
+						button7.setEnabled(true);
+						button8.setEnabled(true);
+						button9.setEnabled(true);
+						button10.setEnabled(true);
+						button11.setEnabled(true);
+						button12.setEnabled(true);
+						int[] topRow = Game.getPlayerTwo().getTopRow();
+						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
+						button1.setText(Integer.toString(topRow[0]));
+						button2.setText(Integer.toString(topRow[1]));
+						button3.setText(Integer.toString(topRow[2]));
+						button4.setText(Integer.toString(topRow[3]));
+						button5.setText(Integer.toString(topRow[4]));
+						button6.setText(Integer.toString(topRow[5]));
+						button7.setText(Integer.toString(bottomRow[0]));
+						button8.setText(Integer.toString(bottomRow[1]));
+						button9.setText(Integer.toString(bottomRow[2]));
+						button10.setText(Integer.toString(bottomRow[3]));
+						button11.setText(Integer.toString(bottomRow[4]));
+						button12.setText(Integer.toString(bottomRow[5]));
+						
+					}
+					//playGame();
+					return;
+				}
+			});
+			
+			button2.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					
+					
+					Game.clickHole(1);
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+						System.out.println("You are Player " + turn.getCurrPlayer());
+						System.out.println("Player 1 Score: " + P1.displayCount());
+						System.out.println("Player 2 Score: " + P2.displayCount());
+						instructions.setText("Player 1 Score: " + P1.displayCount()
+						+ "\nPlayer 2 Score: " + P2.displayCount());
+						button1.setEnabled(false);
+						button2.setEnabled(false);
+						button3.setEnabled(false);
+						button4.setEnabled(false);
+						button5.setEnabled(false);
+						button6.setEnabled(false);
+						button7.setEnabled(true);
+						button8.setEnabled(true);
+						button9.setEnabled(true);
+						button10.setEnabled(true);
+						button11.setEnabled(true);
+						button12.setEnabled(true);
+						int[] topRow = Game.getPlayerTwo().getTopRow();
+						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
+						button1.setText(Integer.toString(topRow[0]));
+						button2.setText(Integer.toString(topRow[1]));
+						button3.setText(Integer.toString(topRow[2]));
+						button4.setText(Integer.toString(topRow[3]));
+						button5.setText(Integer.toString(topRow[4]));
+						button6.setText(Integer.toString(topRow[5]));
+						button7.setText(Integer.toString(bottomRow[0]));
+						button8.setText(Integer.toString(bottomRow[1]));
+						button9.setText(Integer.toString(bottomRow[2]));
+						button10.setText(Integer.toString(bottomRow[3]));
+						button11.setText(Integer.toString(bottomRow[4]));
+						button12.setText(Integer.toString(bottomRow[5]));
+					}
+					//playGame();
+					return;
+				}
+			});
+			button3.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					
+					Game.clickHole(2);
+					
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+						System.out.println("You are Player " + turn.getCurrPlayer());
+						System.out.println("Player 1 Score: " + P1.displayCount());
+						System.out.println("Player 2 Score: " + P2.displayCount());
+						instructions.setText("Player 1 Score: " + P1.displayCount()
+						+ "\nPlayer 2 Score: " + P2.displayCount());
+						button1.setEnabled(false);
+						button2.setEnabled(false);
+						button3.setEnabled(false);
+						button4.setEnabled(false);
+						button5.setEnabled(false);
+						button6.setEnabled(false);
+						button7.setEnabled(true);
+						button8.setEnabled(true);
+						button9.setEnabled(true);
+						button10.setEnabled(true);
+						button11.setEnabled(true);
+						button12.setEnabled(true);
+						int[] topRow = Game.getPlayerTwo().getTopRow();
+						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
+						button1.setText(Integer.toString(topRow[0]));
+						button2.setText(Integer.toString(topRow[1]));
+						button3.setText(Integer.toString(topRow[2]));
+						button4.setText(Integer.toString(topRow[3]));
+						button5.setText(Integer.toString(topRow[4]));
+						button6.setText(Integer.toString(topRow[5]));
+						button7.setText(Integer.toString(bottomRow[0]));
+						button8.setText(Integer.toString(bottomRow[1]));
+						button9.setText(Integer.toString(bottomRow[2]));
+						button10.setText(Integer.toString(bottomRow[3]));
+						button11.setText(Integer.toString(bottomRow[4]));
+						button12.setText(Integer.toString(bottomRow[5]));
+					}
+					
+					return;
+				}
+			});
+			button4.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					
+					Game.clickHole(3);
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+						System.out.println("You are Player " + turn.getCurrPlayer());
+						System.out.println("Player 1 Score: " + P1.displayCount());
+						System.out.println("Player 2 Score: " + P2.displayCount());
+						instructions.setText("Player 1 Score: " + P1.displayCount()
+						+ "\nPlayer 2 Score: " + P2.displayCount());
+						button1.setEnabled(false);
+						button2.setEnabled(false);
+						button3.setEnabled(false);
+						button4.setEnabled(false);
+						button5.setEnabled(false);
+						button6.setEnabled(false);
+						button7.setEnabled(true);
+						button8.setEnabled(true);
+						button9.setEnabled(true);
+						button10.setEnabled(true);
+						button11.setEnabled(true);
+						button12.setEnabled(true);
+						int[] topRow = Game.getPlayerTwo().getTopRow();
+						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
+						button1.setText(Integer.toString(topRow[0]));
+						button2.setText(Integer.toString(topRow[1]));
+						button3.setText(Integer.toString(topRow[2]));
+						button4.setText(Integer.toString(topRow[3]));
+						button5.setText(Integer.toString(topRow[4]));
+						button6.setText(Integer.toString(topRow[5]));
+						button7.setText(Integer.toString(bottomRow[0]));
+						button8.setText(Integer.toString(bottomRow[1]));
+						button9.setText(Integer.toString(bottomRow[2]));
+						button10.setText(Integer.toString(bottomRow[3]));
+						button11.setText(Integer.toString(bottomRow[4]));
+						button12.setText(Integer.toString(bottomRow[5]));
+					}
+					return;
+				}
+			});
+			button5.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					
+					Game.clickHole(4);
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+						System.out.println("You are Player " + turn.getCurrPlayer());
+						System.out.println("Player 1 Score: " + P1.displayCount());
+						System.out.println("Player 2 Score: " + P2.displayCount());
+						instructions.setText("Player 1 Score: " + P1.displayCount()
+						+ "\nPlayer 2 Score: " + P2.displayCount());
+						button1.setEnabled(false);
+						button2.setEnabled(false);
+						button3.setEnabled(false);
+						button4.setEnabled(false);
+						button5.setEnabled(false);
+						button6.setEnabled(false);
+						button7.setEnabled(true);
+						button8.setEnabled(true);
+						button9.setEnabled(true);
+						button10.setEnabled(true);
+						button11.setEnabled(true);
+						button12.setEnabled(true);
+						int[] topRow = Game.getPlayerTwo().getTopRow();
+						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
+						button1.setText(Integer.toString(topRow[0]));
+						button2.setText(Integer.toString(topRow[1]));
+						button3.setText(Integer.toString(topRow[2]));
+						button4.setText(Integer.toString(topRow[3]));
+						button5.setText(Integer.toString(topRow[4]));
+						button6.setText(Integer.toString(topRow[5]));
+						button7.setText(Integer.toString(bottomRow[0]));
+						button8.setText(Integer.toString(bottomRow[1]));
+						button9.setText(Integer.toString(bottomRow[2]));
+						button10.setText(Integer.toString(bottomRow[3]));
+						button11.setText(Integer.toString(bottomRow[4]));
+						button12.setText(Integer.toString(bottomRow[5]));
+					}
+
+					return;
+					
+				}
+			});
+			button6.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					
+					Game.clickHole(5);
+					if(!Game.getClickedZero())
+					{
+						turn.switchTurn();
+					System.out.println("You are Player " + turn.getCurrPlayer());
+					System.out.println("Player 1 Score: " + P1.displayCount());
+					System.out.println("Player 2 Score: " + P2.displayCount());
+					instructions.setText("Player 1 Score: " + P1.displayCount()
+					+ "\nPlayer 2 Score: " + P2.displayCount());
+					button1.setEnabled(false);
+					button2.setEnabled(false);
+					button3.setEnabled(false);
+					button4.setEnabled(false);
+					button5.setEnabled(false);
+					button6.setEnabled(false);
+					button7.setEnabled(true);
+					button8.setEnabled(true);
+					button9.setEnabled(true);
+					button10.setEnabled(true);
+					button11.setEnabled(true);
+					button12.setEnabled(true);
+					int[] topRow = Game.getPlayerTwo().getTopRow();
+					int[] bottomRow = Game.getPlayerTwo().getBottomRow();
+					button1.setText(Integer.toString(topRow[0]));
+					button2.setText(Integer.toString(topRow[1]));
+					button3.setText(Integer.toString(topRow[2]));
+					button4.setText(Integer.toString(topRow[3]));
+					button5.setText(Integer.toString(topRow[4]));
+					button6.setText(Integer.toString(topRow[5]));
+					button7.setText(Integer.toString(bottomRow[0]));
+					button8.setText(Integer.toString(bottomRow[1]));
+					button9.setText(Integer.toString(bottomRow[2]));
+					button10.setText(Integer.toString(bottomRow[3]));
+					button11.setText(Integer.toString(bottomRow[4]));
+					button12.setText(Integer.toString(bottomRow[5]));
+					
+					}
+					return;
+				}
+			});
+	}
+
+
 	/** A scrolling text field in which we can hold the field with instructions for playing a particular game. */
 	protected JScrollPane scrollPane;
 	/** The text area in which we hold the instructions for playing a particular game. */
@@ -676,7 +1275,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		instructions = new JTextArea(5, 30);
 		instructions.setLineWrap(true);
 		instructions.setWrapStyleWord(true);
-		instructions.setText("Wari Rules:"
+		/*instructions.setText("Wari Rules:"
 				+ "\nHow to move:"
 				+ "\n\n1) Select an index on your side of the board (Player 1 is bottom half, Player 2 is top half)"
 				+ "\n\n2) The seeds in that index will be distributed counterclockwise one-by-one across the board."
@@ -684,6 +1283,10 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				+ "\n\nIf so: Did your final seed land in a hole containing either One or Two seeds, thus causing the hole to contain either Two or Three seeds? "
 				+ "\n\nIf so: Take all seeds from this hole and add them to your score. Check the previous holes. Do these holes now contain Two or Three seeds? "
 				+ "\n\nMove one-by one back down the line taking points until you come to a hole that has a number of seeds other than Two or Three.");
+		instructions.setFont(new Font("Arial", Font.PLAIN, 20));*/
+		instructions.setText("Player 1 Score: " + P1.displayCount()
+				+ "\n Player 2 Score: " + P2.displayCount());
+		instructions.setFont(new Font("Arial", Font.PLAIN, 30));
 		scrollPane = new JScrollPane(instructions);
 		scrollPane.setPreferredSize(new Dimension(250, 300));
 	}
