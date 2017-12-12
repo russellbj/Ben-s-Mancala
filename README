@@ -1,0 +1,33 @@
+Wari Rules:
+
+How to move:
+1) Select an index on your side of the board (Player 1 is bottom half, Player 2 is top half)
+2) The seeds in that index will be distributed counterclockwise one-by-one across the board.
+
+How to score:
+Did your seed land in the enemy's row?
+  If so:
+  Did your final seed land in a hole containing either One or Two seeds, thus causing the hole to contain either Two or Three seeds?
+    If so:
+    Take all seeds from this hole and add them to your score. Check the previous holes. Do these holes now contain Two or Three seeds?
+    Move one-by one back down the line taking points until you come to a hole that has a number of seeds other than Two or Three.
+    
+
+
+Example Turn:
+    
+{2, 2, 0, 5, 5, 5, }
+{1, 1, 9, 7, 6, 5, }
+
+Player 1 Points: 0
+Player 2 Points: 0
+
+You are Player 1
+You can choose from Holes 0-5 in row 1
+Enter the index # of the hole you want to click: 2
+{0, 0, 1, 6, 6, 6, }
+{1, 1, 0, 8, 7, 6, }
+
+Player 1 Points: 6
+Player 2 Points: 0
+    

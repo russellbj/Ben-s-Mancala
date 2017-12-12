@@ -1,10 +1,13 @@
 package mancala;
 
+/**
+ * @author melissa and robbie
+ */
 public class CollectingHole {
 	int numberSeeds;
 	
 	/**
-	 * constructor, instanciates tally bin with 0 seeds in it
+	 * constructor, instantiates tally bin with 0 seeds in it
 	 */
 	public CollectingHole(){
 		numberSeeds = 0;
@@ -19,7 +22,7 @@ public class CollectingHole {
 	
 	/**
 	 * method takes in the number of seeds being added to the tally bin and 
-	 * calcuates the new number of seeds in the bin.
+	 * calculates the new number of seeds in the bin.
 	 */
 	public int addSeeds(int numSeeds){
 		//adds seeds to bin
