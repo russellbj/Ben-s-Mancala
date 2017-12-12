@@ -1,6 +1,7 @@
 package mancala;
 
 public class Turn {
+	private static Turn instance;
 	private int currTurn = 1;
 	private int currPlayer = 1;
 	
@@ -25,5 +26,13 @@ public class Turn {
 	public int getCurrTurn()
 	{
 		return currTurn;
+	}
+
+	public static Turn getInstance() {
+		if(instance == null)
+		{
+			instance = new Turn();
+		}
+		return instance;
 	}
 }

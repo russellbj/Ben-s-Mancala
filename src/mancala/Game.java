@@ -7,7 +7,7 @@ public class Game {
 	private static Scanner input = new Scanner(System.in);
 	
 	public static Rules rules = Rules.getInstance();
-	public static Turn turn = new Turn();
+	public static Turn turn = Turn.getInstance();
 	private static int numOfHoles = 12; // Wari - specific
 	private static GameBoard board = GameBoard.getInstance();
 	public static CollectingHole P1 = new CollectingHole();
@@ -19,6 +19,21 @@ public class Game {
 	private static Player playerOne = new Player();
 	private static Player playerTwo = new Player();
 	
+	public static Player getPlayerOne() {
+		return playerOne;
+	}
+
+	public static void setPlayerOne(Player playerOne) {
+		Game.playerOne = playerOne;
+	}
+
+	public static Player getPlayerTwo() {
+		return playerTwo;
+	}
+
+	public static void setPlayerTwo(Player playerTwo) {
+		Game.playerTwo = playerTwo;
+	}
 	private static boolean isPlayerGame;
 	private static boolean isComputerGame;
 	
@@ -27,28 +42,27 @@ public class Game {
 	private static Row rowTwo=new Row(holesPerRow);
 	static int clickedHoleIndex;
 	static int totalPoints;
-	
-	static boolean clickHole(){
 
-			
+	private static boolean clickedZero;
+
+	private static Game instance;
+	
+	static boolean clickHole(int holeIndex){
 		
-		System.out.println("Player 1 Points: " + P1.displayCount());
-		System.out.println("Player 2 Points: " + P2.displayCount());
-		System.out.println();
-		System.out.println("You are Player " + turn.getCurrPlayer());
-		System.out.println("You can choose from Holes 1-6 in row " + turn.getCurrPlayer());
+		//mainWindow.playGame();
+		clickedZero = false;
+		clickedHoleIndex = holeIndex;
 
 		boolean goThrough = false;
 		
 		while(!goThrough)
 		{
 		try{
-		System.out.print("Enter the index # of the hole you want to click: ");
-		clickedHoleIndex = input.nextInt() - 1;
 		if(clickedHoleIndex < 0 || clickedHoleIndex >= 6)
 			throw new Exception();
 		else
 			goThrough = true;
+		
 		}
 		catch(Exception E)
 		{
@@ -61,13 +75,25 @@ public class Game {
 
 		if(turn.getCurrPlayer() == 1)
 		{
+	
 			P1.addSeeds(playerOne.moveSeeds(rowOne, rowTwo, clickedHoleIndex)); // Player one can only click row one, I think (wari rules)
+			if(playerOne.getClickedZero())
+			{	
+				System.out.println("Please enter the index of a hole that contains seeds.");
+				clickedZero = true;
+			}	
+			
 		}
-		if(turn.getCurrPlayer() == 2)
+		else if(turn.getCurrPlayer() == 2)
 		{
-			P2.addSeeds(playerTwo.moveSeeds(rowTwo, rowOne, clickedHoleIndex)); // Player one can only click row one, I think (wari rules)
+			P2.addSeeds(playerTwo.moveSeeds(rowTwo, rowOne, clickedHoleIndex)); // Player TWO can only click row two, I think (wari rules)
+			if(playerTwo.getClickedZero())
+			{
+				System.out.println("Please enter the index of a hole that contains seeds.");
+				clickedZero = true;
+			}
 		}
-
+		
 		return true;
 	}
 	
@@ -82,18 +108,22 @@ public class Game {
 	}
 
 	public static void setup(){
+		System.out.println("You are Player " + turn.getCurrPlayer());
+		System.out.println("");
 		System.out.print("{");
-		for(int i = 0 ; i < 6 ; i++)
+		for(int i = 0 ; i < 5 ; i++)
 		{
 			System.out.print(4 + ", ");
 		}
+		System.out.print(4);
 		System.out.print("}");
 		System.out.println();
 		System.out.print("{");
-		for(int i = 0 ; i < 6 ; i++)
+		for(int i = 0 ; i < 5 ; i++)
 		{
 			System.out.print(4 + ", ");
 		}
+		System.out.print(4);
 		System.out.print("}");
 		System.out.println();
 		System.out.println();
@@ -104,20 +134,38 @@ public class Game {
 		pointsToWin = 25;
 	}
 
+	public static boolean playerOneOver()
+	{
+		int[] bottomRow = playerOne.getBottomRow();
+		
+		for(int i = 0 ; i < bottomRow.length; i++)
+		{
+			if(bottomRow[i] != 0)
+				return false;
+		}
+		return true;
+	}
+	public static boolean playerTwoOver()
+	{
+		int[] topRow = playerTwo.getBottomRow();
+		
+		for(int i = 0 ; i < topRow.length; i++)
+		{
+			if(topRow[i] != 0)
+				return false;
+		}
+		return true;
+	}
+	
 	public static void main(String[]args) throws InterruptedException{
 		totalPoints = P1.displayCount() + P2.displayCount();
 		setup();
 		while(true){
-			Thread.sleep(1);
-			if(mainWindow.isPlayer())
-			{
-		
-			clickHole();
-			
-			turn.switchTurn();
-			if(totalPoints >= 47 || (P1.displayCount() >= pointsToWin) || (P2.displayCount() >= pointsToWin)){
-				endGame();
-			}
+			Thread.sleep(1); 
+			if(/*!playerTwoOver() || !playerOneOver() ||*/
+					totalPoints >= 47 || (P1.displayCount() >= pointsToWin) || (P2.displayCount() >= pointsToWin)){
+				
+				endGame();	
 			}
 			}
 		}
@@ -125,5 +173,23 @@ public class Game {
 	public static void endGame(){
 		System.out.println("Game Over, " + determineWinner());
 		System.exit(1);
+	}
+	
+	public static Game getInstance()
+	{
+		if(instance == null)
+		{
+			instance = new Game();
+		}
+		return instance;
+	}
+
+	public static boolean getClickedZero() {
+		// TODO Auto-generated method stub
+		return clickedZero;
+	}
+	public void setClickedZero(boolean clickedZero) {
+		// TODO Auto-generated method stub
+		this.clickedZero = clickedZero;
 	}
 }
