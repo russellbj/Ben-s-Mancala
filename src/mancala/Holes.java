@@ -1,21 +1,23 @@
 package mancala;
-
+/*
+ * @author Nisha and Papa
+ */
 public class Holes {
 
 	int numOfSeeds;
-	
-	public Holes(int numOfSeeds)
-	{
+
+	// constructor
+	public Holes(int numOfSeeds) {
 		this.numOfSeeds = numOfSeeds;
 	}
-	
-	public int getNumOfSeeds()
-	{
+
+	// getter method to for number of seeds
+	public int getNumOfSeeds() {
 		return numOfSeeds;
 	}
-	
-	public void setNumOfSeeds(int numOfSeeds)
-	{
+
+	// setter for number of seeds
+	public void setNumOfSeeds(int numOfSeeds) {
 		this.numOfSeeds = numOfSeeds;
 	}
 }

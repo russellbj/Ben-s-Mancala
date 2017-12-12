@@ -1,30 +1,34 @@
 package mancala;
-
 public class Row {
-	//private static int seeds = rules.GetSeedsPerBin();
-	private  int seeds = 4; // four seed per hole in Wari
+	/*
+	 * @author Nisha and Papa
+	 */
+
+	// private static int seeds = rules.GetSeedsPerBin();
+	private int seeds = 4; // four seed per hole in Wari
 	private Holes[] holes;
 
+	// getter method to return holes
 	public Holes[] getHoles() {
 		return holes;
 	}
 
+	// setter method for number of holes
 	public void setHoles(Holes[] holes) {
 		this.holes = holes;
 	}
 
-	public Row(int numHoles) 
-	{
+	// constructor
+	public Row(int numHoles) {
 		holes = new Holes[numHoles];
-		
+
 		for (int i = 0; i < numHoles; i++) {
 			holes[i] = new Holes(seeds);
 		}
-
 	}
-	
-	public int getSeedsAtIndex(int index)
-	{
+
+	// returns the number of seeds at a given hole
+	public int getSeedsAtIndex(int index) {
 		return holes[index].getNumOfSeeds();
 	}
 }
