@@ -16,6 +16,9 @@ public class Game {
 	private static boolean possibleMoves = true;
 	private static MainWindow mainWindow = MainWindow.getInstance();
 	
+	private static boolean playerOneDone = false;
+	private static boolean playerTwoDone = false;
+	
 	private static Player playerOne = new Player();
 	private static Player playerTwo = new Player();
 	
@@ -77,21 +80,26 @@ public class Game {
 		{
 	
 			P1.addSeeds(playerOne.moveSeeds(rowOne, rowTwo, clickedHoleIndex)); // Player one can only click row one, I think (wari rules)
+			
 			if(playerOne.getClickedZero())
 			{	
 				System.out.println("Please enter the index of a hole that contains seeds.");
 				clickedZero = true;
 			}	
+			playerOneDone = playerOne.playerOneOver();
 			
 		}
+		
 		else if(turn.getCurrPlayer() == 2)
 		{
 			P2.addSeeds(playerTwo.moveSeeds(rowTwo, rowOne, clickedHoleIndex)); // Player TWO can only click row two, I think (wari rules)
+			
 			if(playerTwo.getClickedZero())
 			{
 				System.out.println("Please enter the index of a hole that contains seeds.");
 				clickedZero = true;
 			}
+			playerTwoDone = playerTwo.playerTwoOver();
 		}
 		
 		return true;
@@ -134,35 +142,12 @@ public class Game {
 		pointsToWin = 25;
 	}
 
-	public static boolean playerOneOver()
-	{
-		int[] bottomRow = playerOne.getBottomRow();
-		
-		for(int i = 0 ; i < bottomRow.length; i++)
-		{
-			if(bottomRow[i] != 0)
-				return false;
-		}
-		return true;
-	}
-	public static boolean playerTwoOver()
-	{
-		int[] topRow = playerTwo.getBottomRow();
-		
-		for(int i = 0 ; i < topRow.length; i++)
-		{
-			if(topRow[i] != 0)
-				return false;
-		}
-		return true;
-	}
-	
 	public static void main(String[]args) throws InterruptedException{
 		totalPoints = P1.displayCount() + P2.displayCount();
 		setup();
 		while(true){
 			Thread.sleep(1); 
-			if(/*!playerTwoOver() || !playerOneOver() ||*/
+			if(playerOneDone || playerTwoDone ||
 					totalPoints >= 47 || (P1.displayCount() >= pointsToWin) || (P2.displayCount() >= pointsToWin)){
 				
 				endGame();	

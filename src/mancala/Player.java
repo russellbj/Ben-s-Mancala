@@ -233,6 +233,46 @@ public class Player
 		return pointsGain;
 	}
 
+	public boolean playerOneOver()
+	{
+		int numOfZeroes = 0;
+		for(int i = 0 ; i < bottomRow.length; i++)
+		{
+			if(bottomRow[i] == 0)
+			{
+				numOfZeroes++;
+			}
+		}
+		if(numOfZeroes == 6)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public boolean playerTwoOver()
+	{
+		int numOfZeroes = 0;
+		for(int i = 0 ; i < topRow.length; i++)
+		{
+			if(topRow[i] == 0)
+			{
+				numOfZeroes++;
+			}
+		}
+		if(numOfZeroes == 6)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 	public boolean getClickedZero() {
 		return clickedZero;
 	}
