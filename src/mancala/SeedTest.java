@@ -8,10 +8,13 @@ import org.junit.Test;
 
 public class SeedTest {
  
+	//Test the getSeeds method
 	@Test
 	public void testGetSeeds() {
-		int startingValue = 4; //Set the value to be tested
-		System.out.println(startingValue); //Print the method to make sure the method correctly returns it
-	}
+		Seed test = new Seed();
+		int initial = test.getSeeds(); //Set the value to be tested
+		assertEquals(4, initial); //Check that we reutrn the desired value
+
+}
 
 }
