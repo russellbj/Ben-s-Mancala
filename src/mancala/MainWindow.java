@@ -726,7 +726,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(0);
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -773,7 +773,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(1);
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -818,7 +818,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(2);
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -863,7 +863,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(3);
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -908,7 +908,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(4);
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());		
@@ -952,7 +952,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(5);
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -998,7 +998,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(0);
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -1045,7 +1045,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(1);
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -1090,7 +1090,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -1134,7 +1134,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(3);
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -1177,7 +1177,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(4);
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -1222,7 +1222,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(5);
 					if(!Game.getClickedZero())
 					{
-						turn.switchTurn();
+						turn.switchPlayer();
 					System.out.println("You are Player " + turn.getCurrPlayer());
 					System.out.println("Player 1 Score: " + P1.displayCount());
 					System.out.println("Player 2 Score: " + P2.displayCount());

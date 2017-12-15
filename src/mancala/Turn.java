@@ -5,7 +5,7 @@ public class Turn {
 	private int currTurn = 1;
 	private int currPlayer = 1;
 	
-	public void switchTurn()
+	public void switchPlayer()
 	{
 			if(currPlayer == 1)
 			{
