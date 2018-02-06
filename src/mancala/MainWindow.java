@@ -699,21 +699,74 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		drawingPane.add(playerChoice);
 		}
 	
-
+	public void printScores(){
+		System.out.println("Player 1 Score: " + P1.displayCount());
+		System.out.println("Player 2 Score: " + P2.displayCount());
+		instructions.setText("Player 1 Score: " + P1.displayCount()
+		+ "\nPlayer 2 Score: " + P2.displayCount());
+	}
+	
+	public void setButtons(int turn){
+		
+		if(turn == 2){
+			button1.setEnabled(true);
+			button2.setEnabled(true);
+			button3.setEnabled(true);
+			button4.setEnabled(true);
+			button5.setEnabled(true);
+			button6.setEnabled(true);
+			button7.setEnabled(false);
+			button8.setEnabled(false);
+			button9.setEnabled(false);
+			button10.setEnabled(false);
+			button11.setEnabled(false);
+			button12.setEnabled(false);
+		}
+		if(turn ==1){
+			button1.setEnabled(false);
+			button2.setEnabled(false);
+			button3.setEnabled(false);
+			button4.setEnabled(false);
+			button5.setEnabled(false);
+			button6.setEnabled(false);
+			button7.setEnabled(true);
+			button8.setEnabled(true);
+			button9.setEnabled(true);
+			button10.setEnabled(true);
+			button11.setEnabled(true);
+			button12.setEnabled(true);
+		}
+		
+	}
+	
+	public void setButtonsText(int turn){
+		int [] topRow;
+		int [] bottomRow;
+		if(turn == 2){
+			topRow = Game.getPlayerOne().getTopRow();
+			bottomRow = Game.getPlayerOne().getBottomRow();
+		}
+		else{
+			topRow = Game.getPlayerTwo().getTopRow();
+			bottomRow = Game.getPlayerTwo().getBottomRow();
+		}
+		button1.setText(Integer.toString(topRow[0]));
+		button2.setText(Integer.toString(topRow[1]));
+		button3.setText(Integer.toString(topRow[2]));
+		button4.setText(Integer.toString(topRow[3]));
+		button5.setText(Integer.toString(topRow[4]));
+		button6.setText(Integer.toString(topRow[5]));
+		button7.setText(Integer.toString(bottomRow[0]));
+		button8.setText(Integer.toString(bottomRow[1]));
+		button9.setText(Integer.toString(bottomRow[2]));
+		button10.setText(Integer.toString(bottomRow[3]));
+		button11.setText(Integer.toString(bottomRow[4]));
+		button12.setText(Integer.toString(bottomRow[5]));
+	}
+	
 	protected void playGame() {
 		
-		button1.setEnabled(false);
-		button2.setEnabled(false);
-		button3.setEnabled(false);
-		button4.setEnabled(false);
-		button5.setEnabled(false);
-		button6.setEnabled(false);
-		button7.setEnabled(true);
-		button8.setEnabled(true);
-		button9.setEnabled(true);
-		button10.setEnabled(true);
-		button11.setEnabled(true);
-		button12.setEnabled(true);
+		setButtons(1);
 		
 			int iterate = 0;
 			int currTurn = turn.getCurrPlayer();
@@ -728,36 +781,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
+						printScores();
+						setButtons(turn.getCurrPlayer());
+						setButtonsText(turn.getCurrPlayer());
 					}
 					//playGame();
 					
@@ -775,36 +801,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
+						printScores();
+						setButtons(turn.getCurrPlayer());
+						setButtonsText(turn.getCurrPlayer());
 					}
 					//playGame();
 					return;
@@ -820,36 +819,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
+						printScores();
+						setButtons(turn.getCurrPlayer());
+						setButtonsText(turn.getCurrPlayer());
 					}
 					//playGame();
 					return;
@@ -865,36 +837,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
+						printScores();
+						setButtons(turn.getCurrPlayer());
+						setButtonsText(turn.getCurrPlayer());
 					}
 					//playGame();
 					return;
@@ -910,36 +855,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());		
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
+						printScores();
+						setButtons(turn.getCurrPlayer());
+						setButtonsText(turn.getCurrPlayer());
 					}
 					//playGame();
 					return;
@@ -954,36 +872,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
+						printScores();
+						setButtons(turn.getCurrPlayer());
+						setButtonsText(turn.getCurrPlayer());
 					}
 					//playGame();
 					return;
@@ -1000,37 +891,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(false);
-						button2.setEnabled(false);
-						button3.setEnabled(false);
-						button4.setEnabled(false);
-						button5.setEnabled(false);
-						button6.setEnabled(false);
-						button7.setEnabled(true);
-						button8.setEnabled(true);
-						button9.setEnabled(true);
-						button10.setEnabled(true);
-						button11.setEnabled(true);
-						button12.setEnabled(true);
-						int[] topRow = Game.getPlayerTwo().getTopRow();
-						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-						
+						printScores();
+						setButtons(turn.getCurrPlayer());
+						setButtonsText(turn.getCurrPlayer());	
 					}
 					//playGame();
 					return;
@@ -1047,36 +910,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(false);
-						button2.setEnabled(false);
-						button3.setEnabled(false);
-						button4.setEnabled(false);
-						button5.setEnabled(false);
-						button6.setEnabled(false);
-						button7.setEnabled(true);
-						button8.setEnabled(true);
-						button9.setEnabled(true);
-						button10.setEnabled(true);
-						button11.setEnabled(true);
-						button12.setEnabled(true);
-						int[] topRow = Game.getPlayerTwo().getTopRow();
-						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
+						printScores();
+						setButtons(turn.getCurrPlayer());
+						setButtonsText(turn.getCurrPlayer());
 					}
 					//playGame();
 					return;
@@ -1092,36 +928,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(false);
-						button2.setEnabled(false);
-						button3.setEnabled(false);
-						button4.setEnabled(false);
-						button5.setEnabled(false);
-						button6.setEnabled(false);
-						button7.setEnabled(true);
-						button8.setEnabled(true);
-						button9.setEnabled(true);
-						button10.setEnabled(true);
-						button11.setEnabled(true);
-						button12.setEnabled(true);
-						int[] topRow = Game.getPlayerTwo().getTopRow();
-						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
+						printScores();
+						setButtons(turn.getCurrPlayer());
+						setButtonsText(turn.getCurrPlayer());
 					}
 					
 					return;
@@ -1136,36 +945,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(false);
-						button2.setEnabled(false);
-						button3.setEnabled(false);
-						button4.setEnabled(false);
-						button5.setEnabled(false);
-						button6.setEnabled(false);
-						button7.setEnabled(true);
-						button8.setEnabled(true);
-						button9.setEnabled(true);
-						button10.setEnabled(true);
-						button11.setEnabled(true);
-						button12.setEnabled(true);
-						int[] topRow = Game.getPlayerTwo().getTopRow();
-						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
+						printScores();
+						setButtons(turn.getCurrPlayer());
+						setButtonsText(turn.getCurrPlayer());
 					}
 					return;
 				}
@@ -1179,36 +961,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(false);
-						button2.setEnabled(false);
-						button3.setEnabled(false);
-						button4.setEnabled(false);
-						button5.setEnabled(false);
-						button6.setEnabled(false);
-						button7.setEnabled(true);
-						button8.setEnabled(true);
-						button9.setEnabled(true);
-						button10.setEnabled(true);
-						button11.setEnabled(true);
-						button12.setEnabled(true);
-						int[] topRow = Game.getPlayerTwo().getTopRow();
-						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
+						printScores();
+						setButtons(turn.getCurrPlayer());
+						setButtonsText(turn.getCurrPlayer());
 					}
 
 					return;
@@ -1224,37 +979,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					{
 						turn.switchPlayer();
 					System.out.println("You are Player " + turn.getCurrPlayer());
-					System.out.println("Player 1 Score: " + P1.displayCount());
-					System.out.println("Player 2 Score: " + P2.displayCount());
-					instructions.setText("Player 1 Score: " + P1.displayCount()
-					+ "\nPlayer 2 Score: " + P2.displayCount());
-					button1.setEnabled(false);
-					button2.setEnabled(false);
-					button3.setEnabled(false);
-					button4.setEnabled(false);
-					button5.setEnabled(false);
-					button6.setEnabled(false);
-					button7.setEnabled(true);
-					button8.setEnabled(true);
-					button9.setEnabled(true);
-					button10.setEnabled(true);
-					button11.setEnabled(true);
-					button12.setEnabled(true);
-					int[] topRow = Game.getPlayerTwo().getTopRow();
-					int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-					button1.setText(Integer.toString(topRow[0]));
-					button2.setText(Integer.toString(topRow[1]));
-					button3.setText(Integer.toString(topRow[2]));
-					button4.setText(Integer.toString(topRow[3]));
-					button5.setText(Integer.toString(topRow[4]));
-					button6.setText(Integer.toString(topRow[5]));
-					button7.setText(Integer.toString(bottomRow[0]));
-					button8.setText(Integer.toString(bottomRow[1]));
-					button9.setText(Integer.toString(bottomRow[2]));
-					button10.setText(Integer.toString(bottomRow[3]));
-					button11.setText(Integer.toString(bottomRow[4]));
-					button12.setText(Integer.toString(bottomRow[5]));
-					
+					printScores();
+					setButtons(turn.getCurrPlayer());
+					setButtonsText(turn.getCurrPlayer());
 					}
 					return;
 				}
