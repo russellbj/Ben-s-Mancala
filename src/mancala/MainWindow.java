@@ -806,8 +806,16 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 		
 		introScreen = new ImageIcon("src/mancala.jpg");
+		
+		Image introImg = introScreen.getImage();
+		setBounds(0,0,10000,10000);
+		Image newIntroImg = introImg.getScaledInstance(2200,1000, Image.SCALE_SMOOTH);
+		introScreen = new ImageIcon(newIntroImg);
 		introLabel = new JLabel(introScreen);
 		drawingPane.add(introLabel);
+		setVisible(true);
+		drawingPane.repaint();
+		drawingPane.revalidate();
 	}	
 		/*playerChoice.addActionListener(new ActionListener()
 		{
