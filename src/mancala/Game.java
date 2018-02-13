@@ -4,17 +4,19 @@ import java.util.Scanner;
 
 public class Game {
 
-	private static Scanner input = new Scanner(System.in);
+//	private static Scanner input = new Scanner(System.in);
 	
 	public static Rules rules = Rules.getInstance();
 	public static Turn turn = Turn.getInstance();
-	private static int numOfHoles = 12; // Wari - specific
-	private static GameBoard board = GameBoard.getInstance();
+//	private static int numOfHoles = 12; // Wari - specific
+//	private static GameBoard board = GameBoard.getInstance();
 	public static CollectingHole P1 = new CollectingHole();
 	public static CollectingHole P2 = new CollectingHole();
 	private static int pointsToWin = 25;
-	private static boolean possibleMoves = true;
+//	private static boolean possibleMoves = true;
 	private static MainWindow mainWindow = MainWindow.getInstance();
+	
+
 	
 	private static boolean playerOneDone = false;
 	private static boolean playerTwoDone = false;
@@ -79,27 +81,27 @@ public class Game {
 		if(turn.getCurrPlayer() == 1)
 		{
 	
-			P1.addSeeds(playerOne.moveSeeds(rowOne, rowTwo, clickedHoleIndex)); // Player one can only click row one, I think (wari rules)
+			//P1.addSeeds(playerOne.moveSeeds(rowOne, rowTwo, clickedHoleIndex)); // Player one can only click row one, I think (wari rules)
 			
 			if(playerOne.getClickedZero())
 			{	
 				System.out.println("Please enter the index of a hole that contains seeds.");
 				clickedZero = true;
 			}	
-			playerOneDone = playerOne.playerOneOver();
+		//	playerOneDone = playerOne.playerOneOver();
 			
 		}
 		
 		else if(turn.getCurrPlayer() == 2)
 		{
-			P2.addSeeds(playerTwo.moveSeeds(rowTwo, rowOne, clickedHoleIndex)); // Player TWO can only click row two, I think (wari rules)
+		//	P2.addSeeds(playerTwo.moveSeeds(rowTwo, rowOne, clickedHoleIndex)); // Player TWO can only click row two, I think (wari rules)
 			
 			if(playerTwo.getClickedZero())
 			{
 				System.out.println("Please enter the index of a hole that contains seeds.");
 				clickedZero = true;
 			}
-			playerTwoDone = playerTwo.playerTwoOver();
+		//	playerTwoDone = playerTwo.playerTwoOver();
 		}
 		
 		return true;
@@ -145,11 +147,11 @@ public class Game {
 	public static void main(String[]args) throws InterruptedException{
 		totalPoints = P1.displayCount() + P2.displayCount();
 		setup();
+
 		while(true){
 			Thread.sleep(1); 
 			if(playerOneDone || playerTwoDone ||
 					totalPoints >= 47 || (P1.displayCount() >= pointsToWin) || (P2.displayCount() >= pointsToWin)){
-				
 				endGame();	
 			}
 			}
