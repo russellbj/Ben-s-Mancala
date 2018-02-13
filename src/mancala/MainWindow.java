@@ -1,9 +1,10 @@
- 
+  
  package mancala;
 
 /**
  * Created by Darrah Chavey, Nov. 7, 2017.
  */
+import java.awt.event.MouseListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -11,6 +12,7 @@ import java.awt.Desktop.Action;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -19,8 +21,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +32,8 @@ import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -54,9 +60,59 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 /* Class & object data, other than the GUI elements */
 	
+	
+	
 	protected static Turn turn = Turn.getInstance();
 	
 	protected static Game game = Game.getInstance();
+	
+	protected static GameBoard boardType;
+	
+	protected boolean gameChosen;
+	
+	protected int[][] boardLayout;
+
+	/*
+	 * GUI Elements
+	 */
+	
+	MouseListener ml = new MouseListener() {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			int mouseX = e.getX();
+			int mouseY = e.getY();
+			AnalyzeClick(mouseX, mouseY);
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
+	protected ImageIcon introScreen;
+	protected ImageIcon wariBoard;
+	protected JLabel introLabel;
 	
 	/**
 	 * Serial ID to allow implementation of Serializable. We don't actually
@@ -101,18 +157,20 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
      */
     protected JMenuBar menuBar;
     
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
-    private JButton button4;
-    private JButton button5;
-    private JButton button6;
-    private JButton button7;
-    private JButton button8;
-    private JButton button9;
-    private JButton button10;
-    private JButton button11;
-    private JButton button12;
+//    private JButton button1;
+//    private JButton button2;
+//    private JButton button3;
+//    private JButton button4;
+//    private JButton button5;
+//    private JButton button6;
+//    private JButton button7;
+//    private JButton button8;
+//    private JButton button9;
+//    private JButton button10;
+//    private JButton button11;
+//    private JButton button12;
+    
+    private JButton[][] buttonArray;
     
     private CollectingHole P1 = Game.P1;
     private CollectingHole P2 = Game.P2;
@@ -412,7 +470,29 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		for (index=0; index<allGames.length; index++) {
 			gameName = allGames[index];
 			gameMenuItem = new JMenuItem(gameName);
-			gameMenuItem.addActionListener(this);
+			gameMenuItem.addActionListener(new ActionListener()
+					{
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							gameChosen = true;
+							System.out.println("Game Chosen");
+							computerChoice = new JButton("Click to play against the Computer");
+							computerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
+							playerChoice = new JButton("Click to play against another Player");
+							playerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
+							// replace with way to handle different games ASAP
+							boardType = new GameBoard(GameVariations.WARI);
+							drawingPane.remove(introLabel);
+							//drawingPane.add(computerChoice);
+							//drawingPane.add(playerChoice);
+							GenerateBoard();
+							drawingPane.repaint();
+							drawingPane.revalidate();
+			
+						}
+				
+					});
 			if ( ignoreDiacriticals.compare(gameName,"F" ) < 0) {
 				gameAlphaAE.add( gameMenuItem );
 			} else if ( ignoreDiacriticals.compare(gameName,"M" ) < 0) {
@@ -594,7 +674,102 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		menuBarPane.add( buttonPanel, "East");
 	}
 		
+	/**
+	 * Used to create board depending on what game was chosen
+	 */
+	protected void GenerateBoard() 
+	{
+		// use factory for this asap
+		System.out.println("Board Generating: " + boardType.getGameName());
+		switch(boardType.getGameName())
+		{
+		case "Wari": 
+			System.out.println("Wari");
+			
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			setBounds(0,0,screenSize.width, screenSize.height);
+			setVisible(true);
+			wariBoard = new ImageIcon("src/Wari Board.png");
+			Image wariBoardImg = wariBoard.getImage();
+			Image newWariBoardImg = wariBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			wariBoard = new ImageIcon(newWariBoardImg);
+
+			JLabel clickableArea = new JLabel(wariBoard);
+			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
+			clickableArea.addMouseListener(ml);
+			drawingPane.add(clickableArea);
+			drawingPane.repaint();
+			drawingPane.revalidate();
+				
+			
+			//clickableArea
+		}
+	}
 	
+	protected void AnalyzeClick(int mouseX, int mouseY)
+	{
+		System.out.println("Click Coordinates: " + mouseX + ", " + mouseY);
+		
+		// Wari and the like
+		if(boardType.getNumOfRows() == 2 )
+		{
+			if(mouseY <= 1020)
+			{
+				if(mouseX <= 580)
+				{
+					System.out.println("You Clicked: 1,1");
+				}
+				if(mouseX > 580 && mouseX <= 1195)
+				{
+					System.out.println("You Clicked: 1,2");
+				}
+				if(mouseX > 1195 && mouseX <= 1773)
+				{
+					System.out.println("You Clicked: 1,3");
+				}
+				if(mouseX > 1773 && mouseX <= 2368)
+				{
+					System.out.println("You Clicked: 1,4");
+				}
+				if(mouseX > 2368 && mouseX <= 2960)
+				{
+					System.out.println("You Clicked: 1,5");
+				}
+				if(mouseX > 2960)
+				{
+					System.out.println("You Clicked: 1,6");
+				}
+			}
+			if(mouseY > 1020)
+			{
+				if(mouseX <= 580)
+				{
+					System.out.println("You Clicked: 2,1");
+				}
+				if(mouseX > 580 && mouseX <= 1195)
+				{
+					System.out.println("You Clicked: 2,2");
+				}
+				if(mouseX > 1195 && mouseX <= 1773)
+				{
+					System.out.println("You Clicked: 2,3");
+				}
+				if(mouseX > 1773 && mouseX <= 2368)
+				{
+					System.out.println("You Clicked: 2,4");
+				}
+				if(mouseX > 2368 && mouseX <= 2960)
+				{
+					System.out.println("You Clicked: 2,5");
+				}
+				if(mouseX > 2960)
+				{
+					System.out.println("You Clicked: 2,6");
+				}
+			}
+		}
+	}
+
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
 	 *  the various slots for the components. We also initialize theComponentBar here.
@@ -614,6 +789,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		// inside the pane. This allows the border panel, which we never need reference again, to
 		// always redraw the beveled edges, while the actual canvas inside it is bound to the width
 		// WITHOUT the border, extends to take up all available space, but is properly cropped.
+	
 		JPanel borderForCanvas = new JPanel( new BorderLayout() );
 		borderForCanvas.setBorder(canvasBorder);
 		borderForCanvas.setBackground(Color.WHITE);
@@ -623,16 +799,17 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 		// Then put them into the drawingPane
 		drawingPane = new Container();
-		drawingPane.setLayout( new GridLayout(2,6) );
+		drawingPane.setLayout( new BorderLayout());
 		drawingPane.setBackground(Color.WHITE);
 		
 		//add CPU or Player choice
-		computerChoice = new JButton("Click to play against the Computer");
-		computerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
-		playerChoice = new JButton("Click to play against another Player");
-		playerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
 		
-		playerChoice.addActionListener(new ActionListener()
+		
+		introScreen = new ImageIcon("src/mancala.jpg");
+		introLabel = new JLabel(introScreen);
+		drawingPane.add(introLabel);
+	}	
+		/*playerChoice.addActionListener(new ActionListener()
 		{
 
 		public void actionPerformed(ActionEvent e)
@@ -695,8 +872,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				JOptionPane.showMessageDialog(null, "Coming Soon! :)");
 	      }
 		});
-		drawingPane.add(computerChoice);
-		drawingPane.add(playerChoice);
+		
 		}
 	
 
@@ -726,7 +902,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(0);
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -773,7 +949,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(1);
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -818,7 +994,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(2);
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -863,7 +1039,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(3);
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -896,7 +1072,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 						button11.setText(Integer.toString(bottomRow[4]));
 						button12.setText(Integer.toString(bottomRow[5]));
 					}
-					//playGame();
+					playGame();
 					return;
 				}
 			});
@@ -908,7 +1084,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(4);
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());		
@@ -952,7 +1128,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(5);
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -998,7 +1174,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(0);
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -1045,7 +1221,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(1);
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -1090,7 +1266,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -1134,7 +1310,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(3);
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -1177,7 +1353,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(4);
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 						System.out.println("You are Player " + turn.getCurrPlayer());
 						System.out.println("Player 1 Score: " + P1.displayCount());
 						System.out.println("Player 2 Score: " + P2.displayCount());
@@ -1222,7 +1398,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					Game.clickHole(5);
 					if(!Game.getClickedZero())
 					{
-						turn.switchPlayer();
+						turn.switchTurn();
 					System.out.println("You are Player " + turn.getCurrPlayer());
 					System.out.println("Player 1 Score: " + P1.displayCount());
 					System.out.println("Player 2 Score: " + P2.displayCount());
@@ -1259,8 +1435,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					return;
 				}
 			});
-	}
-
+	}*/
 
 	/** A scrolling text field in which we can hold the field with instructions for playing a particular game. */
 	protected JScrollPane scrollPane;
@@ -1315,7 +1490,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		this.add(scrollPane, BorderLayout.EAST);
 
 		setPreferredSize( new Dimension(800,600) );   		// Has to happen after "pack()"
-//		setLocation(32*numOfWindows-8,32*numOfWindows-8);	// For applicaitons, support staggering with multiple windows
+//		setLocation(32*numOfWindows-8,32*numOfWindows-8);	// For applications, support staggering with multiple windows
 		setVisible(true);
 		
 		addComponentListener( new ComponentAdapter( ) 
