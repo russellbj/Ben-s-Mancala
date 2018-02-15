@@ -16,7 +16,23 @@ public class GameBoard { // Basic template for gameboards, compatible now with r
 	
 	private String originCountry;
 	private int initialSeedsForBin;
+	public int getInitialSeedsForBin() {
+		return initialSeedsForBin;
+	}
+
+	public void setInitialSeedsForBin(int initialSeedsForBin) {
+		this.initialSeedsForBin = initialSeedsForBin;
+	}
+
 	private int numOfColumns;
+	public int getNumOfColumns() {
+		return numOfColumns;
+	}
+
+	public void setNumOfColumns(int numOfColumns) {
+		this.numOfColumns = numOfColumns;
+	}
+
 	private BoardTypes boardType;
 	private int numOfRows;
 	
@@ -28,7 +44,15 @@ public class GameBoard { // Basic template for gameboards, compatible now with r
 		this.numOfRows = numOfRows;
 	}
 
-	int holesPerRow;
+	private static int holesPerRow;
+	public static int getHolesPerRow() {
+		return holesPerRow;
+	}
+
+	public static void setHolesPerRow(int holesPerRow) {
+		GameBoard.holesPerRow = holesPerRow;
+	}
+
 	//public static Row rowOne, rowTwo; // BEN: could possibly add any number of rows here, and then only actually instantiate the amount you need in the constructor depending on rules (how many rows there are)
 	CollectingHole scoreOne, scoreTwo; 
 	

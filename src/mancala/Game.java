@@ -15,8 +15,10 @@ public class Game {
 	private static int pointsToWin = 25;
 //	private static boolean possibleMoves = true;
 	private static MainWindow mainWindow = MainWindow.getInstance();
-	
-
+	private static int[][] boardLayout;
+	private static GameBoard boardType;
+	private static int numOfRows;
+	private static int numOfColumns;
 	
 	private static boolean playerOneDone = false;
 	private static boolean playerTwoDone = false;
@@ -51,6 +53,7 @@ public class Game {
 	private static boolean clickedZero;
 
 	private static Game instance;
+	private static boolean gameChosen = false;
 	
 	static boolean clickHole(int holeIndex){
 		
@@ -117,37 +120,36 @@ public class Game {
 		}
 	}
 
-	public static void setup(){
+	public static void setup(GameBoard board){
+		boardType = board;
 		System.out.println("You are Player " + turn.getCurrPlayer());
-		System.out.println("");
-		System.out.print("{");
-		for(int i = 0 ; i < 5 ; i++)
-		{
-			System.out.print(4 + ", ");
-		}
-		System.out.print(4);
-		System.out.print("}");
-		System.out.println();
-		System.out.print("{");
-		for(int i = 0 ; i < 5 ; i++)
-		{
-			System.out.print(4 + ", ");
-		}
-		System.out.print(4);
-		System.out.print("}");
-		System.out.println();
-		System.out.println();
-		
 		playerOne.setPlayerNumber(1);
 		playerTwo.setPlayerNumber(2);
-  		rules.getGameRules("WARI");
-		pointsToWin = 25;
+  		boardLayout = boardType.getBoard();
+  		numOfRows = boardType.getNumOfRows();
+  		numOfColumns = boardType.getNumOfColumns();
+  		
+  		for(int x = 0 ; x < numOfRows; x++)
+  		{
+  			System.out.print("{");
+  			for(int y = 0 ; y < numOfColumns; y++)
+  			{
+  				if(y < numOfColumns-1)
+  					System.out.print(boardLayout[x][y] + ", ");
+  				else
+  				{
+  					System.out.print(boardLayout[x][y]);
+  				}
+  			}
+  			System.out.print("}");
+  			System.out.println("");
+  		}
 	}
+
 
 	public static void main(String[]args) throws InterruptedException{
 		totalPoints = P1.displayCount() + P2.displayCount();
-		setup();
-
+		
 		while(true){
 			Thread.sleep(1); 
 			if(playerOneDone || playerTwoDone ||
@@ -178,5 +180,13 @@ public class Game {
 	public void setClickedZero(boolean clickedZero) {
 		// TODO Auto-generated method stub
 		this.clickedZero = clickedZero;
+	}
+
+	public static int[][] getBoardLayout() {
+		return boardLayout;
+	}
+
+	public static void setBoardLayout(int[][] boardLayout) {
+		Game.boardLayout = boardLayout;
 	}
 }
