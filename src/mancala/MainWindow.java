@@ -60,20 +60,23 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 /* Class & object data, other than the GUI elements */
 	
-	
+
 	
 	protected static Turn turn = Turn.getInstance();
 	
-	protected static Game game = Game.getInstance();
+	protected static GameDriver game = GameDriver.getInstance();
 	
-	protected static GameBoard boardType;
+	protected static GameBoard gameBoard;
 	
 	protected boolean gameChosen;
 	
-	protected int[][] boardLayout;
+	protected int[] gameBoardArray;
 
 	protected int numOfSeedsPerHole;
 	
+	protected static int numOfRows;
+	
+	protected static int numOfColumns;
 	/*
 	 * GUI Elements
 	 */
@@ -174,8 +177,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
     
     private JButton[][] buttonArray;
     
-    private CollectingHole P1 = Game.P1;
-    private CollectingHole P2 = Game.P2;
+    private CollectingHole P1 = GameDriver.P1;
+    private CollectingHole P2 = GameDriver.P2;
      /**
      * The menu gameMenu contains the user to select which game they wish
      * to play. There are a variety of ways for them to select the game.
@@ -484,11 +487,11 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 							playerChoice = new JButton("Click to play against another Player");
 							playerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
 							// replace with way to handle different games ASAP
-							boardType = new GameBoard(GameVariations.WARI);
+							gameBoard = new GameBoard(GameVariations.WARI);
 							drawingPane.remove(introLabel);
 							//drawingPane.add(computerChoice);
 							//drawingPane.add(playerChoice);
-							Game.setup(boardType);
+							GameDriver.setup(gameBoard);
 							GenerateBoard();
 							drawingPane.repaint();
 							drawingPane.revalidate();
@@ -683,13 +686,13 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected void GenerateBoard() 
 	{ 
 		// use factory for this asap
-		System.out.println("Board Generating: " + boardType.getGameName());
-		boardLayout = boardType.getBoard();
-		switch(boardType.getGameName())
+		System.out.println("Board Generating: " + gameBoard.getGameName());
+		gameBoardArray = gameBoard.getBoard();
+		switch(gameBoard.getGameName())
 		{
 		case "Wari": 
 			System.out.println("Wari");
-			numOfSeedsPerHole = boardType.getInitialSeedsForBin();
+			numOfSeedsPerHole = gameBoard.getInitialSeedsForBin();
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			setBounds(0,0,screenSize.width, screenSize.height);
 			setVisible(true);
@@ -714,7 +717,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			drawingPane.add(beanLabel);
 			drawingPane.repaint();
 			drawingPane.revalidate();
-				
+			numOfRows = gameBoard.getNumOfRows();
+			
+			numOfColumns = gameBoard.getNumOfColumns();
 			
 			//clickableArea
 		}
@@ -725,13 +730,14 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		System.out.println("Click 0: " + mouseX + ", " + mouseY);
 		
 		// Wari and the like
-		if(boardType.getNumOfRows() == 2)
+		if(numOfRows == 2)
 		{
 			if(mouseY <= 1020)
 			{
 				if(mouseX <= 580)
 				{
 					System.out.println("You Clicked: 1,1");
+					//gameBoard = game.ChangeBoard(gameBoard);
 					
 				}
 				if(mouseX > 580 && mouseX <= 1195)

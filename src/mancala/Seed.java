@@ -2,7 +2,7 @@ package mancala;
 
 public class Seed {
 
-	private static Rules rules = Game.rules;
+	private static Rules rules = GameDriver.rules;
 	
 	int startingValue;
 	

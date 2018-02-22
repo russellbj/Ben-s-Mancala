@@ -2,7 +2,7 @@ package mancala;
 
 import java.util.Scanner;
 
-public class Game {
+public class GameDriver {
 
 //	private static Scanner input = new Scanner(System.in);
 	
@@ -15,7 +15,7 @@ public class Game {
 	private static int pointsToWin = 25;
 //	private static boolean possibleMoves = true;
 	private static MainWindow mainWindow = MainWindow.getInstance();
-	private static int[][] boardLayout;
+	private static int[] boardLayout;
 	private static GameBoard boardType;
 	private static int numOfRows;
 	private static int numOfColumns;
@@ -31,7 +31,7 @@ public class Game {
 	}
 
 	public static void setPlayerOne(Player playerOne) {
-		Game.playerOne = playerOne;
+		GameDriver.playerOne = playerOne;
 	}
 
 	public static Player getPlayerTwo() {
@@ -39,7 +39,7 @@ public class Game {
 	}
 
 	public static void setPlayerTwo(Player playerTwo) {
-		Game.playerTwo = playerTwo;
+		GameDriver.playerTwo = playerTwo;
 	}
 	private static boolean isPlayerGame;
 	private static boolean isComputerGame;
@@ -52,7 +52,7 @@ public class Game {
 
 	private static boolean clickedZero;
 
-	private static Game instance;
+	private static GameDriver instance;
 	private static boolean gameChosen = false;
 	
 	static boolean clickHole(int holeIndex){
@@ -129,7 +129,7 @@ public class Game {
   		numOfRows = boardType.getNumOfRows();
   		numOfColumns = boardType.getNumOfColumns();
   		
-  		for(int x = 0 ; x < numOfRows; x++)
+  	/*	for(int x = 0 ; x < numOfRows; x++)
   		{
   			System.out.print("{");
   			for(int y = 0 ; y < numOfColumns; y++)
@@ -143,7 +143,7 @@ public class Game {
   			}
   			System.out.print("}");
   			System.out.println("");
-  		}
+  		}*/
 	}
 
 
@@ -164,11 +164,11 @@ public class Game {
 		System.exit(1);
 	}
 	
-	public static Game getInstance()
+	public static GameDriver getInstance()
 	{
 		if(instance == null)
 		{
-			instance = new Game();
+			instance = new GameDriver();
 		}
 		return instance;
 	}
@@ -182,11 +182,11 @@ public class Game {
 		this.clickedZero = clickedZero;
 	}
 
-	public static int[][] getBoardLayout() {
+	public static int[] getBoardLayout() {
 		return boardLayout;
 	}
 
-	public static void setBoardLayout(int[][] boardLayout) {
-		Game.boardLayout = boardLayout;
+	public static void setBoardLayout(int[] boardLayout) {
+		GameDriver.boardLayout = boardLayout;
 	}
 }

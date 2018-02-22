@@ -11,8 +11,8 @@ public class GameBoard { // Basic template for gameboards, compatible now with r
 	}
 
 	private static GameBoard instance = null;
-	private Turn turn = Game.turn; 
-	private Rules rules = Game.rules;
+	private Turn turn = GameDriver.turn; 
+	private Rules rules = GameDriver.rules;
 	
 	private String originCountry;
 	private int initialSeedsForBin;
@@ -56,14 +56,14 @@ public class GameBoard { // Basic template for gameboards, compatible now with r
 	//public static Row rowOne, rowTwo; // BEN: could possibly add any number of rows here, and then only actually instantiate the amount you need in the constructor depending on rules (how many rows there are)
 	CollectingHole scoreOne, scoreTwo; 
 	
-	private static int[][] board;
+	private static int[] board;
 
-	public int[][] getBoard()
+	public int[] getBoard()
 	{
 		return board;
 	}
 	
-	public void setBoard(int[][] board)
+	public void setBoard(int[] board)
 	{
 		this.board = board;
 	}
@@ -76,13 +76,11 @@ public class GameBoard { // Basic template for gameboards, compatible now with r
 		numOfRows = boardType.numberOfRows();
 		gameName = variation.getName();
 		
-		board = new int[numOfRows][numOfColumns];
-		for(int x = 0 ; x < numOfRows; x++)
+		board = new int[numOfRows + numOfColumns];
+		for(int x = 0 ; x < board.length; x++)
 		{
-			for(int y = 0  ; y < numOfColumns; y++)
-			{
-				board[x][y] = initialSeedsForBin;
-			}
+				board[x] = initialSeedsForBin;
+			
 		}
 		
 		//rowOne=new Row(holesPerRow); // May need to add more rows based on game, currently built for Wari
