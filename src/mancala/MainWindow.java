@@ -490,6 +490,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				thisBoardType = gameTwoRow;
 			}
 			gameByType.add( thisBoardType );
+			gameByType.setEnabled(false);
 		}
 
 
@@ -525,6 +526,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				}
 			}
 			gameByCountry.add(gamesOneCountry);
+			gameByCountry.setEnabled(false);
 		}
 
 
