@@ -380,6 +380,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	 * including the hierarchical menus with their menu items.<BR><BR>
 	 * This is declared as public only for purposes of the testing modules.
 	 */
+	@SuppressWarnings("deprecation")
 	protected void initMenuBarPane() {
 		
 		menuBarPane = new JPanel();
@@ -415,18 +416,28 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			gameMenuItem.addActionListener(this);
 			if ( ignoreDiacriticals.compare(gameName,"F" ) < 0) {
 				gameAlphaAE.add( gameMenuItem );
+				
 			} else if ( ignoreDiacriticals.compare(gameName,"M" ) < 0) {
 				gameAlphaFL.add( gameMenuItem );
 			} else if ( ignoreDiacriticals.compare(gameName,"P" ) < 0) {
 				gameAlphaMO.add( gameMenuItem );
 			} else {
 				gameAlphaPZ.add( gameMenuItem );
+				if(gameMenuItem.getText().equals("Wari")){
+					gameMenuItem.setEnabled(true);
+				}
+				else{
+					gameMenuItem.setEnabled(false);
+				}
 			}
 		}
 		gameAlphabetical = new JMenu("Alphabetical");
 		gameAlphabetical.add(gameAlphaAE);
+		gameAlphaAE.setEnabled(false);
 		gameAlphabetical.add(gameAlphaFL);
+		gameAlphaFL.setEnabled(false);	
 		gameAlphabetical.add(gameAlphaMO);
+		gameAlphaMO.setEnabled(false);		
 		gameAlphabetical.add(gameAlphaPZ);
 
 
