@@ -8,12 +8,9 @@ import java.awt.event.MouseListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Desktop.Action;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
@@ -24,7 +21,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,27 +28,21 @@ import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 
-/**
+ /**
  * MainWindow is where most objects in this program live. This creates the program,
  * initializes the menus and GUI, and then initiates the play of the game.
  */
@@ -136,7 +126,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected DrawingCanvas drawingCanvas;
 	
  	/** Which game is currently being played. */
-	protected GameVariations gameBeingPlayed;
+	protected GameEnum gameBeingPlayed;
 	
 
 	/* 
@@ -454,10 +444,10 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 	    // Get all of the known games, sort them alphabetically.
 	    // We keep that list of "allGames" unchanged for later uses.
-		String[] allGames = new String[ GameVariations.values().length ];
+		String[] allGames = new String[ GameEnum.values().length ];
 		int index=0;
-		for (GameVariations gameVariations : GameVariations.values() ) {
-			allGames[index++] = gameVariations.getName();
+		for (GameEnum gameEnum : GameEnum.values() ) {
+			allGames[index++] = gameEnum.getName();
 		}
 		//		Sort the array of games, handling diacritical marks
 	    Collator ignoreDiacriticals = Collator.getInstance(Locale.US);
@@ -487,7 +477,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 							playerChoice = new JButton("Click to play against another Player");
 							playerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
 							// replace with way to handle different games ASAP
-							gameBoard = new GameBoard(GameVariations.WARI);
+							gameBoard = new GameBoard(GameEnum.WARI);
 							drawingPane.remove(introLabel);
 							//drawingPane.add(computerChoice);
 							//drawingPane.add(playerChoice);
@@ -521,7 +511,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		JMenu thisBoardType;
 		for (BoardTypes boardType : BoardTypes.values() ) {
 			ArrayList<String> gamesOfOneType = new ArrayList<String>( );
-			for (GameVariations gameVariation : GameVariations.values() ) {
+			for (GameEnum gameVariation : GameEnum.values() ) {
 				if (gameVariation.getBoardType() == boardType) {
 					gamesOfOneType.add( gameVariation.getName() );
 				}
@@ -573,8 +563,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		gameByCountry = new JMenu("By Country");
 		ArrayList<String> countries = new ArrayList<String>( );
 		String newCountry;
-		for (GameVariations gameVariations : GameVariations.values() ) {
-			newCountry = gameVariations.getOriginCountry( );
+		for (GameEnum gameEnum : GameEnum.values() ) {
+			newCountry = gameEnum.getOriginCountry( );
 			if (!countries.contains(newCountry)) {
 				countries.add(newCountry);
 			}
@@ -586,15 +576,15 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		Arrays.sort(countriesOfOrigin, ignoreDiacriticals);
 		JMenu gamesOneCountry;
 		String countryName;
-		GameVariations gameVariations;
+		GameEnum gameEnum;
 		for (int whichCountry=0; whichCountry<countriesOfOrigin.length; whichCountry++) {
 			countryName = countriesOfOrigin[whichCountry];
 			gamesOneCountry = new JMenu(countryName);
 			for (index=0; index<allGames.length; index++) {
 				gameName = allGames[index];
-				gameVariations = GameVariations.getGameVariation(gameName);
-				if (gameVariations.getOriginCountry().equals(countryName)) {
-					gameMenuItem = new JMenuItem( gameVariations.getName() );
+				gameEnum = GameEnum.getGameVariation(gameName);
+				if (gameEnum.getOriginCountry().equals(countryName)) {
+					gameMenuItem = new JMenuItem( gameEnum.getName() );
 					gameMenuItem.addActionListener(this);
 					gamesOneCountry.add(gameMenuItem);
 				}
