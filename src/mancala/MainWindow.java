@@ -50,7 +50,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 /* Class & object data, other than the GUI elements */
 	
-
+	protected static GameManager gameManager = GameManager.getInstance();
 	
 	protected static Turn turn = Turn.getInstance();
 	
@@ -478,6 +478,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 							playerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
 							// replace with way to handle different games ASAP
 							gameBoard = new GameBoard(GameEnum.WARI);
+							gameManager.setup(GameEnum.WARI);
 							drawingPane.remove(introLabel);
 							//drawingPane.add(computerChoice);
 							//drawingPane.add(playerChoice);
@@ -727,28 +728,34 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				if(mouseX <= 580)
 				{
 					System.out.println("You Clicked: 1,1");
-					//gameBoard = game.ChangeBoard(gameBoard);
+					gameManager.moveSeeds(1, 1);
 					
 				}
 				if(mouseX > 580 && mouseX <= 1195)
 				{
 					System.out.println("You Clicked: 1,2");
+					gameManager.moveSeeds(1,2);
 				}
 				if(mouseX > 1195 && mouseX <= 1773)
 				{
 					System.out.println("You Clicked: 1,3");
+					gameManager.moveSeeds(1,3);
 				}
+				
 				if(mouseX > 1773 && mouseX <= 2368)
 				{
 					System.out.println("You Clicked: 1,4");
+					gameManager.moveSeeds(1,4);
 				}
 				if(mouseX > 2368 && mouseX <= 2960)
 				{
 					System.out.println("You Clicked: 1,5");
+					gameManager.moveSeeds(1,5);
 				}
 				if(mouseX > 2960)
 				{
 					System.out.println("You Clicked: 1,6");
+					gameManager.moveSeeds(1,6);
 				}
 			}
 			if(mouseY > 1020)
@@ -756,26 +763,33 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				if(mouseX <= 580)
 				{
 					System.out.println("You Clicked: 2,1");
+					gameManager.moveSeeds(2,1);
 				}
 				if(mouseX > 580 && mouseX <= 1195)
 				{
 					System.out.println("You Clicked: 2,2");
+					gameManager.moveSeeds(2,2);
 				}
 				if(mouseX > 1195 && mouseX <= 1773)
 				{
 					System.out.println("You Clicked: 2,3");
+					gameManager.moveSeeds(2,3);
 				}
+				
 				if(mouseX > 1773 && mouseX <= 2368)
 				{
 					System.out.println("You Clicked: 2,4");
+					gameManager.moveSeeds(2,4);
 				}
 				if(mouseX > 2368 && mouseX <= 2960)
 				{
 					System.out.println("You Clicked: 2,5");
+					gameManager.moveSeeds(2,5);
 				}
 				if(mouseX > 2960)
 				{
 					System.out.println("You Clicked: 2,6");
+					gameManager.moveSeeds(2, 6);
 				}
 			}
 		}

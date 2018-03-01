@@ -71,7 +71,7 @@ public class GameBoard { // Basic template for gameboards, compatible now with r
 	public GameBoard(GameEnum variation){
 		boardType = variation.getBoardType();
 		originCountry = variation.getOriginCountry();
-		initialSeedsForBin = variation.initialSeedsPerBin();
+		initialSeedsForBin = variation.getInitialSeedsPerBin();
 		numOfColumns = variation.getColumns();
 		numOfRows = boardType.numberOfRows();
 		gameName = variation.getName();
