@@ -3,7 +3,7 @@ package mancala;
 
 public class GameManager 
 {
-	public static int[] boardArray;
+	private static int[] boardArray;
 	private static GameManager instance;
 	private static BoardTypes boardType;
 	private static int numOfColumns;
@@ -29,8 +29,7 @@ public class GameManager
 	}
 	
 	public static void printBoard() 
-	{
-		System.out.println(numOfHoles);
+	{	
 		int rowsLeft = numOfRows;
 		int i = 0;
 		int loopCounter = 1;
@@ -78,8 +77,7 @@ public class GameManager
 		boardArray[index] = 0;
 		
 		int currRow = x;
-		
-		System.out.println("Index: " + index);
+
 		while(seedsLeftToMove >0)
 		{		
 			
@@ -104,9 +102,8 @@ public class GameManager
 					index = (currRow * numOfColumns);
 					
 				}
-				boardArrayCopy = boardArray;
-				System.out.println("Index: " + index);
-			} 
+				
+			}
 			else if(currRow % 2 == 0)
 			{
 				
@@ -114,7 +111,7 @@ public class GameManager
 				if(index != (currRow-1) * numOfColumns)
 				{
 					index--;
-					System.out.println("Switch CAse: "+ (currRow-1) * numOfColumns);
+					
 					int newVal = boardArray[index];
 					newVal++;
 					boardArray[index] = newVal;
@@ -129,16 +126,13 @@ public class GameManager
 					else
 					{
 						currRow = 1;
-						System.out.println("Switching To Beginning");
+						
 					}
 					
 					index = ((currRow - 1) * numOfColumns) - 1;
 					
 				}
-				
-				boardArrayCopy = boardArray;
-				System.out.println("Index: " + index);
-			} 
+			}
 		}
 		printBoard();
 	}

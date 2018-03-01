@@ -50,11 +50,15 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 /* Class & object data, other than the GUI elements */
 	
+	protected static int playerOneScore;
+	
+	protected static int playerTwoScore;
+	
 	protected static GameManager gameManager = GameManager.getInstance();
-	
-	protected static Turn turn = Turn.getInstance();
-	
+
 	protected static GameDriver game = GameDriver.getInstance();
+	
+	protected static GameBoardFactory gameFactory;
 	
 	protected static GameBoard gameBoard;
 	
@@ -75,13 +79,13 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			int mouseX = e.getX();
-			int mouseY = e.getY();
+			int mouseX = e.getXOnScreen();
+			int mouseY = e.getYOnScreen();
 			AnalyzeClick(mouseX, mouseY);
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
+		public void mouseEntered(MouseEvent arg0) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -166,9 +170,6 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 //    private JButton button12;
     
     private JButton[][] buttonArray;
-    
-    private CollectingHole P1 = GameDriver.P1;
-    private CollectingHole P2 = GameDriver.P2;
      /**
      * The menu gameMenu contains the user to select which game they wish
      * to play. There are a variety of ways for them to select the game.
@@ -468,6 +469,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			gameMenuItem.addActionListener(new ActionListener()
 					{
 
+						
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							gameChosen = true;
@@ -477,12 +479,13 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 							playerChoice = new JButton("Click to play against another Player");
 							playerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
 							// replace with way to handle different games ASAP
-							gameBoard = new GameBoard(GameEnum.WARI);
-							gameManager.setup(GameEnum.WARI);
+							gameFactory = new GameBoardFactory(GameEnum.WARI);
+							gameBoard = gameFactory.GameBoardFactory(0);
+							gameManager.setup(gameBoard.getGameEnum());
 							drawingPane.remove(introLabel);
 							//drawingPane.add(computerChoice);
 							//drawingPane.add(playerChoice);
-							GameDriver.setup(gameBoard);
+							
 							GenerateBoard();
 							drawingPane.repaint();
 							drawingPane.revalidate();
@@ -678,12 +681,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	{ 
 		// use factory for this asap
 		System.out.println("Board Generating: " + gameBoard.getGameName());
-		gameBoardArray = gameBoard.getBoard();
+	
 		switch(gameBoard.getGameName())
 		{
 		case "Wari": 
 			System.out.println("Wari");
-			numOfSeedsPerHole = gameBoard.getInitialSeedsForBin();
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			setBounds(0,0,screenSize.width, screenSize.height);
 			setVisible(true);
@@ -697,20 +700,20 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			clickableArea.addMouseListener(ml);
 			drawingPane.add(clickableArea);
 			
-			ImageIcon bean = new ImageIcon("src/Bean-01.gif");
+	/*		ImageIcon bean = new ImageIcon("src/Bean-01.gif");
 			Image beanImg = bean.getImage();
 			Image newBeanImg = beanImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
 			ImageIcon newBean = new ImageIcon(newBeanImg);
 			JLabel beanLabel = new JLabel(newBean);
-			beanLabel.setSize(1000, 1000);
+			beanLabel.setSize(1000, 1000);*/
 			
 
-			drawingPane.add(beanLabel);
+//			drawingPane.add(beanLabel);
 			drawingPane.repaint();
 			drawingPane.revalidate();
-			numOfRows = gameBoard.getNumOfRows();
+			numOfRows = gameBoard.getNumRows();
 			
-			numOfColumns = gameBoard.getNumOfColumns();
+			numOfColumns = gameBoard.getNumColumns();
 			
 			//clickableArea
 		}
@@ -865,8 +868,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				+ "\n\nIf so: Take all seeds from this hole and add them to your score. Check the previous holes. Do these holes now contain Two or Three seeds? "
 				+ "\n\nMove one-by one back down the line taking points until you come to a hole that has a number of seeds other than Two or Three.");
 		instructions.setFont(new Font("Arial", Font.PLAIN, 20));*/
-		instructions.setText("Player 1 Score: " + P1.displayCount()
-				+ "\n Player 2 Score: " + P2.displayCount());
+		instructions.setText("Player 1 Score: " + playerOneScore
+				+ "\n Player 2 Score: " + playerTwoScore);
 		instructions.setFont(new Font("Arial", Font.PLAIN, 30));
 		scrollPane = new JScrollPane(instructions);
 		scrollPane.setPreferredSize(new Dimension(250, 300));
