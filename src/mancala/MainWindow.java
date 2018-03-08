@@ -797,6 +797,32 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			}
 		}
 	}
+	 //Takes in where the user clicked, the screen size and the board details and returns the hole the user clicked on
+	 protected void clickHole(int mouseX, int mouseY, Dimension screenSize, int verticalOffset, int horizontalOffset, boolean endBins, int numRows, int numHoles){
+		double holeWidth;
+		int colNumber;
+		int endBinWidth=100;
+		if(endBins)
+			holeWidth=((screenSize.width-endBinWidth*2)-(horizontalOffset*(numHoles-1)))/numHoles;
+		else
+			holeWidth=((screenSize.width)-(horizontalOffset*(numHoles-1)))/numHoles;
+		double holeHeight=(screenSize.height-(verticalOffset*(numRows-1))/numRows);
+		int rowNumber=(int) (mouseY/(holeHeight+verticalOffset))+1;
+		if(mouseY%(holeHeight+verticalOffset)>holeHeight)
+			return;
+		if(endBins){
+			if((mouseX-endBinWidth)%(holeWidth+horizontalOffset)>holeWidth)
+				return;
+			colNumber=(int) ((mouseX-endBinWidth)/(holeWidth+horizontalOffset))+1;
+		}
+		else{
+			if(mouseX%(holeWidth+horizontalOffset)>holeWidth)
+				return;
+			colNumber=(int) (mouseX/(holeWidth+horizontalOffset))+1;
+		}
+		System.out.println("You clicked: "+rowNumber+","+colNumber);
+		gameManager.moveSeeds(rowNumber, colNumber);
+	}
 
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
