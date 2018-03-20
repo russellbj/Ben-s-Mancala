@@ -427,6 +427,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					gameMenuItem.setEnabled(true);
 					gameMenuItem.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent ev){
+							setUpScreen();
+							playGame();
 							System.out.println("IT WORKED");
 						}
 					});
@@ -611,6 +613,53 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 
 		menuBarPane.add( buttonPanel, "East");
 	}
+	
+	public void setUpScreen(){
+		isComputer = false;
+		isPlayer = true;
+		drawingPane.remove(computerChoice);
+		drawingPane.remove(playerChoice);
+		drawingPane.revalidate();
+		drawingPane.repaint();
+		button1 = new JButton("4");
+		button2 = new JButton("4");
+		button3 = new JButton("4");
+		button4 = new JButton("4");
+		button5 = new JButton("4");
+		button6 = new JButton("4");
+		button7 = new JButton("4");
+		button8 = new JButton("4");
+		button9 = new JButton("4");
+		button10 = new JButton("4");
+		button11 = new JButton("4");
+		button12 = new JButton("4");
+		drawingPane.add("Button One", button1);
+		button1.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.add("Button Two", button2);
+		button2.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.add("Button Three", button3);
+		button3.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.add("Button Four", button4);
+		button4.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.add("Button Five", button5);
+		button5.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.add("Button Six", button6);
+		button6.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.add("Button Seven", button7);
+		button7.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.add("Button Eight", button8);
+		button8.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.add("Button Nine", button9);
+		button9.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.add("Button Ten", button10);
+		button10.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.add("Button Eleven", button11);
+		button11.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.add("Button Twelve", button12);
+		button12.setFont(new Font("Arial", Font.PLAIN, 100));
+		drawingPane.revalidate();
+		drawingPane.repaint();
+	}
 		
 	
 	/**
@@ -655,50 +704,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 
 		public void actionPerformed(ActionEvent e)
 	      {
-				isComputer = false;
-				isPlayer = true;
-				drawingPane.remove(computerChoice);
-				drawingPane.remove(playerChoice);
-				drawingPane.revalidate();
-				drawingPane.repaint();
-				button1 = new JButton("4");
-				button2 = new JButton("4");
-				button3 = new JButton("4");
-				button4 = new JButton("4");
-				button5 = new JButton("4");
-				button6 = new JButton("4");
-				button7 = new JButton("4");
-				button8 = new JButton("4");
-				button9 = new JButton("4");
-				button10 = new JButton("4");
-				button11 = new JButton("4");
-				button12 = new JButton("4");
-				drawingPane.add("Button One", button1);
-				button1.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Two", button2);
-				button2.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Three", button3);
-				button3.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Four", button4);
-				button4.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Five", button5);
-				button5.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Six", button6);
-				button6.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Seven", button7);
-				button7.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Eight", button8);
-				button8.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Nine", button9);
-				button9.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Ten", button10);
-				button10.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Eleven", button11);
-				button11.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Twelve", button12);
-				button12.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.revalidate();
-				drawingPane.repaint();
+			setUpScreen();
 			//	System.out.println(isPlayer);
 				playGame();
 	      }
