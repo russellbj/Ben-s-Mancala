@@ -425,6 +425,11 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				gameAlphaPZ.add( gameMenuItem );
 				if(gameMenuItem.getText().equals("Wari")){
 					gameMenuItem.setEnabled(true);
+					gameMenuItem.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent ev){
+							System.out.println("IT WORKED");
+						}
+					});
 				}
 				else{
 					gameMenuItem.setEnabled(false);
