@@ -427,9 +427,16 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					gameMenuItem.setEnabled(true);
 					gameMenuItem.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent ev){
-							setUpScreen();
-							playGame();
-							System.out.println("IT WORKED");
+							if(isPlayer==false){
+								setUpScreen();
+								playGame();
+							}
+							else{
+								//TODO: reset arrays, reset buttons
+								deleteButtons();
+								setUpScreen();
+								playGame();
+							} 
 						}
 					});
 				}
@@ -612,6 +619,22 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 
 		menuBarPane.add( buttonPanel, "East");
+	}
+	
+	public void deleteButtons(){
+		drawingPane.remove(button1);
+		drawingPane.remove(button2);
+		drawingPane.remove(button3);
+		drawingPane.remove(button4);
+		drawingPane.remove(button5);
+		drawingPane.remove(button6);
+		drawingPane.remove(button7);
+		drawingPane.remove(button8);
+		drawingPane.remove(button9);
+		drawingPane.remove(button10);
+		drawingPane.remove(button11);
+		drawingPane.remove(button12);
+		
 	}
 	
 	public void setUpScreen(){
