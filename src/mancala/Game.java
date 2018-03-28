@@ -50,6 +50,11 @@ public class Game {
 
 	private static Game instance;
 	
+	public static void resetRows(){
+		rowOne=new Row(holesPerRow); // May need to add more rows based on game, currently built for Wari
+		rowTwo=new Row(holesPerRow);
+	}
+	
 	static boolean clickHole(int holeIndex){
 		
 		//mainWindow.playGame();
@@ -91,7 +96,7 @@ public class Game {
 		}
 		
 		else if(turn.getCurrPlayer() == 2)
-		{
+		{	
 			P2.addSeeds(playerTwo.moveSeeds(rowTwo, rowOne, clickedHoleIndex)); // Player TWO can only click row two, I think (wari rules)
 			
 			if(playerTwo.getClickedZero())

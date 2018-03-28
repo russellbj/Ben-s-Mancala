@@ -434,6 +434,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 							else{
 								//TODO: reset arrays, reset buttons
 								deleteButtons();
+								turn.resetTurn();
+								Game.resetRows();
 								setUpScreen();
 								playGame();
 							} 

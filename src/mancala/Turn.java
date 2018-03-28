@@ -27,6 +27,11 @@ public class Turn {
 	{
 		return currTurn;
 	}
+	
+	public void resetTurn(){
+		currPlayer=1;
+		currTurn=1;
+	}
 
 	public static Turn getInstance() {
 		if(instance == null)
