@@ -272,11 +272,13 @@ public class Player
 			return false;
 		}
 	}
+
 	
 	public boolean getClickedZero() {
 		return clickedZero;
 	}
 	
+
 	public void setClickedZero(boolean clickedZero) {
 		this.clickedZero = clickedZero;
 	}

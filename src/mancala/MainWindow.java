@@ -427,12 +427,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					gameMenuItem.setEnabled(true);
 					gameMenuItem.addActionListener(new ActionListener(){
 						public void actionPerformed(ActionEvent ev){
+							// if is Player is false it means that there has not been a game played before
 							if(isPlayer==false){
 								setUpScreen();
 								playGame();
 							}
 							else{
-								//TODO: reset arrays, reset buttons
 								deleteButtons();
 								turn.resetTurn();
 								Game.resetRows();
