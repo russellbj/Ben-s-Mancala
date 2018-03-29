@@ -436,6 +436,10 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 								deleteButtons();
 								turn.resetTurn();
 								Game.resetRows();
+								P1.resetNumSeeds();
+								P2.resetNumSeeds();
+								instructions.setText("Player 1 Score: " + P1.displayCount()
+										+ "\nPlayer 2 Score: " + P2.displayCount());
 								setUpScreen();
 								playGame();
 							} 

@@ -20,6 +20,10 @@ public class CollectingHole {
 		return numberSeeds;
 	}
 	
+	public void resetNumSeeds(){
+		numberSeeds = 0;
+	}
+	
 	/**
 	 * method takes in the number of seeds being added to the tally bin and 
 	 * calculates the new number of seeds in the bin.
