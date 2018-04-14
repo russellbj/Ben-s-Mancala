@@ -12,6 +12,7 @@ public class GameManager
 	private static String name;
 	private static int numOfHoles;
 	private static int initialSeedsPerBin;
+	private static boolean hasEndBins;
 	
 	
 	public static void setup(GameEnum gameEnum)
@@ -20,6 +21,12 @@ public class GameManager
 		numOfColumns = gameEnum.getColumns();
 		numOfRows = gameEnum.getNumOfRows();
 		name = gameEnum.getName();
+		
+		if(gameEnum.getBoardType() == BoardTypes.TWO_ROW_WITH_ENDS)
+			hasEndBins = true;
+		else
+			hasEndBins = false;
+		
 		originCountry = gameEnum.getOriginCountry();
 		numOfHoles = numOfColumns * numOfRows;
 		initialSeedsPerBin = gameEnum.getInitialSeedsPerBin();

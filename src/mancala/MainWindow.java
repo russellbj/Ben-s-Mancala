@@ -50,6 +50,20 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 /* Class & object data, other than the GUI elements */
 	
+	protected Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	protected double topBorder = screenSize.height * 0.3;
+	
+	protected double bottomBorder = screenSize.height * 0.731;
+	
+	protected double leftBorder = screenSize.width * 0.066;
+	
+	protected double rightBorder = screenSize.width * 0.867;
+	
+	protected double verticalOffset = screenSize.height * 0.0429;
+	
+	protected double horizontalOffset = screenSize.width * 0.022758010819808574;
+	
 	protected static int playerOneScore;
 	
 	protected static int playerTwoScore;
@@ -62,15 +76,18 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 	protected static GameBoard gameBoard;
 	
-	protected boolean gameChosen;
+	protected boolean gameChosen = false;
 	
 	protected int[] gameBoardArray;
 
 	protected int numOfSeedsPerHole;
 	
+	protected static boolean hasEndBins;
+	
 	protected static int numOfRows;
 	
 	protected static int numOfColumns;
+	
 	/*
 	 * GUI Elements
 	 */
@@ -82,6 +99,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			int mouseX = e.getXOnScreen();
 			int mouseY = e.getYOnScreen();
 			AnalyzeClick(mouseX, mouseY);
+			if(gameChosen) {
+		//	clickHole(mouseX, mouseY, screenSize, verticalOffset, horizontalOffset, leftBorder, topBorder, hasEndBins, numOfRows, numOfColumns);
+			}
 		}
 
 		@Override
@@ -687,7 +707,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		case "Wari": 
 			System.out.println("Wari");
 			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			
 			setBounds(0,0,screenSize.width, screenSize.height);
 			setVisible(true);
 		
@@ -722,8 +742,27 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected void AnalyzeClick(int mouseX, int mouseY)
 	{
 		System.out.println("Click 0: " + mouseX + ", " + mouseY);
+		if(mouseY < topBorder)
+		{
+			return;
+		}
+		if(mouseX < leftBorder)
+		{
+			return;
+		}
+		if(mouseX> rightBorder)
+		{
+			return;
+		}
+		if(mouseY > bottomBorder)
+		{
+			return;
+		}
 		
-		// Wari and the like
+		/**
+		 *  2 ROW, NO END-BIN GAMES
+		 */
+		
 		if(numOfRows == 2)
 		{
 			if(mouseY <= 1020)
@@ -798,36 +837,58 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		}
 	}
 	 //Takes in where the user clicked, the screen size and the board details and returns the hole the user clicked on
-	 protected int[] clickHole(int mouseX, int mouseY, Dimension screenSize, int verticalOffset, int horizontalOffset, int verticalBorder, int horizontalBorder, boolean endBins, int numRows, int numHoles){
-		double holeWidth;
+	 protected int[] clickHole(int mouseX, int mouseY, Dimension screenSize, double verticalOffset, double horizontalOffset, double verticalBorder, double horizontalBorder, boolean endBins, int numRows, int numHoles){
+		 System.out.println("Running clickHole");
+		 double holeWidth;
 		int colNumber;
 		int endBinWidth=100;
 		if(mouseX<horizontalBorder||mouseY<verticalBorder)
+		{
+			System.out.println("Bounds too small");
 			return null;
+		}
 		if(mouseX>(screenSize.width-horizontalBorder)||mouseY>(screenSize.height-verticalBorder))
+		{
+			System.out.println("Bounds too large");
 			return null;
+		}
 		if(endBins)
+		{
 			holeWidth=((screenSize.width-endBinWidth*2-horizontalBorder*2)-(horizontalOffset*(numHoles-1)))/numHoles;
-		else
+		}
+			else
+			{
 			holeWidth=((screenSize.width-horizontalBorder*2)-(horizontalOffset*(numHoles-1)))/numHoles;
+			}
+		
 		double holeHeight=(screenSize.height-verticalOffset*(numRows-1)-verticalBorder*2)/numRows;
 		int rowNumber=(int) ((mouseY-verticalBorder)/(holeHeight+verticalOffset))+1;
 		if((mouseY-verticalBorder)%(holeHeight+verticalOffset)>holeHeight)
+		{
+			System.out.println("Within Vertical Offset");
 			return null;
+		}
 		if(endBins){
 			if((mouseX-endBinWidth-horizontalBorder)%(holeWidth+horizontalOffset)>holeWidth)
+			{
+				System.out.println("Within Horizontal Offset");
 				return null;
+			}
 			colNumber=(int) ((mouseX-endBinWidth-horizontalBorder)/(holeWidth+horizontalOffset))+1;
 		}
 		else{
 			if((mouseX-horizontalBorder)%(holeWidth+horizontalOffset)>holeWidth)
+			{
+				System.out.println("Within Horizontal Offset");
 				return null;
+			}
 			colNumber=(int) ((mouseX-horizontalBorder)/(holeWidth+horizontalOffset))+1;
 		}
 		//gameManager.moveSeeds(rowNumber, colNumber);
 		int[] result=new int[2]; //row, col
 		result[0]=rowNumber;
 		result[1]=colNumber;
+		System.out.println("Result: [" + rowNumber + ", " + colNumber + "]");
 		return result;
 	}
 
