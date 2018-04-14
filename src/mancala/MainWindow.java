@@ -742,6 +742,10 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected void AnalyzeClick(int mouseX, int mouseY)
 	{
 		System.out.println("Click 0: " + mouseX + ", " + mouseY);
+		
+		double clickableWidth = rightBorder - leftBorder;
+		double clickableHeight = bottomBorder - topBorder;
+		
 		if(mouseY < topBorder)
 		{
 			return;
@@ -765,70 +769,70 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 		if(numOfRows == 2)
 		{
-			if(mouseY <= 1020)
+			if(mouseY <= (screenSize.height/2))
 			{
-				if(mouseX <= 580)
+				if(mouseX <= leftBorder + (clickableWidth/6))
 				{
 					System.out.println("You Clicked: 1,1");
 					gameManager.moveSeeds(1, 1);
 					
 				}
-				if(mouseX > 580 && mouseX <= 1195)
+				if(mouseX >  leftBorder + (clickableWidth/6) && mouseX <=  leftBorder + (2*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 1,2");
 					gameManager.moveSeeds(1,2);
 				}
-				if(mouseX > 1195 && mouseX <= 1773)
+				if(mouseX >  leftBorder + (2*(clickableWidth/6)) && mouseX <=  leftBorder + (3*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 1,3");
 					gameManager.moveSeeds(1,3);
 				}
 				
-				if(mouseX > 1773 && mouseX <= 2368)
+				if(mouseX >  leftBorder + (3*(clickableWidth/6)) && mouseX <=  leftBorder + (4*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 1,4");
 					gameManager.moveSeeds(1,4);
 				}
-				if(mouseX > 2368 && mouseX <= 2960)
+				if(mouseX >  leftBorder + (4*(clickableWidth/6)) && mouseX <=  leftBorder + (5*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 1,5");
 					gameManager.moveSeeds(1,5);
 				}
-				if(mouseX > 2960)
+				if(mouseX >  leftBorder + (5*(clickableWidth/6)) && mouseX <=  leftBorder + (6*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 1,6");
 					gameManager.moveSeeds(1,6);
 				}
 			}
-			if(mouseY > 1020)
+			if(mouseY > (screenSize.height/2))
 			{
-				if(mouseX <= 580)
+				if(mouseX <= leftBorder + (clickableWidth/6))
 				{
 					System.out.println("You Clicked: 2,1");
 					gameManager.moveSeeds(2,1);
 				}
-				if(mouseX > 580 && mouseX <= 1195)
+				if(mouseX >  leftBorder + (clickableWidth/6) && mouseX <=  leftBorder + (2*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 2,2");
 					gameManager.moveSeeds(2,2);
 				}
-				if(mouseX > 1195 && mouseX <= 1773)
+				if(mouseX >  leftBorder + (2*(clickableWidth/6)) && mouseX <=  leftBorder + (3*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 2,3");
 					gameManager.moveSeeds(2,3);
 				}
 				
-				if(mouseX > 1773 && mouseX <= 2368)
+				if(mouseX >  leftBorder + (3*(clickableWidth/6)) && mouseX <=  leftBorder + (4*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 2,4");
 					gameManager.moveSeeds(2,4);
 				}
-				if(mouseX > 2368 && mouseX <= 2960)
+				if(mouseX >  leftBorder + (4*(clickableWidth/6)) && mouseX <=  leftBorder + (5*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 2,5");
 					gameManager.moveSeeds(2,5);
 				}
-				if(mouseX > 2960)
+				if(mouseX >  leftBorder + (5*(clickableWidth/6)) && mouseX <=  leftBorder + (6*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 2,6");
 					gameManager.moveSeeds(2, 6);
