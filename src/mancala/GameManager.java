@@ -90,34 +90,32 @@ public class GameManager
 			
 			if(currRow % 2 == 1)
 			{
-				if(index != numOfColumns - 1)
+				if(index != 0)
 				{
-				index++;
+				index--;
 				int newVal = boardArray[index];
 				newVal++;
 				boardArray[index] = newVal;
 				seedsLeftToMove--;
 				}
 				
-				else if(index == numOfColumns - 1)
+				else if(index == 0)
 				{
 					if(currRow != numOfRows)
 						currRow++;
 					else
 						currRow = 1;
 					
-					index = (currRow * numOfColumns);
+					index = numOfColumns - 1;
 					
 				}
 				
 			}
 			else if(currRow % 2 == 0)
 			{
-				
-			
-				if(index != (currRow-1) * numOfColumns)
+				if(index < numOfHoles - 1)
 				{
-					index--;
+					index++;
 					
 					int newVal = boardArray[index];
 					newVal++;
@@ -126,7 +124,7 @@ public class GameManager
 				}
 				
 				
-				else if(index == (currRow-1) * numOfColumns)
+				else if(index >= numOfHoles - 1)
 				{
 					if(currRow != numOfRows)
 						currRow++;
@@ -136,7 +134,7 @@ public class GameManager
 						
 					}
 					
-					index = ((currRow - 1) * numOfColumns) - 1;
+					index = (currRow * numOfColumns);;
 					
 				}
 			}
