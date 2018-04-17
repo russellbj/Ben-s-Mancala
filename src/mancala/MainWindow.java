@@ -337,6 +337,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
     /** A top level pane for holding the menus */
 	protected JPanel menuBarPane;
 	
+	protected JScrollPane scorePane;
+	
     /** A 2nd level pane for holding the menus */
 	protected JPanel menus;
 	
@@ -436,8 +438,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 		theProgram = this;
 		
-
-			theProgram.initPanesAndGui( beans, hand );
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		theProgram.initPanesAndGui( beans, hand );
 		initMenuBarPane();
 		
 	}
@@ -684,14 +686,15 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		gameOptions.setLayout(new FlowLayout()) ;
 		
 		gameOptions.add(new JLabel("You can put buttons, fields, etc. in this panel:") );
-		gameOptions.setPreferredSize(new Dimension(200,24));
+		gameOptions.setPreferredSize(new Dimension(gameWidth(),24));
 		
 		menuBarPane.add(gameOptions, "Center");
 		
-		JPanel buttonPanel = new JPanel( new FlowLayout() );
+		JPanel rulesPanel = new JPanel( new FlowLayout() );
 		
 
-		menuBarPane.add( buttonPanel, "East");
+		menuBarPane.add( rulesPanel, "East");
+		
 	}
 		
 	/**
@@ -970,10 +973,41 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				+ "\n Player 2 Score: " + playerTwoScore);
 		instructions.setFont(new Font("Arial", Font.PLAIN, 30));
 		scrollPane = new JScrollPane(instructions);
-		scrollPane.setPreferredSize(new Dimension(250, 300));
+		scrollPane.setPreferredSize(new Dimension( (int) ((int)gameWidth()*.2), gameHeight()));
+	}
+	
+	
+	protected JTextArea score;
+	protected void initScorePane( ) {		
+		
+		score = new JTextArea(30, 30);
+		score.setLineWrap(true);
+		score.setWrapStyleWord(true);
+		
+		score.setText("Player 1 Score: " + playerOneScore
+				+ "\n Player 2 Score: " + playerTwoScore);
+		score.setFont(new Font("Arial", Font.PLAIN, 30));
+		scorePane = new JScrollPane(score);
+		scorePane.setPreferredSize(new Dimension( (int) (gameWidth()*.5), (int) (gameHeight()*.1)));
 	}
 
-
+	
+	public int gameWidth(){
+		Toolkit tk = Toolkit.getDefaultToolkit();  
+		
+		int xSize = ((int) tk.getScreenSize().getWidth());  
+		final int gameWidth = (int) (Math.round(xSize * 0.90));
+		return gameWidth;
+	}
+	
+	public int gameHeight(){
+		Toolkit tk = Toolkit.getDefaultToolkit();  
+ 
+		int ySize = ((int) tk.getScreenSize().getHeight());
+		final int gameHeight = (int) (Math.round(ySize * 0.90));
+		return gameHeight;
+		
+	}
 	/**
 	 *  Create the drawing panes and other GUI elements used in the main 
 	 *  window; place them inside the main window. 
@@ -986,26 +1020,27 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		initMenuBarPane();
 		initDrawingPane( beans, hand );
 		initInstructionsPane();
+		initScorePane();
 		
 		// Then add all the highest level panes to the main window
 		getContentPane().setLayout(new BorderLayout());		// For applications
 		getContentPane().add(menuBarPane, "North");			// For applications
-		getContentPane().add(drawingPane, "Center");		// For applications
+		getContentPane().add(drawingPane, "Center");            // For applications
 		pack();												// For applications
 		this.add(menuBarPane, BorderLayout.NORTH);
 		this.add(drawingPane, BorderLayout.CENTER);
 		this.add(scrollPane, BorderLayout.EAST);
+		this.add(scorePane, BorderLayout.SOUTH);
+		
+	
 
-		setPreferredSize( new Dimension(800,600) );   		// Has to happen after "pack()"
+		setSize( new Dimension(gameWidth(),gameHeight()) );   		// Has to happen after "pack()"
 //		setLocation(32*numOfWindows-8,32*numOfWindows-8);	// For applications, support staggering with multiple windows
 		setVisible(true);
 		
 		addComponentListener( new ComponentAdapter( ) 
 				{	    public void componentResized(ComponentEvent e) {
-							theProgram.setSize(
-									Math.max(theProgram.getWidth(),696),
-									Math.max(theProgram.getHeight(),600)
-							);
+							theProgram.setSize(gameWidth(),gameHeight());
 				 		}
 				}
 		);
