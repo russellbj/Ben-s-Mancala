@@ -25,8 +25,12 @@ public class GameDriver {
 
 
 
+
 	public static void main(String[]args) throws InterruptedException{
 		//totalPoints = P1.displayCount() + P2.displayCount();
+		GameBoard gameBoard = new GameBoard(GameEnum.WARI);
+//		gameBoard.transformXYtoIndex(5, 1);
+        gameBoard.setBoardState(gameBoard.getBoardStateArray(), 5, 14 );
 		gui = new MainWindow();
 		while(true){
 			Thread.sleep(1); 
