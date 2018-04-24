@@ -50,6 +50,20 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 /* Class & object data, other than the GUI elements */
 	
+	protected Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	protected double topBorder = screenSize.height * 0.3;
+	
+	protected double bottomBorder = screenSize.height * 0.731;
+	
+	protected double leftBorder = screenSize.width * 0.066;
+	
+	protected double rightBorder = screenSize.width * 0.867;
+	
+	protected double verticalOffset = screenSize.height * 0.0429;
+	
+	protected double horizontalOffset = screenSize.width * 0.022758010819808574;
+	
 	protected static int playerOneScore;
 	
 	protected static int playerTwoScore;
@@ -62,15 +76,18 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 	protected static GameBoard gameBoard;
 	
-	protected boolean gameChosen;
+	protected boolean gameChosen = false;
 	
 	protected int[] gameBoardArray;
 
 	protected int numOfSeedsPerHole;
 	
+	protected static boolean hasEndBins;
+	
 	protected static int numOfRows;
 	
 	protected static int numOfColumns;
+	
 	/*
 	 * GUI Elements
 	 */
@@ -82,6 +99,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			int mouseX = e.getXOnScreen();
 			int mouseY = e.getYOnScreen();
 			AnalyzeClick(mouseX, mouseY);
+			if(gameChosen) {
+		//	clickHole(mouseX, mouseY, screenSize, verticalOffset, horizontalOffset, leftBorder, topBorder, hasEndBins, numOfRows, numOfColumns);
+			}
 		}
 
 		@Override
@@ -317,6 +337,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
     /** A top level pane for holding the menus */
 	protected JPanel menuBarPane;
 	
+	protected JScrollPane scorePane;
+	
     /** A 2nd level pane for holding the menus */
 	protected JPanel menus;
 	
@@ -416,8 +438,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 		theProgram = this;
 		
-
-			theProgram.initPanesAndGui( beans, hand );
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		theProgram.initPanesAndGui( beans, hand );
 		initMenuBarPane();
 		
 	}
@@ -664,14 +686,15 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		gameOptions.setLayout(new FlowLayout()) ;
 		
 		gameOptions.add(new JLabel("You can put buttons, fields, etc. in this panel:") );
-		gameOptions.setPreferredSize(new Dimension(200,24));
+		gameOptions.setPreferredSize(new Dimension(gameWidth(),24));
 		
 		menuBarPane.add(gameOptions, "Center");
 		
-		JPanel buttonPanel = new JPanel( new FlowLayout() );
+		JPanel rulesPanel = new JPanel( new FlowLayout() );
 		
 
-		menuBarPane.add( buttonPanel, "East");
+		menuBarPane.add( rulesPanel, "East");
+		
 	}
 		
 	/**
@@ -687,7 +710,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		case "Wari": 
 			System.out.println("Wari");
 			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			
 			setBounds(0,0,screenSize.width, screenSize.height);
 			setVisible(true);
 		
@@ -723,73 +746,96 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	{
 		System.out.println("Click 0: " + mouseX + ", " + mouseY);
 		
-		// Wari and the like
+		double clickableWidth = rightBorder - leftBorder;
+		double clickableHeight = bottomBorder - topBorder;
+		
+		if(mouseY < topBorder)
+		{
+			return;
+		}
+		if(mouseX < leftBorder)
+		{
+			return;
+		}
+		if(mouseX> rightBorder)
+		{
+			return;
+		}
+		if(mouseY > bottomBorder)
+		{
+			return;
+		}
+		
+		/**
+		 *  2 ROW, NO END-BIN GAMES
+		 */
+		
 		if(numOfRows == 2)
 		{
-			if(mouseY <= 1020)
+			if(mouseY <= (screenSize.height/2))
 			{
-				if(mouseX <= 580)
+				if(mouseX <= leftBorder + (clickableWidth/6))
 				{
 					System.out.println("You Clicked: 1,1");
 					gameManager.moveSeeds(1, 1);
 					
 				}
-				if(mouseX > 580 && mouseX <= 1195)
+				if(mouseX >  leftBorder + (clickableWidth/6) && mouseX <=  leftBorder + (2*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 1,2");
 					gameManager.moveSeeds(1,2);
 				}
-				if(mouseX > 1195 && mouseX <= 1773)
+				if(mouseX >  leftBorder + (2*(clickableWidth/6)) && mouseX <=  leftBorder + (3*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 1,3");
 					gameManager.moveSeeds(1,3);
 				}
 				
-				if(mouseX > 1773 && mouseX <= 2368)
+				if(mouseX >  leftBorder + (3*(clickableWidth/6)) && mouseX <=  leftBorder + (4*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 1,4");
 					gameManager.moveSeeds(1,4);
 				}
-				if(mouseX > 2368 && mouseX <= 2960)
+				if(mouseX >  leftBorder + (4*(clickableWidth/6)) && mouseX <=  leftBorder + (5*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 1,5");
 					gameManager.moveSeeds(1,5);
 				}
-				if(mouseX > 2960)
+				if(mouseX >  leftBorder + (5*(clickableWidth/6)) && mouseX <=  leftBorder + (6*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 1,6");
 					gameManager.moveSeeds(1,6);
 				}
 			}
-			if(mouseY > 1020)
+			if(mouseY > (screenSize.height/2))
 			{
-				if(mouseX <= 580)
+				if(mouseX <= leftBorder + (clickableWidth/6))
 				{
 					System.out.println("You Clicked: 2,1");
 					gameManager.moveSeeds(2,1);
 				}
-				if(mouseX > 580 && mouseX <= 1195)
+				if(mouseX >  leftBorder + (clickableWidth/6) && mouseX <=  leftBorder + (2*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 2,2");
 					gameManager.moveSeeds(2,2);
 				}
-				if(mouseX > 1195 && mouseX <= 1773)
+				if(mouseX >  leftBorder + (2*(clickableWidth/6)) && mouseX <=  leftBorder + (3*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 2,3");
 					gameManager.moveSeeds(2,3);
 				}
 				
-				if(mouseX > 1773 && mouseX <= 2368)
+				if(mouseX >  leftBorder + (3*(clickableWidth/6)) && mouseX <=  leftBorder + (4*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 2,4");
 					gameManager.moveSeeds(2,4);
 				}
-				if(mouseX > 2368 && mouseX <= 2960)
+				if(mouseX >  leftBorder + (4*(clickableWidth/6)) && mouseX <=  leftBorder + (5*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 2,5");
 					gameManager.moveSeeds(2,5);
 				}
-				if(mouseX > 2960)
+				if(mouseX >  leftBorder + (5*(clickableWidth/6)) && mouseX <=  leftBorder + (6*(clickableWidth/6)))
 				{
 					System.out.println("You Clicked: 2,6");
 					gameManager.moveSeeds(2, 6);
@@ -798,36 +844,58 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		}
 	}
 	 //Takes in where the user clicked, the screen size and the board details and returns the hole the user clicked on
-	 protected int[] clickHole(int mouseX, int mouseY, Dimension screenSize, int verticalOffset, int horizontalOffset, int verticalBorder, int horizontalBorder, boolean endBins, int numRows, int numHoles){
-		double holeWidth;
+	 protected int[] clickHole(int mouseX, int mouseY, Dimension screenSize, double verticalOffset, double horizontalOffset, double verticalBorder, double horizontalBorder, boolean endBins, int numRows, int numHoles){
+		 System.out.println("Running clickHole");
+		 double holeWidth;
 		int colNumber;
 		int endBinWidth=100;
 		if(mouseX<horizontalBorder||mouseY<verticalBorder)
+		{
+			System.out.println("Bounds too small");
 			return null;
+		}
 		if(mouseX>(screenSize.width-horizontalBorder)||mouseY>(screenSize.height-verticalBorder))
+		{
+			System.out.println("Bounds too large");
 			return null;
+		}
 		if(endBins)
+		{
 			holeWidth=((screenSize.width-endBinWidth*2-horizontalBorder*2)-(horizontalOffset*(numHoles-1)))/numHoles;
-		else
+		}
+			else
+			{
 			holeWidth=((screenSize.width-horizontalBorder*2)-(horizontalOffset*(numHoles-1)))/numHoles;
+			}
+		
 		double holeHeight=(screenSize.height-verticalOffset*(numRows-1)-verticalBorder*2)/numRows;
 		int rowNumber=(int) ((mouseY-verticalBorder)/(holeHeight+verticalOffset))+1;
 		if((mouseY-verticalBorder)%(holeHeight+verticalOffset)>holeHeight)
+		{
+			System.out.println("Within Vertical Offset");
 			return null;
+		}
 		if(endBins){
 			if((mouseX-endBinWidth-horizontalBorder)%(holeWidth+horizontalOffset)>holeWidth)
+			{
+				System.out.println("Within Horizontal Offset");
 				return null;
+			}
 			colNumber=(int) ((mouseX-endBinWidth-horizontalBorder)/(holeWidth+horizontalOffset))+1;
 		}
 		else{
 			if((mouseX-horizontalBorder)%(holeWidth+horizontalOffset)>holeWidth)
+			{
+				System.out.println("Within Horizontal Offset");
 				return null;
+			}
 			colNumber=(int) ((mouseX-horizontalBorder)/(holeWidth+horizontalOffset))+1;
 		}
 		//gameManager.moveSeeds(rowNumber, colNumber);
 		int[] result=new int[2]; //row, col
 		result[0]=rowNumber;
 		result[1]=colNumber;
+		System.out.println("Result: [" + rowNumber + ", " + colNumber + "]");
 		return result;
 	}
 
@@ -905,10 +973,41 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				+ "\n Player 2 Score: " + playerTwoScore);
 		instructions.setFont(new Font("Arial", Font.PLAIN, 30));
 		scrollPane = new JScrollPane(instructions);
-		scrollPane.setPreferredSize(new Dimension(250, 300));
+		scrollPane.setPreferredSize(new Dimension( (int) ((int)gameWidth()*.2), gameHeight()));
+	}
+	
+	
+	protected JTextArea score;
+	protected void initScorePane( ) {		
+		
+		score = new JTextArea(30, 30);
+		score.setLineWrap(true);
+		score.setWrapStyleWord(true);
+		
+		score.setText("Player 1 Score: " + playerOneScore
+				+ "\n Player 2 Score: " + playerTwoScore);
+		score.setFont(new Font("Arial", Font.PLAIN, 30));
+		scorePane = new JScrollPane(score);
+		scorePane.setPreferredSize(new Dimension( (int) (gameWidth()*.5), (int) (gameHeight()*.1)));
 	}
 
-
+	
+	public int gameWidth(){
+		Toolkit tk = Toolkit.getDefaultToolkit();  
+		
+		int xSize = ((int) tk.getScreenSize().getWidth());  
+		final int gameWidth = (int) (Math.round(xSize * 0.90));
+		return gameWidth;
+	}
+	
+	public int gameHeight(){
+		Toolkit tk = Toolkit.getDefaultToolkit();  
+ 
+		int ySize = ((int) tk.getScreenSize().getHeight());
+		final int gameHeight = (int) (Math.round(ySize * 0.90));
+		return gameHeight;
+		
+	}
 	/**
 	 *  Create the drawing panes and other GUI elements used in the main 
 	 *  window; place them inside the main window. 
@@ -921,26 +1020,27 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		initMenuBarPane();
 		initDrawingPane( beans, hand );
 		initInstructionsPane();
+		initScorePane();
 		
 		// Then add all the highest level panes to the main window
 		getContentPane().setLayout(new BorderLayout());		// For applications
 		getContentPane().add(menuBarPane, "North");			// For applications
-		getContentPane().add(drawingPane, "Center");		// For applications
+		getContentPane().add(drawingPane, "Center");            // For applications
 		pack();												// For applications
 		this.add(menuBarPane, BorderLayout.NORTH);
 		this.add(drawingPane, BorderLayout.CENTER);
 		this.add(scrollPane, BorderLayout.EAST);
+		this.add(scorePane, BorderLayout.SOUTH);
+		
+	
 
-		setPreferredSize( new Dimension(800,600) );   		// Has to happen after "pack()"
+		setSize( new Dimension(gameWidth(),gameHeight()) );   		// Has to happen after "pack()"
 //		setLocation(32*numOfWindows-8,32*numOfWindows-8);	// For applications, support staggering with multiple windows
 		setVisible(true);
 		
 		addComponentListener( new ComponentAdapter( ) 
 				{	    public void componentResized(ComponentEvent e) {
-							theProgram.setSize(
-									Math.max(theProgram.getWidth(),696),
-									Math.max(theProgram.getHeight(),600)
-							);
+							theProgram.setSize(gameWidth(),gameHeight());
 				 		}
 				}
 		);
