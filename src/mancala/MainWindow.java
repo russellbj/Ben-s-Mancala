@@ -1266,11 +1266,16 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected JScrollPane scrollPane;
 	/** The text area in which we hold the instructions for playing a particular game. */
 	protected JTextArea instructions;
+
 	
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
 	 *  the various slots for the components. We also initialize theComponentBar here.
 	 */
+	protected JPanel bottomPane;
+	protected JButton tie;
+
+
 	protected void initInstructionsPane( ) {		
 		instructions = new JTextArea(5, 30);
 		instructions.setLineWrap(true);
@@ -1289,6 +1294,14 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		instructions.setFont(new Font("Arial", Font.PLAIN, 30));
 		scrollPane = new JScrollPane(instructions);
 		scrollPane.setPreferredSize(new Dimension(250, 300));
+		tie = new JButton("Tie");
+	bottomPane = new JPanel();
+	bottomPane.setSize(30, 30);
+	bottomPane.add(tie);
+
+	
+
+		
 	}
 
 
@@ -1313,6 +1326,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		this.add(menuBarPane, BorderLayout.NORTH);
 		this.add(drawingPane, BorderLayout.CENTER);
 		this.add(scrollPane, BorderLayout.EAST);
+		this.add(bottomPane, BorderLayout.SOUTH);
 
 		setPreferredSize( new Dimension(800,600) );   		// Has to happen after "pack()"
 //		setLocation(32*numOfWindows-8,32*numOfWindows-8);	// For applicaitons, support staggering with multiple windows
