@@ -239,6 +239,59 @@ public class Rules {
 	}
 }
 
+class LegalMoveChecker {
+	public LegalMoveChecker getLegalMoveChecker(String gameName){
+		switch (gameName) {
+			case "Wari": 
+				return new WariLegalMoveChecker();
+			default: 
+				return new LegalMoveChecker(); 
+		}
+	}
+}
+
+class WariLegalMoveChecker extends LegalMoveChecker {
+	
+	public WariLegalMoveChecker() {
+		int[][] gameBoard = new int[2][6];
+	}
+	public boolean checkMove(int[][] board, int[] hole, boolean player1) {
+		int sum = 0; 
+		int newSum = 0;  
+		if(hole[0] == 0 && player1 == false) {
+			return false;
+		}
+		if(hole[0] == 1 && player1 == true) {
+			return false; 
+		}
+		if(player1 == true) {
+			for(int i = 0; i < 6; i++) {
+				sum += board[1][i];
+			}
+		}
+		if(player1 == false) {
+			for(int i = 0; i < 6; i++) {
+				sum += board[0][i];
+			}
+		}
+		//we will make the move here 
+		if(player1 == true) {
+			for(int i = 0; i < 6; i++) {
+				newSum += board[1][i];
+			}
+		}
+		if(player1 == false) {
+			for(int i = 0; i < 6; i++) {
+				newSum += board[0][i];
+			}
+		}
+		if (newSum != sum) {
+			return true; 
+		}else {
+			return false; 
+		}
+	}
+}
 /**
  * Class to be used only by Rules. 
  * Organizes rules for given games.
@@ -342,4 +395,5 @@ class GameType {
 	public int GetPointsToWin() {
 		return pointsToWin;
 	}
+	
 }
