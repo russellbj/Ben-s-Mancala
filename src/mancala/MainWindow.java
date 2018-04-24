@@ -745,7 +745,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 						button11.setEnabled(false);
 						button12.setEnabled(false);
 						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
+						int[] bottomRow = Game.getPlayerOne().getBottomRow(); 
 						button1.setText(Integer.toString(topRow[0]));
 						button2.setText(Integer.toString(topRow[1]));
 						button3.setText(Integer.toString(topRow[2]));
