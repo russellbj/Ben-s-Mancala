@@ -251,10 +251,10 @@ class LegalMoveChecker {
 }
 
 class WariLegalMoveChecker extends LegalMoveChecker {
-	// checks if move is legal 
 	public WariLegalMoveChecker() {
 		int[][] gameBoard = new int[2][6];
 	}
+	// checks if move is legal 
 	public boolean checkMove(int[][] board, int[] hole, boolean player1) {
 		int sum = 0; 
 		int newSum = 0;  
