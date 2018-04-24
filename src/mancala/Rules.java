@@ -251,7 +251,7 @@ class LegalMoveChecker {
 }
 
 class WariLegalMoveChecker extends LegalMoveChecker {
-	
+	// checks if move is legal 
 	public WariLegalMoveChecker() {
 		int[][] gameBoard = new int[2][6];
 	}
