@@ -46,6 +46,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 
+
 /**
  * MainWindow is where most objects in this program live. This creates the program,
  * initializes the menus and GUI, and then initiates the play of the game.
@@ -1295,9 +1296,17 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		scrollPane = new JScrollPane(instructions);
 		scrollPane.setPreferredSize(new Dimension(250, 300));
 		tie = new JButton("Tie");
+		tie.addActionListener(new ActionListener(){			
+			public void actionPerformed(ActionEvent e) {
+				TieGame tie = new TieGame();
+				tie.buttonTie();
+			}
+		}
+				);
 	bottomPane = new JPanel();
 	bottomPane.setSize(30, 30);
 	bottomPane.add(tie);
+	
 
 	
 
