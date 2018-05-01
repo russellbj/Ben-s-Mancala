@@ -923,19 +923,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			topPane.setBackground(Color.WHITE);
 			topPane.setBorder(blackline);		
 			
-			bottomPane = new JPanel();
-			bottomPane.setLayout(new BorderLayout());
-			bottomPane.setPreferredSize(new Dimension(30, 30));
-			bottomPane.setBackground(Color.WHITE);
-			bottomPane.setBorder(blackline);
-			
 			sidePane = new JPanel();
 			sidePane.setLayout(new BorderLayout());			
 			sidePane.setPreferredSize(new Dimension(300, 100));
 			sidePane.setBackground(Color.WHITE);			
 			sidePane.setBorder(blackline);
-			
-			topPane.add(bottomPane, BorderLayout.SOUTH);
+
 			topPane.add(sidePane, BorderLayout.EAST);
 								
 			//background image added
@@ -946,7 +939,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			
 			//tie JButton created and added to bottom panel
 			tie = new JButton("TIE");
-			bottomPane.add(tie, BorderLayout.CENTER);
+			sidePane.add(tie, BorderLayout.SOUTH);
 		}
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
@@ -1036,6 +1029,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				+ "\n Player 2 Score: " + playerTwoScore);
 		score.setFont(new Font("Arial", Font.PLAIN, 30));
 		scorePane = new JScrollPane(score);
+		score.setEditable(false);
 		scorePane.setPreferredSize(new Dimension( (int) (gameWidth()*.5), (int) (gameHeight()*.1)));
 	}
 
