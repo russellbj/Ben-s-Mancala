@@ -938,6 +938,15 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			topPane.add(bottomPane, BorderLayout.SOUTH);
 			topPane.add(sidePane, BorderLayout.EAST);
 								
+			//background image added
+			topPane.add(introLabel);
+			
+			//score of each player displayed on screen
+			sidePane.add(scorePane, BorderLayout.CENTER);
+			
+			//tie JButton created and added to bottom panel
+			tie = new JButton("TIE");
+			bottomPane.add(tie, BorderLayout.CENTER);
 		}
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
@@ -1021,7 +1030,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 		score = new JTextArea(30, 30);
 		score.setLineWrap(true);
-		score.setWrapStyleWord(true);
+		score.setWrapStyleWord(true); 
 		
 		score.setText("Player 1 Score: " + playerOneScore
 				+ "\n Player 2 Score: " + playerTwoScore);
