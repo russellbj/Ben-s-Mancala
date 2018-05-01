@@ -521,12 +521,21 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				gameAlphaMO.add( gameMenuItem );
 			} else {
 				gameAlphaPZ.add( gameMenuItem );
+				if(gameMenuItem.getText().equals("Wari")){
+					gameMenuItem.setEnabled(true);
+				}
+				else{
+					gameMenuItem.setEnabled(false);
+				}
 			}
 		}
 		gameAlphabetical = new JMenu("Alphabetical");
 		gameAlphabetical.add(gameAlphaAE);
+		gameAlphaAE.setEnabled(false);
 		gameAlphabetical.add(gameAlphaFL);
+		gameAlphaFL.setEnabled(false);
 		gameAlphabetical.add(gameAlphaMO);
+		gameAlphaMO.setEnabled(false);
 		gameAlphabetical.add(gameAlphaPZ);
 
 
@@ -579,6 +588,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				thisBoardType = gameTwoRow;
 			}
 			gameByType.add( thisBoardType );
+			gameByType.setEnabled(false);
 		}
 
 
@@ -614,6 +624,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				}
 			}
 			gameByCountry.add(gamesOneCountry);
+			gameByCountry.setEnabled(false);
 		}
 
 
