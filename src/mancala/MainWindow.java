@@ -519,6 +519,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				gameAlphaFL.add( gameMenuItem );
 			} else if ( ignoreDiacriticals.compare(gameName,"P" ) < 0) {
 				gameAlphaMO.add( gameMenuItem );
+				if(gameMenuItem.getText().equals("Oware 1")){
+					gameMenuItem.setEnabled(true);
+				}
+				else{
+					gameMenuItem.setEnabled(false);
+				}
 			} else {
 				gameAlphaPZ.add( gameMenuItem );
 				if(gameMenuItem.getText().equals("Wari")){
@@ -535,7 +541,6 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		gameAlphabetical.add(gameAlphaFL);
 		gameAlphaFL.setEnabled(false);
 		gameAlphabetical.add(gameAlphaMO);
-		gameAlphaMO.setEnabled(false);
 		gameAlphabetical.add(gameAlphaPZ);
 
 
