@@ -499,7 +499,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 							playerChoice = new JButton("Click to play against another Player");
 							playerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
 							// replace with way to handle different games ASAP
-							gameFactory = new GameBoardFactory(GameEnum.WARI);
+							if(e.getActionCommand().equals("Wari")){
+									gameFactory = new GameBoardFactory(GameEnum.WARI);
+							}
+							if(e.getActionCommand().equals("Oware 1")){
+								gameFactory = new GameBoardFactory(GameEnum.OWARE_1);
+							}
 							gameBoard = gameFactory.GameBoardFactory(0);
 							gameManager.setup(gameBoard.getGameEnum());
 							drawingPane.remove(introLabel);
