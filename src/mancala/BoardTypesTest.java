@@ -18,7 +18,7 @@ public class BoardTypesTest {
 	}
 	
 	@Test
-	public void numberOfRowsTestTwp() {
+	public void numberOfRowsTestTwo() {
 		//ARRANGE
 		BoardTypes test = BoardTypes.TWO_ROW;
 		int expected = 2;
