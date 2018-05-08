@@ -52,17 +52,21 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 	protected Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
-	protected double topBorder = screenSize.height * 0.3;
+	protected double activeHeight = screenSize.height * 0.845;
 	
-	protected double bottomBorder = screenSize.height * 0.731;
+	protected double activeWidth = screenSize.width * 0.811;
 	
-	protected double leftBorder = screenSize.width * 0.066;
+	protected double topBorder = activeHeight * 0.244;
 	
-	protected double rightBorder = screenSize.width * 0.867;
+	protected double bottomBorder = activeHeight * 0.745;
 	
-	protected double verticalOffset = screenSize.height * 0.0429;
+	protected double leftBorder = 0;
 	
-	protected double horizontalOffset = screenSize.width * 0.022758010819808574;
+	protected double rightBorder = activeWidth;
+	
+	protected double verticalOffset = activeHeight * 0.0429;
+		
+	protected double horizontalOffset = activeWidth * 0.022758010819808574;
 	
 	protected static int playerOneScore;
 	
@@ -96,8 +100,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			int mouseX = e.getXOnScreen();
-			int mouseY = e.getYOnScreen();
+			int mouseX = e.getX();
+			int mouseY = e.getY();
 			AnalyzeClick(mouseX, mouseY);
 			if(gameChosen) {
 		//	clickHole(mouseX, mouseY, screenSize, verticalOffset, horizontalOffset, leftBorder, topBorder, hasEndBins, numOfRows, numOfColumns);
@@ -507,6 +511,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 							}
 							gameBoard = gameFactory.GameBoardFactory(0);
 							gameManager.setup(gameBoard.getGameEnum());
+							introLabel.setVisible(false);
+							introLabel.setEnabled(false);
 							drawingPane.remove(introLabel);
 							//drawingPane.add(computerChoice);
 							//drawingPane.add(playerChoice);
@@ -741,6 +747,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
 			clickableArea.addMouseListener(ml);
 			drawingPane.add(clickableArea);
+			topPane.add(clickableArea);
 			
 	/*		ImageIcon bean = new ImageIcon("src/Bean-01.gif");
 			Image beanImg = bean.getImage();
@@ -764,9 +771,10 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected void AnalyzeClick(int mouseX, int mouseY)
 	{
 		System.out.println("Click 0: " + mouseX + ", " + mouseY);
-		
+
 		double clickableWidth = rightBorder - leftBorder;
 		double clickableHeight = bottomBorder - topBorder;
+		double midpoint = (bottomBorder + topBorder) / 2;
 		
 		if(mouseY < topBorder)
 		{
@@ -791,7 +799,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 		if(numOfRows == 2)
 		{
-			if(mouseY <= (screenSize.height/2))
+			if(mouseY <= (midpoint))
 			{
 				if(mouseX <= leftBorder + (clickableWidth/6))
 				{
@@ -826,7 +834,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					gameManager.moveSeeds(1,6);
 				}
 			}
-			if(mouseY > (screenSize.height/2))
+			if(mouseY > (midpoint))
 			{
 				if(mouseX <= leftBorder + (clickableWidth/6))
 				{
@@ -944,19 +952,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			topPane.setBackground(Color.WHITE);
 			topPane.setBorder(blackline);		
 			
-			bottomPane = new JPanel();
-			bottomPane.setLayout(new BorderLayout());
-			bottomPane.setPreferredSize(new Dimension(30, 30));
-			bottomPane.setBackground(Color.WHITE);
-			bottomPane.setBorder(blackline);
-			
 			sidePane = new JPanel();
 			sidePane.setLayout(new BorderLayout());			
 			sidePane.setPreferredSize(new Dimension(300, 100));
 			sidePane.setBackground(Color.WHITE);			
 			sidePane.setBorder(blackline);
-			
-			topPane.add(bottomPane, BorderLayout.SOUTH);
+
 			topPane.add(sidePane, BorderLayout.EAST);
 								
 			//background image added
@@ -967,7 +968,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			
 			//tie JButton created and added to bottom panel
 			tie = new JButton("TIE");
-			bottomPane.add(tie, BorderLayout.CENTER);
+			sidePane.add(tie, BorderLayout.SOUTH);
 		}
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
@@ -1057,6 +1058,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				+ "\n Player 2 Score: " + playerTwoScore);
 		score.setFont(new Font("Arial", Font.PLAIN, 30));
 		scorePane = new JScrollPane(score);
+		score.setEditable(false);
 		scorePane.setPreferredSize(new Dimension( (int) (gameWidth()*.5), (int) (gameHeight()*.1)));
 	}
 
