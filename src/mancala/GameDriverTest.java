@@ -4,6 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * 
+ * @author melissamclean
+ *
+ */
 public class GameDriverTest {
 
 	@Test
