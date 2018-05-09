@@ -503,7 +503,13 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 							playerChoice = new JButton("Click to play against another Player");
 							playerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
 							// replace with way to handle different games ASAP
-							gameFactory = new GameBoardFactory(GameEnum.WARI);
+							if(e.getActionCommand().equals("Wari")){
+									gameFactory = new GameBoardFactory(GameEnum.WARI);
+							}
+							if(e.getActionCommand().equals("Oware 1")){
+								System.out.println("OWARE");
+								gameFactory = new GameBoardFactory(GameEnum.OWARE_1);
+							}
 							gameBoard = gameFactory.GameBoardFactory(0);
 							gameManager.setup(gameBoard.getGameEnum());
 							introLabel.setVisible(false);
@@ -525,6 +531,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				gameAlphaFL.add( gameMenuItem );
 			} else if ( ignoreDiacriticals.compare(gameName,"P" ) < 0) {
 				gameAlphaMO.add( gameMenuItem );
+				if(gameMenuItem.getText().equals("Oware 1")){
+					gameMenuItem.setEnabled(true);
+				}
+				else{
+					gameMenuItem.setEnabled(false);
+				}
 			} else {
 				gameAlphaPZ.add( gameMenuItem );
 				if(gameMenuItem.getText().equals("Wari")){
@@ -541,7 +553,6 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		gameAlphabetical.add(gameAlphaFL);
 		gameAlphaFL.setEnabled(false);
 		gameAlphabetical.add(gameAlphaMO);
-		gameAlphaMO.setEnabled(false);
 		gameAlphabetical.add(gameAlphaPZ);
 
 
@@ -724,7 +735,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		{
 		case "Wari": 
 			System.out.println("Wari");
-			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
 			
 			setBounds(0,0,screenSize.width, screenSize.height);
 			setVisible(true);
@@ -734,6 +745,40 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			Image newWariBoardImg = wariBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
 			wariBoard = new ImageIcon(newWariBoardImg);
 			JLabel clickableArea = new JLabel(wariBoard);
+			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
+			clickableArea.addMouseListener(ml);
+			drawingPane.add(clickableArea);
+			topPane.add(clickableArea);
+			
+	/*		ImageIcon bean = new ImageIcon("src/Bean-01.gif");
+			Image beanImg = bean.getImage();
+			Image newBeanImg = beanImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			ImageIcon newBean = new ImageIcon(newBeanImg);
+			JLabel beanLabel = new JLabel(newBean);
+			beanLabel.setSize(1000, 1000);*/
+			
+
+//			drawingPane.add(beanLabel);
+			drawingPane.repaint();
+			drawingPane.revalidate();
+			numOfRows = gameBoard.getNumRows();
+			
+			numOfColumns = gameBoard.getNumColumns();
+			
+			//clickableArea
+			break;
+		case "Oware 1":
+			System.out.print("Oware");
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+			
+			setBounds(0,0,screenSize.width, screenSize.height);
+			setVisible(true);
+		
+			wariBoard = new ImageIcon("src/Wari Board.png");
+			Image owareBoardImg = wariBoard.getImage();
+			Image newOwareBoardImg = owareBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			ImageIcon owareBoard = new ImageIcon(newOwareBoardImg);
+			clickableArea = new JLabel(owareBoard);
 			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
 			clickableArea.addMouseListener(ml);
 			drawingPane.add(clickableArea);
