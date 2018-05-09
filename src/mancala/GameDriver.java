@@ -1,7 +1,5 @@
 package mancala;
 
-import java.util.Scanner;
-
 public class GameDriver {
 
 //	private static Scanner input = new Scanner(System.in);
@@ -30,7 +28,7 @@ public class GameDriver {
 		//totalPoints = P1.displayCount() + P2.displayCount();
 		GameBoard gameBoard = new GameBoard(GameEnum.WARI);
 //		gameBoard.transformXYtoIndex(5, 1);
-        gameBoard.setBoardState(gameBoard.getBoardStateArray(), 5, 14 );
+        gameBoard.realSetBoardState(gameBoard.getBoardStateArray(), 5, 14 );
 		gui = new MainWindow();
 		while(true){
 			Thread.sleep(1); 

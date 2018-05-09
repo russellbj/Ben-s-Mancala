@@ -2,7 +2,9 @@ package mancala;
 
 import java.util.Arrays;
 
-
+/**
+ * @author Dhanvanthri
+ */
 public class GameBoard {
     private String gameName;
     private BoardTypes numRows;
@@ -42,12 +44,20 @@ public class GameBoard {
     }
 
 
-    public void setBoardState(Integer[] board, Integer boardPosition, Integer newValue) {
+    public void realSetBoardState(Integer[] board, Integer boardPosition, Integer newValue) {
         board = boardStateArray.clone();
         System.out.println(board.toString());
         board[boardPosition] = newValue;
         boardStateArray = board.clone();
         System.out.println(boardStateArray.toString());
+    }
+
+    private Integer[] internalBoardState(Integer[] board, Integer boardPosition, Integer newValue) {
+        board = boardStateArray.clone();
+        System.out.println(board.toString());
+        board[boardPosition] = newValue;
+        System.out.println(boardStateArray.toString());
+        return board;
     }
 
     /**
