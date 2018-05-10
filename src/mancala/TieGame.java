@@ -12,11 +12,12 @@ import javax.swing.JOptionPane;
 public class TieGame {
 
 	public TieGame() {
+		
 		// TODO Auto-generated constructor stub
 	}
 
 	boolean tieGame(int [] gameBoard){
-		final int limit = 24;
+		final int limit = 25;
 		int count = 0;
 
 		boolean tieConditionMet = false;
