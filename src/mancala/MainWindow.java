@@ -458,11 +458,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	 */
 	protected void initMenuBarPane() {
 		
-		menuBarPane = new JPanel();
-		
+		menuBarPane = new JPanel();		
 		// Create the menuBar to contain the menus
-		menuBar = new JMenuBar();
-		
+		menuBar = new JMenuBar();		
 		// Set up the various game menus:
 		
 	    // Get all of the known games, sort them alphabetically.
@@ -898,7 +896,51 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		System.out.println("Result: [" + rowNumber + ", " + colNumber + "]");
 		return result;
 	}
+	 
+	// A top level pane that holds the game image and other panes
+	 protected JPanel topPane;
+	 
+	//next-level pane that holds the tie button
+	 protected JPanel bottomPane;
+	 
+	//side pane to hold the instructions, score of the game
+	 protected JPanel sidePane;
+	 
+	//tie button
+	 protected JButton tie;
+	 
+	//text area that displays the score of each player
+	 protected JTextArea scoreVal;
 
+
+		protected void allPanes(){
+			Border blackline, raisedbevel, loweredbevel, empty;
+			blackline = BorderFactory.createLineBorder(Color.black);
+			
+			topPane = new JPanel();
+			topPane.setLayout(new BorderLayout());
+			topPane.setPreferredSize(new Dimension(500, 500));	
+			topPane.setBackground(Color.WHITE);
+			topPane.setBorder(blackline);		
+			
+			sidePane = new JPanel();
+			sidePane.setLayout(new BorderLayout());			
+			sidePane.setPreferredSize(new Dimension(300, 100));
+			sidePane.setBackground(Color.WHITE);			
+			sidePane.setBorder(blackline);
+
+			topPane.add(sidePane, BorderLayout.EAST);
+								
+			//background image added
+			topPane.add(introLabel);
+			
+			//score of each player displayed on screen
+			sidePane.add(scorePane, BorderLayout.CENTER);
+			
+			//tie JButton created and added to bottom panel
+			tie = new JButton("TIE");
+			sidePane.add(tie, BorderLayout.SOUTH);
+		}
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
 	 *  the various slots for the components. We also initialize theComponentBar here.
@@ -932,19 +974,18 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		drawingPane.setBackground(Color.WHITE);
 		
 		//add CPU or Player choice
-		
-		
+	
 		introScreen = new ImageIcon("src/mancala.jpg");
-		
 		Image introImg = introScreen.getImage();
 		setBounds(0,0,10000,10000);
 		Image newIntroImg = introImg.getScaledInstance(2200,1000, Image.SCALE_SMOOTH);
 		introScreen = new ImageIcon(newIntroImg);
 		introLabel = new JLabel(introScreen);
-		drawingPane.add(introLabel);
 		setVisible(true);
-		drawingPane.repaint();
+		drawingPane.repaint();	
 		drawingPane.revalidate();
+
+
 	}
 
 	/** A scrolling text field in which we can hold the field with instructions for playing a particular game. */
@@ -975,19 +1016,20 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		scrollPane = new JScrollPane(instructions);
 		scrollPane.setPreferredSize(new Dimension( (int) ((int)gameWidth()*.2), gameHeight()));
 	}
-	
+
 	
 	protected JTextArea score;
 	protected void initScorePane( ) {		
 		
 		score = new JTextArea(30, 30);
 		score.setLineWrap(true);
-		score.setWrapStyleWord(true);
+		score.setWrapStyleWord(true); 
 		
 		score.setText("Player 1 Score: " + playerOneScore
 				+ "\n Player 2 Score: " + playerTwoScore);
 		score.setFont(new Font("Arial", Font.PLAIN, 30));
 		scorePane = new JScrollPane(score);
+		score.setEditable(false);
 		scorePane.setPreferredSize(new Dimension( (int) (gameWidth()*.5), (int) (gameHeight()*.1)));
 	}
 
@@ -1019,8 +1061,10 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		// Create and initialize the main panes:
 		initMenuBarPane();
 		initDrawingPane( beans, hand );
-		initInstructionsPane();
 		initScorePane();
+		allPanes();
+		initInstructionsPane();
+		
 		
 		// Then add all the highest level panes to the main window
 		getContentPane().setLayout(new BorderLayout());		// For applications
@@ -1029,8 +1073,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		pack();												// For applications
 		this.add(menuBarPane, BorderLayout.NORTH);
 		this.add(drawingPane, BorderLayout.CENTER);
-		this.add(scrollPane, BorderLayout.EAST);
-		this.add(scorePane, BorderLayout.SOUTH);
+		this.add(topPane, BorderLayout.CENTER);
+		pack();
 		
 	
 
