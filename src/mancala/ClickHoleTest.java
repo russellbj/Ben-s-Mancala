@@ -6,6 +6,11 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import org.junit.Test;
+/**
+ * 
+ * @author Joel
+ *
+ */
 public class ClickHoleTest {
 
 	@Test
