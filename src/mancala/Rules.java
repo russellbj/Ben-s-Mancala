@@ -33,10 +33,10 @@ public class Rules {
 	public Rules () {
 		// open file
 		// loop through file line-by-line
-		String gamesText = "2 6 4 true WARI 25;"
-				+ "5 6 4 true 5ROW 25;"
-				+ "2 6 10 true MANYSEED 25;"
-				+ "2 6 4 false BINLESS 25";
+		String gamesText = "2 6 4 true WARI;"
+				+ "5 6 4 true 5ROW;"
+				+ "2 6 10 true MANYSEED;"
+				+ "2 6 4 false BINLESS";
 		String[] gamesTextLines = gamesText.split(";");
 		gameListSize = gamesTextLines.length;
 		gameList = new GameType[gameListSize];
@@ -80,12 +80,7 @@ public class Rules {
 			sideBins = true;
 		}
 		name = gameStuff[4];
-		if (gameStuff.length < 6) {
-			game = new GameType(numRows,numBins,numSeeds,sideBins,name);
-		} else {
-			winPoints = Integer.parseInt(gameStuff[5]);
-			game = new GameType(numRows,numBins,numSeeds,sideBins,name,winPoints);
-		}
+		game = new GameType(numRows,numBins,numSeeds,sideBins,name);
 		return game;
 	}
 	
@@ -111,7 +106,7 @@ public class Rules {
 		seedsPerBin = gameList[gameSelected].GetSeedsPerBin();
 		hasSidebins = gameList[gameSelected].CheckSideBins();
 		name = gameList[gameSelected].GetName();
-		pointsToWin = gameList[gameSelected].GetPointsToWin();
+		pointsToWin = GetPointsToWin(rowAmount,binsPerRow,seedsPerBin);
 	}
 	
 	/**
@@ -126,7 +121,7 @@ public class Rules {
 		binsPerRow = columns;
 		seedsPerBin = startBeans;
 		hasSidebins = sideBins;
-		pointsToWin = winPoints;
+		pointsToWin = (rowAmount*binsPerRow*seedsPerBin)/2 +1;
 	}
 	
 	/**
@@ -173,10 +168,10 @@ public class Rules {
 	}
 	
 	/**
-	 * @return points required for a player to win
+	 * @return points required for a player to win, given the board type
 	 */
-	public int GetPointsToWin() {
-		return pointsToWin;
+	public int GetPointsToWin(int rows, int bins, int seeds) {
+		return (rows*bins*seeds)/2 +1;
 	}
 	
 	public String[] BreakText(String text) {
@@ -229,8 +224,7 @@ public class Rules {
 		System.out.println("\nWhy would you call this method?\nIt doesn't do anything except print this.");
 	}
 	
-	public static Rules getInstance()
-	{
+	public static Rules getInstance(){
 		if(instance == null)
 		{
 			instance = new Rules();
@@ -308,16 +302,6 @@ class GameType {
 	private boolean hasSidebins;
 	private int pointsToWin;
 	
-	/**
-	 * give parameters for a game
-	 * @param rows number of rows
-	 * @param columns number of columns
-	 * @param startBeans number of beans per hole
-	 * @param sideBins whether has sidebins or not
-	 */
-	public GameType (int rows, int columns, int startBeans, boolean sideBins, String gameName) {
-		SetUp (rows,columns,startBeans,sideBins,gameName,10000);
-	}
 	
 	/**
 	 * give parameters for game
@@ -326,8 +310,8 @@ class GameType {
 	 * @param startBeans number of beans per hole
 	 * @param sideBins whether has sidebins or not
 	 */
-	public GameType (int rows, int columns, int startBeans, boolean sideBins, String gameName, int winPoints) {
-		SetUp (rows,columns,startBeans,sideBins,gameName,winPoints);
+	public GameType (int rows, int columns, int startBeans, boolean sideBins, String gameName) {
+		SetUp (rows,columns,startBeans,sideBins,gameName);
 	}
 	
 	/**
@@ -337,13 +321,13 @@ class GameType {
 	 * @param startBeans number of beans per hole
 	 * @param sideBins whether has sidebins or not
 	 */
-	private void SetUp (int rows, int columns, int startBeans, boolean sideBins, String gameName, int winPoints) {
+	private void SetUp (int rows, int columns, int startBeans, boolean sideBins, String gameName) {
 		name = gameName;
 		rowAmount = rows;
 		binsPerRow = columns;
 		seedsPerBin = startBeans;
 		hasSidebins = sideBins;
-		pointsToWin = winPoints;
+		pointsToWin=GetPointsToWin(rowAmount,binsPerRow,seedsPerBin);
 	}
 	
 	/**
@@ -388,12 +372,13 @@ class GameType {
 	public String GetName() {
 		return name;
 	}
-	
 	/**
-	 * @return points required for a player to win
+	 * 
+	 * @return points required for a player to win, given the board type
 	 */
-	public int GetPointsToWin() {
-		return pointsToWin;
+	public int GetPointsToWin(int rows, int bins, int seeds) {
+		return (rows*bins*seeds)/2 +1;
 	}
+	
 	
 }
