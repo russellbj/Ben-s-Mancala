@@ -506,9 +506,13 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 							if(e.getActionCommand().equals("Wari")){
 									gameFactory = new GameBoardFactory(GameEnum.WARI);
 							}
-							if(e.getActionCommand().equals("Oware 1")){
+							else if(e.getActionCommand().equals("Oware 1")){
 								System.out.println("OWARE");
 								gameFactory = new GameBoardFactory(GameEnum.OWARE_1);
+							}
+							else if(e.getActionCommand().equals("Vai Lung Thlan")){
+								System.out.println("Vai Lung Thlan");
+								gameFactory = new GameBoardFactory(GameEnum.VAI_LUNG_THLAN);
 							}
 							gameBoard = gameFactory.GameBoardFactory(0);
 							gameManager.setup(gameBoard.getGameEnum());
@@ -540,6 +544,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			} else {
 				gameAlphaPZ.add( gameMenuItem );
 				if(gameMenuItem.getText().equals("Wari")){
+					gameMenuItem.setEnabled(true);
+				}
+				else if(gameMenuItem.getText().equals("Vai Lung Thlan")){
 					gameMenuItem.setEnabled(true);
 				}
 				else{
@@ -735,7 +742,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		{
 		case "Wari": 
 			System.out.println("Wari");
-numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
 			
 			setBounds(0,0,screenSize.width, screenSize.height);
 			setVisible(true);
@@ -800,6 +807,27 @@ numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
 			numOfColumns = gameBoard.getNumColumns();
 			
 			//clickableArea
+		case "Vai Lung Thlan":
+			System.out.print("Vai Lung Thlan");
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+			
+			setBounds(0,0,screenSize.width, screenSize.height);
+			setVisible(true);
+		
+			wariBoard = new ImageIcon("src/Wari Board.png");
+			Image vaiLungThlanBoardImg = wariBoard.getImage();
+			Image newVaiLungThlanBoardImg = vaiLungThlanBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			ImageIcon vaiLungThlanBoard = new ImageIcon(newVaiLungThlanBoardImg);
+			clickableArea = new JLabel(vaiLungThlanBoard);
+			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
+			clickableArea.addMouseListener(ml);
+			drawingPane.add(clickableArea);
+			topPane.add(clickableArea);
+			drawingPane.repaint();
+			drawingPane.revalidate();
+			numOfRows = gameBoard.getNumRows();
+			
+			numOfColumns = gameBoard.getNumColumns();
 		}
 	}
 	
