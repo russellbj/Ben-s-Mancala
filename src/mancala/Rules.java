@@ -34,6 +34,7 @@ public class Rules {
 		// open file
 		// loop through file line-by-line
 		String gamesText = "2 6 4 true WARI true;"
+				+ "2 6 4 true OWARE true;"
 				+ "5 6 4 true 5ROW true;"
 				+ "2 6 10 true MANYSEED true;"
 				+ "2 6 4 false BINLESS true;"

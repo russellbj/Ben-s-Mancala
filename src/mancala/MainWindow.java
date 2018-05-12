@@ -826,7 +826,6 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			drawingPane.repaint();
 			drawingPane.revalidate();
 			numOfRows = gameBoard.getNumRows();
-			
 			numOfColumns = gameBoard.getNumColumns();
 		}
 	}
