@@ -89,7 +89,6 @@ public class GameManager
 		int seedsLeftToMove = boardArray[index];
 		
 		if(turn == currRow){
-			System.out.print("IN");
 			boardArray[index] = 0;
 			while(seedsLeftToMove >0)
 			{		
