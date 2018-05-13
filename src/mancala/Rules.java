@@ -26,6 +26,14 @@ public class Rules {
 	
 	private int gameListSize = 4;
 	private GameType[] gameList;
+	private GameType currentGamePlayed;
+	
+	String gamesText = "2 6 4 true WARI true;"
+			+ "2 6 4 true OWARE true;"
+			+ "5 6 4 true 5ROW true;"
+			+ "2 6 10 true MANYSEED true;"
+			+ "2 6 4 false BINLESS true;"
+			+ "2 6 5 false VAI_LUNG_THLAN false";
 	
 	/**
 	 * Sets up the rules class.
@@ -33,12 +41,6 @@ public class Rules {
 	public Rules () {
 		// open file
 		// loop through file line-by-line
-		String gamesText = "2 6 4 true WARI true;"
-				+ "2 6 4 true OWARE true;"
-				+ "5 6 4 true 5ROW true;"
-				+ "2 6 10 true MANYSEED true;"
-				+ "2 6 4 false BINLESS true;"
-				+ "2 6 5 false VAI_LUNG_THLAN false";
 		String[] gamesTextLines = gamesText.split(";");
 		gameListSize = gamesTextLines.length;
 		gameList = new GameType[gameListSize];
@@ -60,6 +62,19 @@ public class Rules {
 		gameList[3] = new GameType(2,6,4,false,"BINLESS",25);
 		*/
 		// Will set array of game types from text file
+	}
+	
+	public Rules(String gameName){
+		String[] gamesTextLines = gamesText.split(";");
+		gameListSize = gamesTextLines.length;
+		gameList = new GameType[gameListSize];
+		for (int i = 0; i< gamesTextLines.length; i++) {
+			GameType candidateGame = TranslateLine(gamesTextLines[i]);
+			if(candidateGame.GetName().equals(gameName)){
+				currentGamePlayed=candidateGame;
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -166,6 +181,14 @@ public class Rules {
 	 */
 	public boolean CheckSideBins() {
 		return hasSidebins;
+	}
+	
+	/**
+	 * 
+	 * @return True when sowing done in counterclockwise direction, false if done clockwise
+	 */
+	public boolean getCounterclockwise() {
+		return counterclockwise;
 	}
 	
 	

@@ -858,7 +858,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		/**
 		 *  2 ROW, NO END-BIN GAMES
 		 */
-		
+		System.out.println(clickableWidth);
 		if(numOfRows == 2)
 		{
 			if(mouseY <= (midpoint))
