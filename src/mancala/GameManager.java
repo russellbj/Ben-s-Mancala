@@ -14,10 +14,12 @@ public class GameManager
 	private static int initialSeedsPerBin;
 	private static boolean hasEndBins;
 	private static int turn;
-	
-	
+	private static boolean counterclockwise;
+	public static Rules rules;
+
 	public static void setup(GameEnum gameEnum)
 	{
+		rules=new Rules(name);
 		boardType = gameEnum.getBoardType();
 		numOfColumns = gameEnum.getColumns();
 		numOfRows = gameEnum.getNumOfRows();
@@ -28,15 +30,16 @@ public class GameManager
 			hasEndBins = true;
 		else
 			hasEndBins = false;
-		
+
 		originCountry = gameEnum.getOriginCountry();
 		numOfHoles = numOfColumns * numOfRows;
 		initialSeedsPerBin = gameEnum.getInitialSeedsPerBin();
+		counterclockwise=rules.getCounterclockwise();
 		boardArray = new int[numOfHoles];
 		setupBoardArray();
 		printBoard();
 	}
-	
+
 	public static void printBoard() 
 	{	
 		int rowsLeft = numOfRows;
@@ -45,23 +48,23 @@ public class GameManager
 		while(rowsLeft > 0)
 		{
 			System.out.print("{");
-			
-		while(i < (numOfColumns * loopCounter))
-		{
-			if(i != (numOfColumns * loopCounter) - 1)
+
+			while(i < (numOfColumns * loopCounter))
 			{
-			System.out.print(boardArray[i] + ", ");
+				if(i != (numOfColumns * loopCounter) - 1)
+				{
+					System.out.print(boardArray[i] + ", ");
+				}
+				else
+				{
+					System.out.print(boardArray[i]);
+				}
+				i++;
+
 			}
-			else
-			{
-				System.out.print(boardArray[i]);
-			}
-			i++;
-			
-		}
-		loopCounter++;
-		System.out.println("}");
-		rowsLeft--;
+			loopCounter++;
+			System.out.println("}");
+			rowsLeft--;
 		}
 	}
 
@@ -72,7 +75,7 @@ public class GameManager
 			boardArray[x] = initialSeedsPerBin;
 		}
 	}
-	
+
 	public static void moveSeeds(int x, int y)
 	{
 		
@@ -89,7 +92,7 @@ public class GameManager
 			boardArray[index] = 0;
 			while(seedsLeftToMove >0)
 			{		
-			
+			if(counterclockwise){
 				if(currRow % 2 == 1)
 				{
 					if(index != 0)
@@ -100,32 +103,32 @@ public class GameManager
 						boardArray[index] = newVal;
 						seedsLeftToMove--;
 					}
-					
 					else if(index == 0)
 					{
 						if(currRow != numOfRows)
 							currRow++;
 						else
 							currRow = 1;
-					
+
+
 						index = numOfColumns - 1;
-					
+
 					}
-				
+
 				}
 				else if(currRow % 2 == 0)
 				{
 					if(index < numOfHoles - 1)
 					{
 						index++;
-						
+
 						int newVal = boardArray[index];
 						newVal++;
 						boardArray[index] = newVal;
 						seedsLeftToMove--;
 					}
-				
-				
+
+
 					else if(index >= numOfHoles - 1)
 					{
 						if(currRow != numOfRows)
@@ -133,11 +136,59 @@ public class GameManager
 						else
 						{
 							currRow = 1;
-						
+
 						}
-					
+
 						index = (currRow * numOfColumns);;
-					
+
+					}
+				}
+			}
+			else if(counterclockwise==false){
+				if(currRow % 2 == 1){
+					if(index < numOfColumns -1){
+						index++;
+						int newVal = boardArray[index];
+						newVal++;
+						boardArray[index] = newVal;
+						seedsLeftToMove--;
+					}
+					else if(index >= numOfColumns -1){
+						if(currRow != numOfRows){
+							currRow++;
+						}
+						else
+							currRow = 1;
+
+						index = (numOfRows-1)*numOfColumns+numOfColumns;
+
+					}
+
+				}
+				else if(currRow % 2 == 0)
+				{
+					if(index >(currRow-1)*numOfColumns)
+					{
+						index--;
+
+						int newVal = boardArray[index];
+						newVal++;
+						boardArray[index] = newVal;
+						seedsLeftToMove--;
+					}
+
+
+					else{
+						if(currRow != numOfRows)
+							currRow++;
+						else
+						{
+							currRow = 1;
+
+						}
+
+						index = -1;
+
 					}
 				}
 			}
@@ -149,7 +200,7 @@ public class GameManager
 		printBoard();
 		
 	}
-	
+
 	public static boolean validMove(int index)
 	{
 		if(boardArray[index] <= 0) 
@@ -158,7 +209,7 @@ public class GameManager
 		}
 		else
 		{
-		return true;
+			return true;
 		}
 	}
 
