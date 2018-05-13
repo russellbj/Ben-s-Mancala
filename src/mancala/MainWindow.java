@@ -50,6 +50,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 /* Class & object data, other than the GUI elements */
 	
+	protected Border blackline, raisedbevel, loweredbevel, empty;
+	
 	protected Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	protected double activeHeight = screenSize.height * 0.845;
@@ -757,6 +759,23 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			drawingPane.add(clickableArea);
 			topPane.add(clickableArea);
 			
+			// Side Pane is added for scoring and rules
+			
+			sidePane = new JPanel();
+			sidePane.setLayout(new BorderLayout());			
+			sidePane.setPreferredSize(new Dimension(300, 100));
+			sidePane.setBackground(Color.WHITE);			
+			sidePane.setBorder(blackline);
+
+			topPane.add(sidePane, BorderLayout.EAST);
+					
+			//tie JButton created and added to bottom panel
+		
+			sidePane.add(scorePane, BorderLayout.CENTER);
+			
+			tie = new JButton("TIE");
+			sidePane.add(tie, BorderLayout.SOUTH);
+			
 	/*		ImageIcon bean = new ImageIcon("src/Bean-01.gif");
 			Image beanImg = bean.getImage();
 			Image newBeanImg = beanImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
@@ -1006,7 +1025,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 
 
 		protected void allPanes(){
-			Border blackline, raisedbevel, loweredbevel, empty;
+			
 			blackline = BorderFactory.createLineBorder(Color.black);
 			
 			topPane = new JPanel();
@@ -1015,23 +1034,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			topPane.setBackground(Color.WHITE);
 			topPane.setBorder(blackline);		
 			
-			sidePane = new JPanel();
-			sidePane.setLayout(new BorderLayout());			
-			sidePane.setPreferredSize(new Dimension(300, 100));
-			sidePane.setBackground(Color.WHITE);			
-			sidePane.setBorder(blackline);
-
-			topPane.add(sidePane, BorderLayout.EAST);
-								
+					
 			//background image added
 			topPane.add(introLabel);
 			
-			//score of each player displayed on screen
-			sidePane.add(scorePane, BorderLayout.CENTER);
-			
-			//tie JButton created and added to bottom panel
-			tie = new JButton("TIE");
-			sidePane.add(tie, BorderLayout.SOUTH);
+		
+		
 		}
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
@@ -1267,6 +1275,11 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	  */
 	public static MainWindow getTheProgram() {
 		return theProgram;
+	}
+	
+	public static GameBoard getGameBoard()
+	{
+		return gameBoard;
 	}
 	
 	public static MainWindow getInstance()
