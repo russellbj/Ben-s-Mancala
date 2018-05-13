@@ -1,8 +1,7 @@
 package mancala;
 
 
-public class GameManager 
-{
+public class GameManager{
 	private static int[] boardArray;
 	private static GameManager instance;
 	private static BoardTypes boardType;
@@ -13,7 +12,6 @@ public class GameManager
 	private static int numOfHoles;
 	private static int initialSeedsPerBin;
 	private static boolean hasEndBins;
-	private static int turn;
 	private static boolean counterclockwise;
 	public static Rules rules;
 
@@ -24,8 +22,7 @@ public class GameManager
 		numOfColumns = gameEnum.getColumns();
 		numOfRows = gameEnum.getNumOfRows();
 		name = gameEnum.getName();
-		turn = 1;
-		
+
 		if(gameEnum.getBoardType() == BoardTypes.TWO_ROW_WITH_ENDS)
 			hasEndBins = true;
 		else
@@ -40,8 +37,7 @@ public class GameManager
 		printBoard();
 	}
 
-	public static void printBoard() 
-	{	
+	public static void printBoard(){	
 		int rowsLeft = numOfRows;
 		int i = 0;
 		int loopCounter = 1;
@@ -78,20 +74,19 @@ public class GameManager
 
 	public static void moveSeeds(int x, int y)
 	{
-		
 		int[] boardArrayCopy = boardArray;
 		int rowsToAdd = (numOfColumns) * (x-1);
 		int index = 0;
-			
-				index = (rowsToAdd + y) - 1;
-			
-		int currRow = x;	
+
+		index = (rowsToAdd + y) - 1;
+
 		int seedsLeftToMove = boardArray[index];
-		
-		if(turn == currRow){
-			boardArray[index] = 0;
-			while(seedsLeftToMove >0)
-			{		
+		boardArray[index] = 0;
+
+		int currRow = x;
+
+		while(seedsLeftToMove >0)
+		{		
 			if(counterclockwise){
 				if(currRow % 2 == 1)
 				{
@@ -99,17 +94,18 @@ public class GameManager
 					{
 						index--;
 						int newVal = boardArray[index];
-						newVal++;
+						if((!name.equals("SONGO"))||(index!=newVal))
+							newVal++;
 						boardArray[index] = newVal;
 						seedsLeftToMove--;
 					}
+
 					else if(index == 0)
 					{
 						if(currRow != numOfRows)
 							currRow++;
 						else
 							currRow = 1;
-
 
 						index = numOfColumns - 1;
 
@@ -123,7 +119,8 @@ public class GameManager
 						index++;
 
 						int newVal = boardArray[index];
-						newVal++;
+						if((!name.equals("SONGO"))||(index!=newVal))
+							newVal++;
 						boardArray[index] = newVal;
 						seedsLeftToMove--;
 					}
@@ -149,7 +146,8 @@ public class GameManager
 					if(index < numOfColumns -1){
 						index++;
 						int newVal = boardArray[index];
-						newVal++;
+						if((!name.equals("SONGO"))||(index!=newVal))
+							newVal++;
 						boardArray[index] = newVal;
 						seedsLeftToMove--;
 					}
@@ -170,9 +168,9 @@ public class GameManager
 					if(index >(currRow-1)*numOfColumns)
 					{
 						index--;
-
 						int newVal = boardArray[index];
-						newVal++;
+						if((!name.equals("SONGO"))||(index!=newVal))
+							newVal++;
 						boardArray[index] = newVal;
 						seedsLeftToMove--;
 					}
@@ -191,20 +189,14 @@ public class GameManager
 
 					}
 				}
-			}}
-			setTurn();
 			}
-		else{
-			System.out.println("Thats not your side of the board");
 		}
 		printBoard();
-		
 	}
 
 	public static boolean validMove(int index)
 	{
-		if(boardArray[index] <= 0) 
-		{
+		if(boardArray[index] <= 0){
 			return false;
 		}
 		else
@@ -219,17 +211,5 @@ public class GameManager
 			instance = new GameManager();
 		}
 		return instance;
-	}
-	
-	/**
-	 * switches the turn between player one and player 2
-	 */
-	public static void setTurn(){
-		if (turn == 1){
-			turn =2;
-		}
-		else{
-			turn = 1;
-		}
 	}
 }

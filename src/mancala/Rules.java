@@ -33,7 +33,8 @@ public class Rules {
 			+ "5 6 4 true 5ROW true;"
 			+ "2 6 10 true MANYSEED true;"
 			+ "2 6 4 false BINLESS true;"
-			+ "2 6 5 false VAI_LUNG_THLAN false";
+			+ "2 6 5 false VAI_LUNG_THLAN false;"
+			+ "2 7 5 false SONGO false";
 	
 	/**
 	 * Sets up the rules class.
@@ -47,21 +48,6 @@ public class Rules {
 		for (int i = 0; i< gamesTextLines.length; i++) {
 			gameList[i] = TranslateLine(gamesTextLines[i]);
 		}
-		
-		/*
-		gameList[0] = TranslateLine("2 6 4 true WARI 25");
-		gameList[1] = TranslateLine("5 6 4 true 5ROW 25");
-		gameList[2] = TranslateLine("2 6 10 true MANYSEED 25");
-		gameList[3] = TranslateLine("2 6 4 false BINLESS 25");
-		*/
-		
-		/*
-		gameList[0] = new GameType(2,6,4,true,"WARI",25);
-		gameList[1] = new GameType(5,6,4,true,"5ROW",25);
-		gameList[2] = new GameType(2,6,10,true,"MANYSEED",25);
-		gameList[3] = new GameType(2,6,4,false,"BINLESS",25);
-		*/
-		// Will set array of game types from text file
 	}
 	
 	public Rules(String gameName){

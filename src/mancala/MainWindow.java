@@ -1,4 +1,4 @@
-  
+
  package mancala;
 
 /**
@@ -49,8 +49,6 @@ import javax.swing.border.Border;
 public class MainWindow extends JFrame implements WindowListener, ActionListener {			// For an application
 	
 /* Class & object data, other than the GUI elements */
-	
-	protected Border blackline, raisedbevel, loweredbevel, empty;
 	
 	protected Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
@@ -516,6 +514,10 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 								System.out.println("Vai Lung Thlan");
 								gameFactory = new GameBoardFactory(GameEnum.VAI_LUNG_THLAN);
 							}
+							else if(e.getActionCommand().equals("Songo")){
+								System.out.println("Songo");
+								gameFactory = new GameBoardFactory(GameEnum.SONGO);
+							}
 							gameBoard = gameFactory.GameBoardFactory(0);
 							gameManager.setup(gameBoard.getGameEnum());
 							introLabel.setVisible(false);
@@ -545,7 +547,10 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				}
 			} else {
 				gameAlphaPZ.add( gameMenuItem );
-				if(gameMenuItem.getText().equals("Wari")){
+				if(gameMenuItem.getText().equals("Songo")){
+					gameMenuItem.setEnabled(true);
+				}
+				else if(gameMenuItem.getText().equals("Wari")){
 					gameMenuItem.setEnabled(true);
 				}
 				else if(gameMenuItem.getText().equals("Vai Lung Thlan")){
@@ -746,35 +751,18 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			System.out.println("Wari");
 			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
 			
-			setBounds(0,0,gameWidth(), gameHeight());
+			setBounds(0,0,screenSize.width, screenSize.height);
 			setVisible(true);
 		
 			wariBoard = new ImageIcon("src/Wari Board.png");
 			Image wariBoardImg = wariBoard.getImage();
-			Image newWariBoardImg = wariBoardImg.getScaledInstance(gameWidth()-250, gameHeight()-100, Image.SCALE_SMOOTH);
+			Image newWariBoardImg = wariBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
 			wariBoard = new ImageIcon(newWariBoardImg);
 			JLabel clickableArea = new JLabel(wariBoard);
-			clickableArea.setBounds(0, 0, gameWidth()-250, gameHeight()-100);
+			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
 			clickableArea.addMouseListener(ml);
 			drawingPane.add(clickableArea);
 			topPane.add(clickableArea);
-			
-			// Side Pane is added for scoring and rules
-			
-			sidePane = new JPanel();
-			sidePane.setLayout(new BorderLayout());			
-			sidePane.setPreferredSize(new Dimension(300, 100));
-			sidePane.setBackground(Color.WHITE);			
-			sidePane.setBorder(blackline);
-
-			topPane.add(sidePane, BorderLayout.EAST);
-					
-			//tie JButton created and added to bottom panel
-		
-			sidePane.add(scorePane, BorderLayout.CENTER);
-			
-			tie = new JButton("TIE");
-			sidePane.add(tie, BorderLayout.SOUTH);
 			
 	/*		ImageIcon bean = new ImageIcon("src/Bean-01.gif");
 			Image beanImg = bean.getImage();
@@ -797,15 +785,15 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			System.out.print("Oware");
 			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
 			
-			setBounds(0,0,gameWidth(), gameHeight());
+			setBounds(0,0,screenSize.width, screenSize.height);
 			setVisible(true);
 		
 			wariBoard = new ImageIcon("src/Wari Board.png");
 			Image owareBoardImg = wariBoard.getImage();
-			Image newOwareBoardImg = owareBoardImg.getScaledInstance(gameWidth()-250, gameHeight()-100, Image.SCALE_SMOOTH);
+			Image newOwareBoardImg = owareBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
 			ImageIcon owareBoard = new ImageIcon(newOwareBoardImg);
 			clickableArea = new JLabel(owareBoard);
-			clickableArea.setBounds(0, 0, gameWidth()-250, gameHeight()-100);
+			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
 			clickableArea.addMouseListener(ml);
 			drawingPane.add(clickableArea);
 			topPane.add(clickableArea);
@@ -831,15 +819,36 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			System.out.print("Vai Lung Thlan");
 			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
 			
-			setBounds(0,0,gameWidth(), gameHeight());
+			setBounds(0,0,screenSize.width, screenSize.height);
 			setVisible(true);
 		
 			wariBoard = new ImageIcon("src/Wari Board.png");
 			Image vaiLungThlanBoardImg = wariBoard.getImage();
-			Image newVaiLungThlanBoardImg = vaiLungThlanBoardImg.getScaledInstance(gameWidth()-250, gameHeight()-100, Image.SCALE_SMOOTH);
+			Image newVaiLungThlanBoardImg = vaiLungThlanBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
 			ImageIcon vaiLungThlanBoard = new ImageIcon(newVaiLungThlanBoardImg);
 			clickableArea = new JLabel(vaiLungThlanBoard);
-			clickableArea.setBounds(0, 0, gameWidth()-250, gameHeight()-100);
+			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
+			clickableArea.addMouseListener(ml);
+			drawingPane.add(clickableArea);
+			topPane.add(clickableArea);
+			drawingPane.repaint();
+			drawingPane.revalidate();
+			numOfRows = gameBoard.getNumRows();
+			numOfColumns = gameBoard.getNumColumns();
+			break;
+		case "Songo":
+			System.out.print("Songo");
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+			
+			setBounds(0,0,screenSize.width, screenSize.height);
+			setVisible(true);
+		
+			wariBoard = new ImageIcon("src/Wari Board.png");
+			Image songoBoardImg = wariBoard.getImage(); //NEEDS TO HAVE 7 COLUMNS
+			Image newSongoBoardImg = songoBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			ImageIcon songoBoard = new ImageIcon(newSongoBoardImg);
+			clickableArea = new JLabel(songoBoard);
+			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
 			clickableArea.addMouseListener(ml);
 			drawingPane.add(clickableArea);
 			topPane.add(clickableArea);
@@ -1025,7 +1034,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 
 
 		protected void allPanes(){
-			
+			Border blackline, raisedbevel, loweredbevel, empty;
 			blackline = BorderFactory.createLineBorder(Color.black);
 			
 			topPane = new JPanel();
@@ -1034,12 +1043,23 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			topPane.setBackground(Color.WHITE);
 			topPane.setBorder(blackline);		
 			
-					
+			sidePane = new JPanel();
+			sidePane.setLayout(new BorderLayout());			
+			sidePane.setPreferredSize(new Dimension(300, 100));
+			sidePane.setBackground(Color.WHITE);			
+			sidePane.setBorder(blackline);
+
+			topPane.add(sidePane, BorderLayout.EAST);
+								
 			//background image added
 			topPane.add(introLabel);
 			
-		
-		
+			//score of each player displayed on screen
+			sidePane.add(scorePane, BorderLayout.CENTER);
+			
+			//tie JButton created and added to bottom panel
+			tie = new JButton("TIE");
+			sidePane.add(tie, BorderLayout.SOUTH);
 		}
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
@@ -1275,11 +1295,6 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	  */
 	public static MainWindow getTheProgram() {
 		return theProgram;
-	}
-	
-	public static GameBoard getGameBoard()
-	{
-		return gameBoard;
 	}
 	
 	public static MainWindow getInstance()
