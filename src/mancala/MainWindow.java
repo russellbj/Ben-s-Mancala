@@ -342,6 +342,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected JPanel menuBarPane;
 	
 	protected JScrollPane scorePane;
+	protected JScrollPane errorPane;
 	
     /** A 2nd level pane for holding the menus */
 	protected JPanel menus;
@@ -798,6 +799,21 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			drawingPane.add(clickableArea);
 			topPane.add(clickableArea);
 			
+			sidePane = new JPanel();
+			sidePane.setLayout(new BorderLayout());			
+			sidePane.setPreferredSize(new Dimension(300, 100));
+			sidePane.setBackground(Color.WHITE);			
+			sidePane.setBorder(blackline);
+
+			topPane.add(sidePane, BorderLayout.EAST);
+					
+			//tie JButton created and added to bottom panel
+		
+			sidePane.add(errorPane, BorderLayout.CENTER);
+			
+			tie = new JButton("TIE");
+			sidePane.add(tie, BorderLayout.SOUTH);
+			
 	/*		ImageIcon bean = new ImageIcon("src/Bean-01.gif");
 			Image beanImg = bean.getImage();
 			Image newBeanImg = beanImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
@@ -856,6 +872,22 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			drawingPane.revalidate();
 			numOfRows = gameBoard.getNumRows();
 			numOfColumns = gameBoard.getNumColumns();
+			
+			
+			sidePane = new JPanel();
+			sidePane.setLayout(new BorderLayout());			
+			sidePane.setPreferredSize(new Dimension(300, 100));
+			sidePane.setBackground(Color.WHITE);			
+			sidePane.setBorder(blackline);
+
+			topPane.add(sidePane, BorderLayout.EAST);
+					
+			//tie JButton created and added to bottom panel
+		
+			sidePane.add(errorPane, BorderLayout.CENTER);
+			
+			tie = new JButton("TIE");
+			sidePane.add(tie, BorderLayout.SOUTH);
 		}
 	}
 	
@@ -1110,33 +1142,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 
 	/** A scrolling text field in which we can hold the field with instructions for playing a particular game. */
 	protected JScrollPane scrollPane;
-	/** The text area in which we hold the instructions for playing a particular game. */
-	protected JTextArea instructions;
-	
-	/**
-	 *  Create the drawing pane, containing the main canvas for drawing, along with
-	 *  the various slots for the components. We also initialize theComponentBar here.
-	 */
-	protected void initInstructionsPane( ) {		
-		instructions = new JTextArea(5, 30);
-		instructions.setLineWrap(true);
-		instructions.setWrapStyleWord(true);
-		/*instructions.setText("Wari Rules:"
-				+ "\nHow to move:"
-				+ "\n\n1) Select an index on your side of the board (Player 1 is bottom half, Player 2 is top half)"
-				+ "\n\n2) The seeds in that index will be distributed counterclockwise one-by-one across the board."
-				+ "\n\nHow to score: Did your seed land in the enemy's row? "
-				+ "\n\nIf so: Did your final seed land in a hole containing either One or Two seeds, thus causing the hole to contain either Two or Three seeds? "
-				+ "\n\nIf so: Take all seeds from this hole and add them to your score. Check the previous holes. Do these holes now contain Two or Three seeds? "
-				+ "\n\nMove one-by one back down the line taking points until you come to a hole that has a number of seeds other than Two or Three.");
-		instructions.setFont(new Font("Arial", Font.PLAIN, 20));*/
-		instructions.setText("Player 1 Score: " + playerOneScore
-				+ "\n Player 2 Score: " + playerTwoScore);
-		instructions.setFont(new Font("Arial", Font.PLAIN, 30));
-		scrollPane = new JScrollPane(instructions);
-		scrollPane.setPreferredSize(new Dimension( (int) ((int)gameWidth()*.2), gameHeight()));
-	}
 
+
+	
 	
 	protected JTextArea score;
 	protected void initScorePane( ) {		
@@ -1146,11 +1154,40 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		score.setWrapStyleWord(true); 
 		
 		score.setText("Player 1 Score: " + playerOneScore
-				+ "\n Player 2 Score: " + playerTwoScore);
-		score.setFont(new Font("Arial", Font.PLAIN, 30));
+				+ "\nPlayer 2 Score: " + playerTwoScore
+				+ "\n\nRules:"
+				+ "\n    The six holes on the bottom are yours, and the others are controlled by another player. You will move first. \n" 
+				+ "\n    Each hole has been filled by four beans.\n"
+				+ "\n    Click on a hole (that is not empty!) and “sow” the beans counter clockwise around the board.\n"
+				+ getWariCapture()
+				+ "\n\n    The goal of the game is to Goal is to capture more seeds than the other player. The game ends when you cannot move, or your opponent cannot move, which happens when all of the pits are empty, and it is their turn.\n"
+				+ "\n    If gameplay is looping, click the declare tie button, and the seeds on the board will not be counted by either player.\n");
+		score.setFont(new Font("Times", Font.PLAIN, 19));
 		scorePane = new JScrollPane(score);
 		score.setEditable(false);
 		scorePane.setPreferredSize(new Dimension( (int) (gameWidth()*.5), (int) (gameHeight()*.1)));
+	}
+	
+	protected JTextArea error;
+	protected void initErrorPane( ) {		
+		
+		error = new JTextArea(30, 30);
+		error.setLineWrap(true);
+		error.setWrapStyleWord(true); 
+		
+		error.setText("Player 1 Score: " + playerOneScore
+				+ "\nPlayer 2 Score: " + playerTwoScore
+				+ "\nWe do not have the rules for this game yet. Feel free to look online!");
+		error.setFont(new Font("Times", Font.PLAIN, 19));
+		errorPane = new JScrollPane(error);
+		error.setEditable(false);
+		errorPane.setPreferredSize(new Dimension( (int) (gameWidth()*.5), (int) (gameHeight()*.1)));
+	}
+	
+	public String getWariCapture(){
+		String captureCond;
+		captureCond = "\n    A capture is made when the last bean sown lands in an opponents pit that has one or two beans in it, so the resulting number would be two or three. You then “capture” all seeds in that bin, as well as all opponent bins in a row counting back from the current pit, if they also now contain two or three beans.";
+		return captureCond;
 	}
 
 	
@@ -1182,8 +1219,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		initMenuBarPane();
 		initDrawingPane( beans, hand );
 		initScorePane();
+		initErrorPane();
 		allPanes();
-		initInstructionsPane();
 		
 		
 		// Then add all the highest level panes to the main window
