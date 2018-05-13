@@ -807,6 +807,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			numOfColumns = gameBoard.getNumColumns();
 			
 			//clickableArea
+			break;
 		case "Vai Lung Thlan":
 			System.out.print("Vai Lung Thlan");
 			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
