@@ -21,11 +21,20 @@ public class Rules {
 	// Local variables used for current game type
 	private static Rules instance = null;
 	private String name;
-	private boolean hasSidebins;
+	private boolean hasSidebins, counterclockwise;
 	private int pointsToWin, rowAmount, binsPerRow, seedsPerBin;
 	
 	private int gameListSize = 4;
 	private GameType[] gameList;
+	private GameType currentGamePlayed;
+	
+	String gamesText = "2 6 4 true WARI true;"
+			+ "2 6 4 true OWARE true;"
+			+ "5 6 4 true 5ROW true;"
+			+ "2 6 10 true MANYSEED true;"
+			+ "2 6 4 false BINLESS true;"
+			+ "2 6 5 false VAI_LUNG_THLAN false;"
+			+ "2 7 5 false SONGO false";
 	
 	/**
 	 * Sets up the rules class.
@@ -33,31 +42,25 @@ public class Rules {
 	public Rules () {
 		// open file
 		// loop through file line-by-line
-		String gamesText = "2 6 4 true WARI 25;"
-				+ "5 6 4 true 5ROW 25;"
-				+ "2 6 10 true MANYSEED 25;"
-				+ "2 6 4 false BINLESS 25";
 		String[] gamesTextLines = gamesText.split(";");
 		gameListSize = gamesTextLines.length;
 		gameList = new GameType[gameListSize];
 		for (int i = 0; i< gamesTextLines.length; i++) {
 			gameList[i] = TranslateLine(gamesTextLines[i]);
 		}
-		
-		/*
-		gameList[0] = TranslateLine("2 6 4 true WARI 25");
-		gameList[1] = TranslateLine("5 6 4 true 5ROW 25");
-		gameList[2] = TranslateLine("2 6 10 true MANYSEED 25");
-		gameList[3] = TranslateLine("2 6 4 false BINLESS 25");
-		*/
-		
-		/*
-		gameList[0] = new GameType(2,6,4,true,"WARI",25);
-		gameList[1] = new GameType(5,6,4,true,"5ROW",25);
-		gameList[2] = new GameType(2,6,10,true,"MANYSEED",25);
-		gameList[3] = new GameType(2,6,4,false,"BINLESS",25);
-		*/
-		// Will set array of game types from text file
+	}
+	
+	public Rules(String gameName){
+		String[] gamesTextLines = gamesText.split(";");
+		gameListSize = gamesTextLines.length;
+		gameList = new GameType[gameListSize];
+		for (int i = 0; i< gamesTextLines.length; i++) {
+			GameType candidateGame = TranslateLine(gamesTextLines[i]);
+			if(candidateGame.GetName().equals(gameName)){
+				currentGamePlayed=candidateGame;
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -67,7 +70,8 @@ public class Rules {
 	public GameType TranslateLine(String toTranslate) {
 		GameType game;
 		int numRows, numBins, numSeeds, winPoints = 0;
-		boolean sideBins = false;
+		boolean sideBins= false;
+		boolean counterclockwise = false;
 		String name = "notgame";
 		// rows, bins, seeds, sidebins, name, win
 		
@@ -79,13 +83,11 @@ public class Rules {
 		if (gameStuff[3].toUpperCase().equals("TRUE")) {
 			sideBins = true;
 		}
-		name = gameStuff[4];
-		if (gameStuff.length < 6) {
-			game = new GameType(numRows,numBins,numSeeds,sideBins,name);
-		} else {
-			winPoints = Integer.parseInt(gameStuff[5]);
-			game = new GameType(numRows,numBins,numSeeds,sideBins,name,winPoints);
+		if (gameStuff[5].toUpperCase().equals("TRUE")) {
+			counterclockwise = true;
 		}
+		name = gameStuff[4];
+		game = new GameType(numRows,numBins,numSeeds,sideBins,name,counterclockwise);
 		return game;
 	}
 	
@@ -111,7 +113,8 @@ public class Rules {
 		seedsPerBin = gameList[gameSelected].GetSeedsPerBin();
 		hasSidebins = gameList[gameSelected].CheckSideBins();
 		name = gameList[gameSelected].GetName();
-		pointsToWin = gameList[gameSelected].GetPointsToWin();
+		pointsToWin = GetPointsToWin(rowAmount,binsPerRow,seedsPerBin);
+		counterclockwise=gameList[gameSelected].IsCounterClockwise();
 	}
 	
 	/**
@@ -120,13 +123,15 @@ public class Rules {
 	 * @param columns number of columns
 	 * @param startBeans number of beans per hole (at start)
 	 * @param sideBins whether has side bins or not
+	 * @param ccw whether sowing is done in counterclockwise direction
 	 */
-	public void setCustomRules (int rows, int columns, int startBeans, boolean sideBins, int winPoints) {
+	public void setCustomRules (int rows, int columns, int startBeans, boolean sideBins, int winPoints, boolean ccw) {
 		rowAmount = rows;
 		binsPerRow = columns;
 		seedsPerBin = startBeans;
 		hasSidebins = sideBins;
-		pointsToWin = winPoints;
+		pointsToWin = (rowAmount*binsPerRow*seedsPerBin)/2 +1;
+		counterclockwise = ccw;
 	}
 	
 	/**
@@ -164,6 +169,14 @@ public class Rules {
 		return hasSidebins;
 	}
 	
+	/**
+	 * 
+	 * @return True when sowing done in counterclockwise direction, false if done clockwise
+	 */
+	public boolean getCounterclockwise() {
+		return counterclockwise;
+	}
+	
 	
 	/**
 	 * @return The name of the game
@@ -173,10 +186,10 @@ public class Rules {
 	}
 	
 	/**
-	 * @return points required for a player to win
+	 * @return points required for a player to win, given the board type
 	 */
-	public int GetPointsToWin() {
-		return pointsToWin;
+	public int GetPointsToWin(int rows, int bins, int seeds) {
+		return (rows*bins*seeds)/2 +1;
 	}
 	
 	public String[] BreakText(String text) {
@@ -229,10 +242,8 @@ public class Rules {
 		System.out.println("\nWhy would you call this method?\nIt doesn't do anything except print this.");
 	}
 	
-	public static Rules getInstance()
-	{
-		if(instance == null)
-		{
+	public static Rules getInstance(){
+		if(instance == null) {
 			instance = new Rules();
 		}
 		return instance;
@@ -307,17 +318,8 @@ class GameType {
 	private int seedsPerBin;
 	private boolean hasSidebins;
 	private int pointsToWin;
+	private boolean counterclockwise;
 	
-	/**
-	 * give parameters for a game
-	 * @param rows number of rows
-	 * @param columns number of columns
-	 * @param startBeans number of beans per hole
-	 * @param sideBins whether has sidebins or not
-	 */
-	public GameType (int rows, int columns, int startBeans, boolean sideBins, String gameName) {
-		SetUp (rows,columns,startBeans,sideBins,gameName,10000);
-	}
 	
 	/**
 	 * give parameters for game
@@ -325,11 +327,12 @@ class GameType {
 	 * @param columns number of columns
 	 * @param startBeans number of beans per hole
 	 * @param sideBins whether has sidebins or not
+	 * @param ccw whether beans are sowed in counterclockwise direction
 	 */
-	public GameType (int rows, int columns, int startBeans, boolean sideBins, String gameName, int winPoints) {
-		SetUp (rows,columns,startBeans,sideBins,gameName,winPoints);
+	public GameType (int rows, int columns, int startBeans, boolean sideBins, String gameName, boolean ccw) {
+		SetUp (rows,columns,startBeans,sideBins,gameName,ccw);
 	}
-	
+
 	/**
 	 * Sets the game rules from given parameters
 	 * @param rows number of rows
@@ -337,13 +340,14 @@ class GameType {
 	 * @param startBeans number of beans per hole
 	 * @param sideBins whether has sidebins or not
 	 */
-	private void SetUp (int rows, int columns, int startBeans, boolean sideBins, String gameName, int winPoints) {
+	private void SetUp (int rows, int columns, int startBeans, boolean sideBins, String gameName, boolean ccw) {
 		name = gameName;
 		rowAmount = rows;
 		binsPerRow = columns;
 		seedsPerBin = startBeans;
 		hasSidebins = sideBins;
-		pointsToWin = winPoints;
+		pointsToWin=GetPointsToWin(rowAmount,binsPerRow,seedsPerBin);
+		counterclockwise=ccw;
 	}
 	
 	/**
@@ -388,12 +392,21 @@ class GameType {
 	public String GetName() {
 		return name;
 	}
+	/**
+	 * 
+	 * @return points required for a player to win, given the board type
+	 */
+	public int GetPointsToWin(int rows, int bins, int seeds) {
+		return (rows*bins*seeds)/2 +1;
+	}
 	
 	/**
-	 * @return points required for a player to win
+	 * 
+	 * @return whether direction of sowing is counterclockwise
 	 */
-	public int GetPointsToWin() {
-		return pointsToWin;
+	public boolean IsCounterClockwise() {
+		return counterclockwise;
 	}
+	
 	
 }

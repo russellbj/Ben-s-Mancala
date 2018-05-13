@@ -8,7 +8,7 @@ public class GameDriver {
 //	private static int numOfHoles = 12; // Wari - specific
 //	private static GameBoard board = GameBoard.getInstance();
 
-	private static int pointsToWin = 25;
+	private static int pointsToWin;
 //	private static boolean possibleMoves = true;
 	private static MainWindow gui;
 	static int holesPerRow = 6;
