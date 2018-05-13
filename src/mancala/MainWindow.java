@@ -744,15 +744,15 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			System.out.println("Wari");
 			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
 			
-			setBounds(0,0,screenSize.width, screenSize.height);
+			setBounds(0,0,gameWidth(), gameHeight());
 			setVisible(true);
 		
 			wariBoard = new ImageIcon("src/Wari Board.png");
 			Image wariBoardImg = wariBoard.getImage();
-			Image newWariBoardImg = wariBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			Image newWariBoardImg = wariBoardImg.getScaledInstance(gameWidth()-250, gameHeight()-100, Image.SCALE_SMOOTH);
 			wariBoard = new ImageIcon(newWariBoardImg);
 			JLabel clickableArea = new JLabel(wariBoard);
-			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
+			clickableArea.setBounds(0, 0, gameWidth()-250, gameHeight()-100);
 			clickableArea.addMouseListener(ml);
 			drawingPane.add(clickableArea);
 			topPane.add(clickableArea);
@@ -778,15 +778,15 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			System.out.print("Oware");
 			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
 			
-			setBounds(0,0,screenSize.width, screenSize.height);
+			setBounds(0,0,gameWidth(), gameHeight());
 			setVisible(true);
 		
 			wariBoard = new ImageIcon("src/Wari Board.png");
 			Image owareBoardImg = wariBoard.getImage();
-			Image newOwareBoardImg = owareBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			Image newOwareBoardImg = owareBoardImg.getScaledInstance(gameWidth()-250, gameHeight()-100, Image.SCALE_SMOOTH);
 			ImageIcon owareBoard = new ImageIcon(newOwareBoardImg);
 			clickableArea = new JLabel(owareBoard);
-			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
+			clickableArea.setBounds(0, 0, gameWidth()-250, gameHeight()-100);
 			clickableArea.addMouseListener(ml);
 			drawingPane.add(clickableArea);
 			topPane.add(clickableArea);
@@ -811,15 +811,15 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			System.out.print("Vai Lung Thlan");
 			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
 			
-			setBounds(0,0,screenSize.width, screenSize.height);
+			setBounds(0,0,gameWidth(), gameHeight());
 			setVisible(true);
 		
 			wariBoard = new ImageIcon("src/Wari Board.png");
 			Image vaiLungThlanBoardImg = wariBoard.getImage();
-			Image newVaiLungThlanBoardImg = vaiLungThlanBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			Image newVaiLungThlanBoardImg = vaiLungThlanBoardImg.getScaledInstance(gameWidth()-250, gameHeight()-100, Image.SCALE_SMOOTH);
 			ImageIcon vaiLungThlanBoard = new ImageIcon(newVaiLungThlanBoardImg);
 			clickableArea = new JLabel(vaiLungThlanBoard);
-			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
+			clickableArea.setBounds(0, 0, gameWidth()-250, gameHeight()-100);
 			clickableArea.addMouseListener(ml);
 			drawingPane.add(clickableArea);
 			topPane.add(clickableArea);
