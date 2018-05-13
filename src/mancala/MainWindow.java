@@ -1,17 +1,16 @@
- 
+  
  package mancala;
 
 /**
  * Created by Darrah Chavey, Nov. 7, 2017.
  */
+import java.awt.event.MouseListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Desktop.Action;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
@@ -19,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.Collator;
@@ -28,25 +28,21 @@ import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 
-/**
+ /**
  * MainWindow is where most objects in this program live. This creates the program,
  * initializes the menus and GUI, and then initiates the play of the game.
  */
@@ -54,9 +50,92 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 /* Class & object data, other than the GUI elements */
 	
-	protected static Turn turn = Turn.getInstance();
+	protected Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
-	protected static Game game = Game.getInstance();
+	protected double activeHeight = screenSize.height * 0.845;
+	
+	protected double activeWidth = screenSize.width * 0.811;
+	
+	protected double topBorder = activeHeight * 0.244;
+	
+	protected double bottomBorder = activeHeight * 0.745;
+	
+	protected double leftBorder = 0;
+	
+	protected double rightBorder = activeWidth;
+	
+	protected double verticalOffset = activeHeight * 0.0429;
+		
+	protected double horizontalOffset = activeWidth * 0.022758010819808574;
+	
+	protected static int playerOneScore;
+	
+	protected static int playerTwoScore;
+	
+	protected static GameManager gameManager = GameManager.getInstance();
+
+	protected static GameDriver game = GameDriver.getInstance();
+	
+	protected static GameBoardFactory gameFactory;
+	
+	protected static GameBoard gameBoard;
+	
+	protected boolean gameChosen = false;
+	
+	protected int[] gameBoardArray;
+
+	protected int numOfSeedsPerHole;
+	
+	protected static boolean hasEndBins;
+	
+	protected static int numOfRows;
+	
+	protected static int numOfColumns;
+	
+	/*
+	 * GUI Elements
+	 */
+	
+	MouseListener ml = new MouseListener() {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			int mouseX = e.getX();
+			int mouseY = e.getY();
+			AnalyzeClick(mouseX, mouseY);
+			if(gameChosen) {
+		//	clickHole(mouseX, mouseY, screenSize, verticalOffset, horizontalOffset, leftBorder, topBorder, hasEndBins, numOfRows, numOfColumns);
+			}
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
+	protected ImageIcon introScreen;
+	protected ImageIcon wariBoard;
+	protected JLabel introLabel;
 	
 	/**
 	 * Serial ID to allow implementation of Serializable. We don't actually
@@ -75,7 +154,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected DrawingCanvas drawingCanvas;
 	
  	/** Which game is currently being played. */
-	protected GameVariations gameBeingPlayed;
+	protected GameEnum gameBeingPlayed;
 	
 
 	/* 
@@ -101,21 +180,20 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
      */
     protected JMenuBar menuBar;
     
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
-    private JButton button4;
-    private JButton button5;
-    private JButton button6;
-    private JButton button7;
-    private JButton button8;
-    private JButton button9;
-    private JButton button10;
-    private JButton button11;
-    private JButton button12;
+//    private JButton button1;
+//    private JButton button2;
+//    private JButton button3;
+//    private JButton button4;
+//    private JButton button5;
+//    private JButton button6;
+//    private JButton button7;
+//    private JButton button8;
+//    private JButton button9;
+//    private JButton button10;
+//    private JButton button11;
+//    private JButton button12;
     
-    private CollectingHole P1 = Game.P1;
-    private CollectingHole P2 = Game.P2;
+    private JButton[][] buttonArray;
      /**
      * The menu gameMenu contains the user to select which game they wish
      * to play. There are a variety of ways for them to select the game.
@@ -263,6 +341,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
     /** A top level pane for holding the menus */
 	protected JPanel menuBarPane;
 	
+	protected JScrollPane scorePane;
+	
     /** A 2nd level pane for holding the menus */
 	protected JPanel menus;
 	
@@ -362,8 +442,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 		theProgram = this;
 		
-
-			theProgram.initPanesAndGui( beans, hand );
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		theProgram.initPanesAndGui( beans, hand );
 		initMenuBarPane();
 		
 	}
@@ -382,19 +462,17 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	 */
 	protected void initMenuBarPane() {
 		
-		menuBarPane = new JPanel();
-		
+		menuBarPane = new JPanel();		
 		// Create the menuBar to contain the menus
-		menuBar = new JMenuBar();
-		
+		menuBar = new JMenuBar();		
 		// Set up the various game menus:
 		
 	    // Get all of the known games, sort them alphabetically.
 	    // We keep that list of "allGames" unchanged for later uses.
-		String[] allGames = new String[ GameVariations.values().length ];
+		String[] allGames = new String[ GameEnum.values().length ];
 		int index=0;
-		for (GameVariations gameVariations : GameVariations.values() ) {
-			allGames[index++] = gameVariations.getName();
+		for (GameEnum gameEnum : GameEnum.values() ) {
+			allGames[index++] = gameEnum.getName();
 		}
 		//		Sort the array of games, handling diacritical marks
 	    Collator ignoreDiacriticals = Collator.getInstance(Locale.US);
@@ -412,20 +490,75 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		for (index=0; index<allGames.length; index++) {
 			gameName = allGames[index];
 			gameMenuItem = new JMenuItem(gameName);
-			gameMenuItem.addActionListener(this);
+			gameMenuItem.addActionListener(new ActionListener()
+					{
+
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							gameChosen = true;
+							System.out.println("Game Chosen");
+							computerChoice = new JButton("Click to play against the Computer");
+							computerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
+							playerChoice = new JButton("Click to play against another Player");
+							playerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
+							// replace with way to handle different games ASAP
+							if(e.getActionCommand().equals("Wari")){
+									gameFactory = new GameBoardFactory(GameEnum.WARI);
+							}
+							else if(e.getActionCommand().equals("Oware 1")){
+								System.out.println("OWARE");
+								gameFactory = new GameBoardFactory(GameEnum.OWARE_1);
+							}
+							else if(e.getActionCommand().equals("Vai Lung Thlan")){
+								System.out.println("Vai Lung Thlan");
+								gameFactory = new GameBoardFactory(GameEnum.VAI_LUNG_THLAN);
+							}
+							gameBoard = gameFactory.GameBoardFactory(0);
+							gameManager.setup(gameBoard.getGameEnum());
+							introLabel.setVisible(false);
+							introLabel.setEnabled(false);
+							drawingPane.remove(introLabel);
+							//drawingPane.add(computerChoice);
+							//drawingPane.add(playerChoice);
+							
+							GenerateBoard();
+							drawingPane.repaint();
+							drawingPane.revalidate();
+			
+						}
+				
+					});
 			if ( ignoreDiacriticals.compare(gameName,"F" ) < 0) {
 				gameAlphaAE.add( gameMenuItem );
 			} else if ( ignoreDiacriticals.compare(gameName,"M" ) < 0) {
 				gameAlphaFL.add( gameMenuItem );
 			} else if ( ignoreDiacriticals.compare(gameName,"P" ) < 0) {
 				gameAlphaMO.add( gameMenuItem );
+				if(gameMenuItem.getText().equals("Oware 1")){
+					gameMenuItem.setEnabled(true);
+				}
+				else{
+					gameMenuItem.setEnabled(false);
+				}
 			} else {
 				gameAlphaPZ.add( gameMenuItem );
+				if(gameMenuItem.getText().equals("Wari")){
+					gameMenuItem.setEnabled(true);
+				}
+				else if(gameMenuItem.getText().equals("Vai Lung Thlan")){
+					gameMenuItem.setEnabled(true);
+				}
+				else{
+					gameMenuItem.setEnabled(false);
+				}
 			}
 		}
 		gameAlphabetical = new JMenu("Alphabetical");
 		gameAlphabetical.add(gameAlphaAE);
+		gameAlphaAE.setEnabled(false);
 		gameAlphabetical.add(gameAlphaFL);
+		gameAlphaFL.setEnabled(false);
 		gameAlphabetical.add(gameAlphaMO);
 		gameAlphabetical.add(gameAlphaPZ);
 
@@ -435,7 +568,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		JMenu thisBoardType;
 		for (BoardTypes boardType : BoardTypes.values() ) {
 			ArrayList<String> gamesOfOneType = new ArrayList<String>( );
-			for (GameVariations gameVariation : GameVariations.values() ) {
+			for (GameEnum gameVariation : GameEnum.values() ) {
 				if (gameVariation.getBoardType() == boardType) {
 					gamesOfOneType.add( gameVariation.getName() );
 				}
@@ -479,6 +612,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				thisBoardType = gameTwoRow;
 			}
 			gameByType.add( thisBoardType );
+			gameByType.setEnabled(false);
 		}
 
 
@@ -487,8 +621,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		gameByCountry = new JMenu("By Country");
 		ArrayList<String> countries = new ArrayList<String>( );
 		String newCountry;
-		for (GameVariations gameVariations : GameVariations.values() ) {
-			newCountry = gameVariations.getOriginCountry( );
+		for (GameEnum gameEnum : GameEnum.values() ) {
+			newCountry = gameEnum.getOriginCountry( );
 			if (!countries.contains(newCountry)) {
 				countries.add(newCountry);
 			}
@@ -500,20 +634,21 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		Arrays.sort(countriesOfOrigin, ignoreDiacriticals);
 		JMenu gamesOneCountry;
 		String countryName;
-		GameVariations gameVariations;
+		GameEnum gameEnum;
 		for (int whichCountry=0; whichCountry<countriesOfOrigin.length; whichCountry++) {
 			countryName = countriesOfOrigin[whichCountry];
 			gamesOneCountry = new JMenu(countryName);
 			for (index=0; index<allGames.length; index++) {
 				gameName = allGames[index];
-				gameVariations = GameVariations.getGameVariation(gameName);
-				if (gameVariations.getOriginCountry().equals(countryName)) {
-					gameMenuItem = new JMenuItem( gameVariations.getName() );
+				gameEnum = GameEnum.getGameVariation(gameName);
+				if (gameEnum.getOriginCountry().equals(countryName)) {
+					gameMenuItem = new JMenuItem( gameEnum.getName() );
 					gameMenuItem.addActionListener(this);
 					gamesOneCountry.add(gameMenuItem);
 				}
 			}
 			gameByCountry.add(gamesOneCountry);
+			gameByCountry.setEnabled(false);
 		}
 
 
@@ -584,17 +719,319 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		gameOptions.setLayout(new FlowLayout()) ;
 		
 		gameOptions.add(new JLabel("You can put buttons, fields, etc. in this panel:") );
-		gameOptions.setPreferredSize(new Dimension(200,24));
+		gameOptions.setPreferredSize(new Dimension(gameWidth(),24));
 		
 		menuBarPane.add(gameOptions, "Center");
 		
-		JPanel buttonPanel = new JPanel( new FlowLayout() );
+		JPanel rulesPanel = new JPanel( new FlowLayout() );
 		
 
-		menuBarPane.add( buttonPanel, "East");
+		menuBarPane.add( rulesPanel, "East");
+		
 	}
 		
+	/**
+	 * Used to create board depending on what game was chosen
+	 */
+	protected void GenerateBoard() 
+	{ 
+		// use factory for this asap
+		System.out.println("Board Generating: " + gameBoard.getGameName());
 	
+		switch(gameBoard.getGameName())
+		{
+		case "Wari": 
+			System.out.println("Wari");
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+			
+			setBounds(0,0,gameWidth(), gameHeight());
+			setVisible(true);
+		
+			wariBoard = new ImageIcon("src/Wari Board.png");
+			Image wariBoardImg = wariBoard.getImage();
+			Image newWariBoardImg = wariBoardImg.getScaledInstance(gameWidth()-250, gameHeight()-100, Image.SCALE_SMOOTH);
+			wariBoard = new ImageIcon(newWariBoardImg);
+			JLabel clickableArea = new JLabel(wariBoard);
+			clickableArea.setBounds(0, 0, gameWidth()-250, gameHeight()-100);
+			clickableArea.addMouseListener(ml);
+			drawingPane.add(clickableArea);
+			topPane.add(clickableArea);
+			
+	/*		ImageIcon bean = new ImageIcon("src/Bean-01.gif");
+			Image beanImg = bean.getImage();
+			Image newBeanImg = beanImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			ImageIcon newBean = new ImageIcon(newBeanImg);
+			JLabel beanLabel = new JLabel(newBean);
+			beanLabel.setSize(1000, 1000);*/
+			
+
+//			drawingPane.add(beanLabel);
+			drawingPane.repaint();
+			drawingPane.revalidate();
+			numOfRows = gameBoard.getNumRows();
+			
+			numOfColumns = gameBoard.getNumColumns();
+			
+			//clickableArea
+			break;
+		case "Oware 1":
+			System.out.print("Oware");
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+			
+			setBounds(0,0,gameWidth(), gameHeight());
+			setVisible(true);
+		
+			wariBoard = new ImageIcon("src/Wari Board.png");
+			Image owareBoardImg = wariBoard.getImage();
+			Image newOwareBoardImg = owareBoardImg.getScaledInstance(gameWidth()-250, gameHeight()-100, Image.SCALE_SMOOTH);
+			ImageIcon owareBoard = new ImageIcon(newOwareBoardImg);
+			clickableArea = new JLabel(owareBoard);
+			clickableArea.setBounds(0, 0, gameWidth()-250, gameHeight()-100);
+			clickableArea.addMouseListener(ml);
+			drawingPane.add(clickableArea);
+			topPane.add(clickableArea);
+			
+	/*		ImageIcon bean = new ImageIcon("src/Bean-01.gif");
+			Image beanImg = bean.getImage();
+			Image newBeanImg = beanImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			ImageIcon newBean = new ImageIcon(newBeanImg);
+			JLabel beanLabel = new JLabel(newBean);
+			beanLabel.setSize(1000, 1000);*/
+			
+
+//			drawingPane.add(beanLabel);
+			drawingPane.repaint();
+			drawingPane.revalidate();
+			numOfRows = gameBoard.getNumRows();
+			
+			numOfColumns = gameBoard.getNumColumns();
+			
+			//clickableArea
+		case "Vai Lung Thlan":
+			System.out.print("Vai Lung Thlan");
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+			
+			setBounds(0,0,gameWidth(), gameHeight());
+			setVisible(true);
+		
+			wariBoard = new ImageIcon("src/Wari Board.png");
+			Image vaiLungThlanBoardImg = wariBoard.getImage();
+			Image newVaiLungThlanBoardImg = vaiLungThlanBoardImg.getScaledInstance(gameWidth()-250, gameHeight()-100, Image.SCALE_SMOOTH);
+			ImageIcon vaiLungThlanBoard = new ImageIcon(newVaiLungThlanBoardImg);
+			clickableArea = new JLabel(vaiLungThlanBoard);
+			clickableArea.setBounds(0, 0, gameWidth()-250, gameHeight()-100);
+			clickableArea.addMouseListener(ml);
+			drawingPane.add(clickableArea);
+			topPane.add(clickableArea);
+			drawingPane.repaint();
+			drawingPane.revalidate();
+			numOfRows = gameBoard.getNumRows();
+			numOfColumns = gameBoard.getNumColumns();
+		}
+	}
+	
+	protected void AnalyzeClick(int mouseX, int mouseY)
+	{
+		System.out.println("Click 0: " + mouseX + ", " + mouseY);
+
+		double clickableWidth = rightBorder - leftBorder;
+		double clickableHeight = bottomBorder - topBorder;
+		double midpoint = (bottomBorder + topBorder) / 2;
+		
+		if(mouseY < topBorder)
+		{
+			return;
+		}
+		if(mouseX < leftBorder)
+		{
+			return;
+		}
+		if(mouseX> rightBorder)
+		{
+			return;
+		}
+		if(mouseY > bottomBorder)
+		{
+			return;
+		}
+		
+		/**
+		 *  2 ROW, NO END-BIN GAMES
+		 */
+		
+		if(numOfRows == 2)
+		{
+			if(mouseY <= (midpoint))
+			{
+				if(mouseX <= leftBorder + (clickableWidth/6))
+				{
+					System.out.println("You Clicked: 1,1");
+					gameManager.moveSeeds(1, 1);
+					
+				}
+				if(mouseX >  leftBorder + (clickableWidth/6) && mouseX <=  leftBorder + (2*(clickableWidth/6)))
+				{
+					System.out.println("You Clicked: 1,2");
+					gameManager.moveSeeds(1,2);
+				}
+				if(mouseX >  leftBorder + (2*(clickableWidth/6)) && mouseX <=  leftBorder + (3*(clickableWidth/6)))
+				{
+					System.out.println("You Clicked: 1,3");
+					gameManager.moveSeeds(1,3);
+				}
+				
+				if(mouseX >  leftBorder + (3*(clickableWidth/6)) && mouseX <=  leftBorder + (4*(clickableWidth/6)))
+				{
+					System.out.println("You Clicked: 1,4");
+					gameManager.moveSeeds(1,4);
+				}
+				if(mouseX >  leftBorder + (4*(clickableWidth/6)) && mouseX <=  leftBorder + (5*(clickableWidth/6)))
+				{
+					System.out.println("You Clicked: 1,5");
+					gameManager.moveSeeds(1,5);
+				}
+				if(mouseX >  leftBorder + (5*(clickableWidth/6)) && mouseX <=  leftBorder + (6*(clickableWidth/6)))
+				{
+					System.out.println("You Clicked: 1,6");
+					gameManager.moveSeeds(1,6);
+				}
+			}
+			if(mouseY > (midpoint))
+			{
+				if(mouseX <= leftBorder + (clickableWidth/6))
+				{
+					System.out.println("You Clicked: 2,1");
+					gameManager.moveSeeds(2,1);
+				}
+				if(mouseX >  leftBorder + (clickableWidth/6) && mouseX <=  leftBorder + (2*(clickableWidth/6)))
+				{
+					System.out.println("You Clicked: 2,2");
+					gameManager.moveSeeds(2,2);
+				}
+				if(mouseX >  leftBorder + (2*(clickableWidth/6)) && mouseX <=  leftBorder + (3*(clickableWidth/6)))
+				{
+					System.out.println("You Clicked: 2,3");
+					gameManager.moveSeeds(2,3);
+				}
+				
+				if(mouseX >  leftBorder + (3*(clickableWidth/6)) && mouseX <=  leftBorder + (4*(clickableWidth/6)))
+				{
+					System.out.println("You Clicked: 2,4");
+					gameManager.moveSeeds(2,4);
+				}
+				if(mouseX >  leftBorder + (4*(clickableWidth/6)) && mouseX <=  leftBorder + (5*(clickableWidth/6)))
+				{
+					System.out.println("You Clicked: 2,5");
+					gameManager.moveSeeds(2,5);
+				}
+				if(mouseX >  leftBorder + (5*(clickableWidth/6)) && mouseX <=  leftBorder + (6*(clickableWidth/6)))
+				{
+					System.out.println("You Clicked: 2,6");
+					gameManager.moveSeeds(2, 6);
+				}
+			}
+		}
+	}
+	 //Takes in where the user clicked, the screen size and the board details and returns the hole the user clicked on
+	 protected int[] clickHole(int mouseX, int mouseY, Dimension screenSize, double verticalOffset, double horizontalOffset, double verticalBorder, double horizontalBorder, boolean endBins, int numRows, int numHoles){
+		 System.out.println("Running clickHole");
+		 double holeWidth;
+		int colNumber;
+		int endBinWidth=100;
+		if(mouseX<horizontalBorder||mouseY<verticalBorder)
+		{
+			System.out.println("Bounds too small");
+			return null;
+		}
+		if(mouseX>(screenSize.width-horizontalBorder)||mouseY>(screenSize.height-verticalBorder))
+		{
+			System.out.println("Bounds too large");
+			return null;
+		}
+		if(endBins)
+		{
+			holeWidth=((screenSize.width-endBinWidth*2-horizontalBorder*2)-(horizontalOffset*(numHoles-1)))/numHoles;
+		}
+			else
+			{
+			holeWidth=((screenSize.width-horizontalBorder*2)-(horizontalOffset*(numHoles-1)))/numHoles;
+			}
+		
+		double holeHeight=(screenSize.height-verticalOffset*(numRows-1)-verticalBorder*2)/numRows;
+		int rowNumber=(int) ((mouseY-verticalBorder)/(holeHeight+verticalOffset))+1;
+		if((mouseY-verticalBorder)%(holeHeight+verticalOffset)>holeHeight)
+		{
+			System.out.println("Within Vertical Offset");
+			return null;
+		}
+		if(endBins){
+			if((mouseX-endBinWidth-horizontalBorder)%(holeWidth+horizontalOffset)>holeWidth)
+			{
+				System.out.println("Within Horizontal Offset");
+				return null;
+			}
+			colNumber=(int) ((mouseX-endBinWidth-horizontalBorder)/(holeWidth+horizontalOffset))+1;
+		}
+		else{
+			if((mouseX-horizontalBorder)%(holeWidth+horizontalOffset)>holeWidth)
+			{
+				System.out.println("Within Horizontal Offset");
+				return null;
+			}
+			colNumber=(int) ((mouseX-horizontalBorder)/(holeWidth+horizontalOffset))+1;
+		}
+		//gameManager.moveSeeds(rowNumber, colNumber);
+		int[] result=new int[2]; //row, col
+		result[0]=rowNumber;
+		result[1]=colNumber;
+		System.out.println("Result: [" + rowNumber + ", " + colNumber + "]");
+		return result;
+	}
+	 
+	// A top level pane that holds the game image and other panes
+	 protected JPanel topPane;
+	 
+	//next-level pane that holds the tie button
+	 protected JPanel bottomPane;
+	 
+	//side pane to hold the instructions, score of the game
+	 protected JPanel sidePane;
+	 
+	//tie button
+	 protected JButton tie;
+	 
+	//text area that displays the score of each player
+	 protected JTextArea scoreVal;
+
+
+		protected void allPanes(){
+			Border blackline, raisedbevel, loweredbevel, empty;
+			blackline = BorderFactory.createLineBorder(Color.black);
+			
+			topPane = new JPanel();
+			topPane.setLayout(new BorderLayout());
+			topPane.setPreferredSize(new Dimension(500, 500));	
+			topPane.setBackground(Color.WHITE);
+			topPane.setBorder(blackline);		
+			
+			sidePane = new JPanel();
+			sidePane.setLayout(new BorderLayout());			
+			sidePane.setPreferredSize(new Dimension(300, 100));
+			sidePane.setBackground(Color.WHITE);			
+			sidePane.setBorder(blackline);
+
+			topPane.add(sidePane, BorderLayout.EAST);
+								
+			//background image added
+			topPane.add(introLabel);
+			
+			//score of each player displayed on screen
+			sidePane.add(scorePane, BorderLayout.CENTER);
+			
+			//tie JButton created and added to bottom panel
+			tie = new JButton("TIE");
+			sidePane.add(tie, BorderLayout.SOUTH);
+		}
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
 	 *  the various slots for the components. We also initialize theComponentBar here.
@@ -614,6 +1051,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		// inside the pane. This allows the border panel, which we never need reference again, to
 		// always redraw the beveled edges, while the actual canvas inside it is bound to the width
 		// WITHOUT the border, extends to take up all available space, but is properly cropped.
+	
 		JPanel borderForCanvas = new JPanel( new BorderLayout() );
 		borderForCanvas.setBorder(canvasBorder);
 		borderForCanvas.setBackground(Color.WHITE);
@@ -623,644 +1061,23 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		
 		// Then put them into the drawingPane
 		drawingPane = new Container();
-		drawingPane.setLayout( new GridLayout(2,6) );
+		drawingPane.setLayout( new BorderLayout());
 		drawingPane.setBackground(Color.WHITE);
 		
 		//add CPU or Player choice
-		computerChoice = new JButton("Click to play against the Computer");
-		computerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
-		playerChoice = new JButton("Click to play against another Player");
-		playerChoice.setFont(new Font("Arial", Font.PLAIN, 80));
-		
-		playerChoice.addActionListener(new ActionListener()
-		{
-
-		public void actionPerformed(ActionEvent e)
-	      {
-				isComputer = false;
-				isPlayer = true;
-				drawingPane.remove(computerChoice);
-				drawingPane.remove(playerChoice);
-				drawingPane.revalidate();
-				drawingPane.repaint();
-				button1 = new JButton("4");
-				button2 = new JButton("4");
-				button3 = new JButton("4");
-				button4 = new JButton("4");
-				button5 = new JButton("4");
-				button6 = new JButton("4");
-				button7 = new JButton("4");
-				button8 = new JButton("4");
-				button9 = new JButton("4");
-				button10 = new JButton("4");
-				button11 = new JButton("4");
-				button12 = new JButton("4");
-				drawingPane.add("Button One", button1);
-				button1.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Two", button2);
-				button2.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Three", button3);
-				button3.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Four", button4);
-				button4.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Five", button5);
-				button5.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Six", button6);
-				button6.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Seven", button7);
-				button7.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Eight", button8);
-				button8.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Nine", button9);
-				button9.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Ten", button10);
-				button10.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Eleven", button11);
-				button11.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.add("Button Twelve", button12);
-				button12.setFont(new Font("Arial", Font.PLAIN, 100));
-				drawingPane.revalidate();
-				drawingPane.repaint();
-			//	System.out.println(isPlayer);
-				playGame();
-	      }
-		});
-		
-		computerChoice.addActionListener(new ActionListener()
-		{
-		  public void actionPerformed(ActionEvent e)
-	      {
-				isPlayer = false;
-				isComputer = true;
-				JOptionPane.showMessageDialog(null, "Coming Soon! :)");
-	      }
-		});
-		drawingPane.add(computerChoice);
-		drawingPane.add(playerChoice);
-		}
 	
+		introScreen = new ImageIcon("src/mancala.jpg");
+		Image introImg = introScreen.getImage();
+		setBounds(0,0,10000,10000);
+		Image newIntroImg = introImg.getScaledInstance(2200,1000, Image.SCALE_SMOOTH);
+		introScreen = new ImageIcon(newIntroImg);
+		introLabel = new JLabel(introScreen);
+		setVisible(true);
+		drawingPane.repaint();	
+		drawingPane.revalidate();
 
-	protected void playGame() {
-		
-		button1.setEnabled(false);
-		button2.setEnabled(false);
-		button3.setEnabled(false);
-		button4.setEnabled(false);
-		button5.setEnabled(false);
-		button6.setEnabled(false);
-		button7.setEnabled(true);
-		button8.setEnabled(true);
-		button9.setEnabled(true);
-		button10.setEnabled(true);
-		button11.setEnabled(true);
-		button12.setEnabled(true);
-		
-			int iterate = 0;
-			int currTurn = turn.getCurrPlayer();
-			buttonClicked = false;
-				button7.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-					buttonClicked = true;
-					System.out.println("");
-					Game.clickHole(0);
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-					}
-					//playGame();
-					
-					return;
-				}
-			});
-				
-			button8.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-					
-					System.out.println("");
-					Game.clickHole(1);
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-					}
-					//playGame();
-					return;
-				}
-			});
-			button9.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-			
-					System.out.println("");
-					Game.clickHole(2);
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-					}
-					//playGame();
-					return;
-				}
-			});
-			button10.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-			
-					System.out.println("");
-					Game.clickHole(3);
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-					}
-					//playGame();
-					return;
-				}
-			});
-			button11.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-		
-					System.out.println("");
-					Game.clickHole(4);
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());		
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-					}
-					//playGame();
-					return;
-				}
-			});
-			button12.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-					System.out.println("");
-					Game.clickHole(5);
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(true);
-						button2.setEnabled(true);
-						button3.setEnabled(true);
-						button4.setEnabled(true);
-						button5.setEnabled(true);
-						button6.setEnabled(true);
-						button7.setEnabled(false);
-						button8.setEnabled(false);
-						button9.setEnabled(false);
-						button10.setEnabled(false);
-						button11.setEnabled(false);
-						button12.setEnabled(false);
-						int[] topRow = Game.getPlayerOne().getTopRow();
-						int[] bottomRow = Game.getPlayerOne().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-					}
-					//playGame();
-					return;
-				}
-				
-			});
 
-			button1.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-					buttonClicked = true;
-					Game.clickHole(0);
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(false);
-						button2.setEnabled(false);
-						button3.setEnabled(false);
-						button4.setEnabled(false);
-						button5.setEnabled(false);
-						button6.setEnabled(false);
-						button7.setEnabled(true);
-						button8.setEnabled(true);
-						button9.setEnabled(true);
-						button10.setEnabled(true);
-						button11.setEnabled(true);
-						button12.setEnabled(true);
-						int[] topRow = Game.getPlayerTwo().getTopRow();
-						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-						
-					}
-					//playGame();
-					return;
-				}
-			});
-			
-			button2.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-					
-					
-					Game.clickHole(1);
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(false);
-						button2.setEnabled(false);
-						button3.setEnabled(false);
-						button4.setEnabled(false);
-						button5.setEnabled(false);
-						button6.setEnabled(false);
-						button7.setEnabled(true);
-						button8.setEnabled(true);
-						button9.setEnabled(true);
-						button10.setEnabled(true);
-						button11.setEnabled(true);
-						button12.setEnabled(true);
-						int[] topRow = Game.getPlayerTwo().getTopRow();
-						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-					}
-					//playGame();
-					return;
-				}
-			});
-			button3.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-					
-					Game.clickHole(2);
-					
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(false);
-						button2.setEnabled(false);
-						button3.setEnabled(false);
-						button4.setEnabled(false);
-						button5.setEnabled(false);
-						button6.setEnabled(false);
-						button7.setEnabled(true);
-						button8.setEnabled(true);
-						button9.setEnabled(true);
-						button10.setEnabled(true);
-						button11.setEnabled(true);
-						button12.setEnabled(true);
-						int[] topRow = Game.getPlayerTwo().getTopRow();
-						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-					}
-					
-					return;
-				}
-			});
-			button4.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-					
-					Game.clickHole(3);
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(false);
-						button2.setEnabled(false);
-						button3.setEnabled(false);
-						button4.setEnabled(false);
-						button5.setEnabled(false);
-						button6.setEnabled(false);
-						button7.setEnabled(true);
-						button8.setEnabled(true);
-						button9.setEnabled(true);
-						button10.setEnabled(true);
-						button11.setEnabled(true);
-						button12.setEnabled(true);
-						int[] topRow = Game.getPlayerTwo().getTopRow();
-						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-					}
-					return;
-				}
-			});
-			button5.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-					
-					Game.clickHole(4);
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-						System.out.println("You are Player " + turn.getCurrPlayer());
-						System.out.println("Player 1 Score: " + P1.displayCount());
-						System.out.println("Player 2 Score: " + P2.displayCount());
-						instructions.setText("Player 1 Score: " + P1.displayCount()
-						+ "\nPlayer 2 Score: " + P2.displayCount());
-						button1.setEnabled(false);
-						button2.setEnabled(false);
-						button3.setEnabled(false);
-						button4.setEnabled(false);
-						button5.setEnabled(false);
-						button6.setEnabled(false);
-						button7.setEnabled(true);
-						button8.setEnabled(true);
-						button9.setEnabled(true);
-						button10.setEnabled(true);
-						button11.setEnabled(true);
-						button12.setEnabled(true);
-						int[] topRow = Game.getPlayerTwo().getTopRow();
-						int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-						button1.setText(Integer.toString(topRow[0]));
-						button2.setText(Integer.toString(topRow[1]));
-						button3.setText(Integer.toString(topRow[2]));
-						button4.setText(Integer.toString(topRow[3]));
-						button5.setText(Integer.toString(topRow[4]));
-						button6.setText(Integer.toString(topRow[5]));
-						button7.setText(Integer.toString(bottomRow[0]));
-						button8.setText(Integer.toString(bottomRow[1]));
-						button9.setText(Integer.toString(bottomRow[2]));
-						button10.setText(Integer.toString(bottomRow[3]));
-						button11.setText(Integer.toString(bottomRow[4]));
-						button12.setText(Integer.toString(bottomRow[5]));
-					}
-
-					return;
-					
-				}
-			});
-			button6.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e)
-				{
-					
-					Game.clickHole(5);
-					if(!Game.getClickedZero())
-					{
-						turn.switchPlayer();
-					System.out.println("You are Player " + turn.getCurrPlayer());
-					System.out.println("Player 1 Score: " + P1.displayCount());
-					System.out.println("Player 2 Score: " + P2.displayCount());
-					instructions.setText("Player 1 Score: " + P1.displayCount()
-					+ "\nPlayer 2 Score: " + P2.displayCount());
-					button1.setEnabled(false);
-					button2.setEnabled(false);
-					button3.setEnabled(false);
-					button4.setEnabled(false);
-					button5.setEnabled(false);
-					button6.setEnabled(false);
-					button7.setEnabled(true);
-					button8.setEnabled(true);
-					button9.setEnabled(true);
-					button10.setEnabled(true);
-					button11.setEnabled(true);
-					button12.setEnabled(true);
-					int[] topRow = Game.getPlayerTwo().getTopRow();
-					int[] bottomRow = Game.getPlayerTwo().getBottomRow();
-					button1.setText(Integer.toString(topRow[0]));
-					button2.setText(Integer.toString(topRow[1]));
-					button3.setText(Integer.toString(topRow[2]));
-					button4.setText(Integer.toString(topRow[3]));
-					button5.setText(Integer.toString(topRow[4]));
-					button6.setText(Integer.toString(topRow[5]));
-					button7.setText(Integer.toString(bottomRow[0]));
-					button8.setText(Integer.toString(bottomRow[1]));
-					button9.setText(Integer.toString(bottomRow[2]));
-					button10.setText(Integer.toString(bottomRow[3]));
-					button11.setText(Integer.toString(bottomRow[4]));
-					button12.setText(Integer.toString(bottomRow[5]));
-					
-					}
-					return;
-				}
-			});
 	}
-
 
 	/** A scrolling text field in which we can hold the field with instructions for playing a particular game. */
 	protected JScrollPane scrollPane;
@@ -1284,14 +1101,46 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				+ "\n\nIf so: Take all seeds from this hole and add them to your score. Check the previous holes. Do these holes now contain Two or Three seeds? "
 				+ "\n\nMove one-by one back down the line taking points until you come to a hole that has a number of seeds other than Two or Three.");
 		instructions.setFont(new Font("Arial", Font.PLAIN, 20));*/
-		instructions.setText("Player 1 Score: " + P1.displayCount()
-				+ "\n Player 2 Score: " + P2.displayCount());
+		instructions.setText("Player 1 Score: " + playerOneScore
+				+ "\n Player 2 Score: " + playerTwoScore);
 		instructions.setFont(new Font("Arial", Font.PLAIN, 30));
 		scrollPane = new JScrollPane(instructions);
-		scrollPane.setPreferredSize(new Dimension(250, 300));
+		scrollPane.setPreferredSize(new Dimension( (int) ((int)gameWidth()*.2), gameHeight()));
 	}
 
+	
+	protected JTextArea score;
+	protected void initScorePane( ) {		
+		
+		score = new JTextArea(30, 30);
+		score.setLineWrap(true);
+		score.setWrapStyleWord(true); 
+		
+		score.setText("Player 1 Score: " + playerOneScore
+				+ "\n Player 2 Score: " + playerTwoScore);
+		score.setFont(new Font("Arial", Font.PLAIN, 30));
+		scorePane = new JScrollPane(score);
+		score.setEditable(false);
+		scorePane.setPreferredSize(new Dimension( (int) (gameWidth()*.5), (int) (gameHeight()*.1)));
+	}
 
+	
+	public int gameWidth(){
+		Toolkit tk = Toolkit.getDefaultToolkit();  
+		
+		int xSize = ((int) tk.getScreenSize().getWidth());  
+		final int gameWidth = (int) (Math.round(xSize * 0.90));
+		return gameWidth;
+	}
+	
+	public int gameHeight(){
+		Toolkit tk = Toolkit.getDefaultToolkit();  
+ 
+		int ySize = ((int) tk.getScreenSize().getHeight());
+		final int gameHeight = (int) (Math.round(ySize * 0.90));
+		return gameHeight;
+		
+	}
 	/**
 	 *  Create the drawing panes and other GUI elements used in the main 
 	 *  window; place them inside the main window. 
@@ -1303,27 +1152,30 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		// Create and initialize the main panes:
 		initMenuBarPane();
 		initDrawingPane( beans, hand );
+		initScorePane();
+		allPanes();
 		initInstructionsPane();
+		
 		
 		// Then add all the highest level panes to the main window
 		getContentPane().setLayout(new BorderLayout());		// For applications
 		getContentPane().add(menuBarPane, "North");			// For applications
-		getContentPane().add(drawingPane, "Center");		// For applications
+		getContentPane().add(drawingPane, "Center");            // For applications
 		pack();												// For applications
 		this.add(menuBarPane, BorderLayout.NORTH);
 		this.add(drawingPane, BorderLayout.CENTER);
-		this.add(scrollPane, BorderLayout.EAST);
+		this.add(topPane, BorderLayout.CENTER);
+		pack();
+		
+	
 
-		setPreferredSize( new Dimension(800,600) );   		// Has to happen after "pack()"
-//		setLocation(32*numOfWindows-8,32*numOfWindows-8);	// For applicaitons, support staggering with multiple windows
+		setSize( new Dimension(gameWidth(),gameHeight()) );   		// Has to happen after "pack()"
+//		setLocation(32*numOfWindows-8,32*numOfWindows-8);	// For applications, support staggering with multiple windows
 		setVisible(true);
 		
 		addComponentListener( new ComponentAdapter( ) 
 				{	    public void componentResized(ComponentEvent e) {
-							theProgram.setSize(
-									Math.max(theProgram.getWidth(),696),
-									Math.max(theProgram.getHeight(),600)
-							);
+							theProgram.setSize(gameWidth(),gameHeight());
 				 		}
 				}
 		);
