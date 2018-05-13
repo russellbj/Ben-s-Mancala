@@ -191,9 +191,9 @@ public class GameManager
 
 					}
 				}
-			}
-				setTurn();
 			}}
+			setTurn();
+			}
 		else{
 			System.out.println("Thats not your side of the board");
 		}
