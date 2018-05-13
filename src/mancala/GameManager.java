@@ -33,7 +33,6 @@ public class GameManager
 		numOfHoles = numOfColumns * numOfRows;
 		initialSeedsPerBin = gameEnum.getInitialSeedsPerBin();
 		counterclockwise=rules.getCounterclockwise();
-		System.out.println(counterclockwise);
 		boardArray = new int[numOfHoles];
 		setupBoardArray();
 		printBoard();
@@ -82,7 +81,6 @@ public class GameManager
 		int index = 0;
 
 		index = (rowsToAdd + y) - 1;
-		System.out.println(index);
 
 		int seedsLeftToMove = boardArray[index];
 		boardArray[index] = 0;
@@ -144,7 +142,6 @@ public class GameManager
 				}
 			}
 			else if(counterclockwise==false){
-				System.out.println("CLOCKWISE");
 				if(currRow % 2 == 1){
 					if(index < numOfColumns -1){
 						index++;
@@ -179,7 +176,6 @@ public class GameManager
 
 
 					else{
-						System.out.println("Switch");
 						if(currRow != numOfRows)
 							currRow++;
 						else
