@@ -12,6 +12,9 @@ public class MoveManager{
 		this.numRows=numRows;
 	}
 	public void move(int x, int y, GameBoard gb){
+		counterClockwiseMove(x,y,gb);
+	}
+	public void counterClockwiseMove(int x, int y, GameBoard gb){
 		Integer[] board=gb.getBoardStateArray();
 		int rowsToAdd = (numColumns) * (x-1);
 		int index = (rowsToAdd + y) - 1;
@@ -70,6 +73,9 @@ class VaiLungThlanMoveManager extends MoveManager {
 	}
 	
 	public void move(int x, int y, GameBoard gb){
+		clockwiseMove(x,y,gb);
+	}
+	public void clockwiseMove(int x, int y, GameBoard gb){
 		Integer[] board=gb.getBoardStateArray();
 		int rowsToAdd = (numColumns) * (x-1);
 		int index = (rowsToAdd + y) - 1;
@@ -81,7 +87,7 @@ class VaiLungThlanMoveManager extends MoveManager {
 			if(index < numColumns -1){
 				index++;
 				int newVal = board[index];
-				if(checkCanMove(index,startingIndex))
+				if(checkCanScore(index,startingIndex))
 					newVal++;
 				board[index] = newVal;
 				seedsLeftToMove--;
@@ -101,7 +107,7 @@ class VaiLungThlanMoveManager extends MoveManager {
 			if(index >(currRow-1)*numColumns){
 				index--;
 				int newVal = board[index];
-				if(checkCanMove(index,startingIndex))
+				if(checkCanScore(index,startingIndex))
 					newVal++;
 				board[index] = newVal;
 				seedsLeftToMove--;
@@ -118,7 +124,7 @@ class VaiLungThlanMoveManager extends MoveManager {
 			gb.realSetBoardState(i, board[i]);
 		}
 	}
-	public boolean checkCanMove(int currIndex, int startIndex){
+	public boolean checkCanScore(int currIndex, int startIndex){
 		return true;
 	}
 }
@@ -129,10 +135,9 @@ class SongoMoveManager extends VaiLungThlanMoveManager{
 		super(numColumns, numRows);
 		// TODO Auto-generated constructor stub
 	}
-	public boolean checkCanMove(int currIndex, int startIndex){
+	public boolean checkCanScore(int currIndex, int startIndex){
 		return currIndex!=startIndex;
 	}
-	
 }
 
 class AdjiBotoMoveManager extends MoveManager{
@@ -143,6 +148,22 @@ class AdjiBotoMoveManager extends MoveManager{
 	}
 	public int pickUpSeeds(int seedsInHole){
 		return seedsInHole-1;
+	}	
+}
+
+class QelatMoveManager extends VaiLungThlanMoveManager{
+	private int numColumns, numRows;
+	public QelatMoveManager(int numColumns, int numRows) {
+		super(numColumns, numRows);
+		// TODO Auto-generated constructor stub
 	}
-	
+	public void move(int x, int y, GameBoard gb){
+		Integer[] board=gb.getBoardStateArray();
+		int rowsToAdd = (numColumns) * (x-1);
+		int index = (rowsToAdd + y) - 1;
+		if((index<numColumns/2)||(index>=(numColumns*numRows)-2))
+			counterClockwiseMove(x,y,gb);
+		else
+			clockwiseMove(x,y,gb);
+	}
 }

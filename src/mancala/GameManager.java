@@ -54,6 +54,8 @@ public class GameManager{
 		case "adji boto":
 			mm=new AdjiBotoMoveManager(numOfColumns,numOfRows);
 			break;
+		case "qelat 1":
+			mm=new QelatMoveManager(numOfColumns,numOfRows);
 		}
 	}
 

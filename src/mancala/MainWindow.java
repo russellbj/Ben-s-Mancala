@@ -522,6 +522,11 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 								System.out.println("Adji Boto");
 								gameFactory = new GameBoardFactory(GameEnum.ADJI_BOTO);
 							}
+
+							else if(e.getActionCommand().equals("Qelat")){
+								System.out.println("Qelat");
+								gameFactory = new GameBoardFactory(GameEnum.QELAT_1);
+							}
 							gameBoard = gameFactory.GameBoardFactory(0);
 							gameManager.setup(gameBoard.getGameEnum(),gameBoard);
 							introLabel.setVisible(false);
@@ -550,6 +555,10 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			} else if ( ignoreDiacriticals.compare(gameName,"P" ) < 0) {
 				gameAlphaMO.add( gameMenuItem );
 				if(gameMenuItem.getText().equals("Oware 1")){
+					gameMenuItem.setEnabled(true);
+				}
+
+				else if(gameMenuItem.getText().equals("Qelat 1")){
 					gameMenuItem.setEnabled(true);
 				}
 				else{
