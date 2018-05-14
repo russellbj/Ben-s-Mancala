@@ -1,4 +1,4 @@
-package quickStartMenu;
+package mancala;
 
 /**
  * 
@@ -63,16 +63,17 @@ public class QuickStart {
 	}
 
 	// Use this method if you want to open the Quick Start Menu in the Computer's default web browser.
-	// Works on Windows, whether it works on Mac is unknown.
+	// Works on Windows, but the file path must be changed based on the computer running the program.
+	// Whether this code works on Mac is unknown.
 	public static void openInBrowser() throws IOException, URISyntaxException {
 		if (Desktop.isDesktopSupported()) {
-			File htmlFile = new File("C://Users//Q//workspace//Quick Start Menu//src//quickStartMenu//files/QSM.html");
+			File htmlFile = new File("C://Users//Q//workspace//Mancala//src//mancala//files/QSM.html");
 			Desktop.getDesktop().browse(htmlFile.toURI());
 		}
 	}
 
 	// A previous version of this code that includes next and back options via typing into the console.
-	// Although currently unused, I wanted to include it.
+	// Although currently unused, I wanted to include it here.
 	public static void version1() {
 		Scanner sc = new Scanner(System.in);
 		int input = 0;
