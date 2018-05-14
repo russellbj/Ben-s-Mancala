@@ -28,6 +28,10 @@ public class GameManager
 		printBoard();
 	}
 	
+	public static int getNum(int index){
+		return boardArray[index];
+	}
+	
 	public static void printBoard() 
 	{	
 		int rowsLeft = numOfRows;

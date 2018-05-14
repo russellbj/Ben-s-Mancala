@@ -5,27 +5,41 @@
  * Created by Darrah Chavey, Nov. 7, 2017.
  */
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -65,12 +79,28 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected boolean gameChosen;
 	
 	protected int[] gameBoardArray;
+	
+	protected int[][] coordinateArray = new int[12][4];
+	
+	protected int[] coordX = new int [48];
+	
+	protected int[] coordY = new int [48];
+	
+	protected Image[] bean = new Image[48];
 
 	protected int numOfSeedsPerHole;
 	
 	protected static int numOfRows;
 	
 	protected static int numOfColumns;
+	
+	private static Color hiliteColor = new Color(0xFFFFC0);
+	  
+	private static Font font = new Font("SansSerif", Font.PLAIN, 12);
+	
+	private FontRenderContext frc = new FontRenderContext(null, false, false);
+	
+	private Point pt = new Point(Short.MAX_VALUE, Short.MAX_VALUE);
 	/*
 	 * GUI Elements
 	 */
@@ -107,6 +137,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			// TODO Auto-generated method stub
 			
 		}
+		
 	};
 	
 	protected ImageIcon introScreen;
@@ -156,18 +187,18 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
      */
     protected JMenuBar menuBar;
     
-//    private JButton button1;
-//    private JButton button2;
-//    private JButton button3;
-//    private JButton button4;
-//    private JButton button5;
-//    private JButton button6;
-//    private JButton button7;
-//    private JButton button8;
-//    private JButton button9;
-//    private JButton button10;
-//    private JButton button11;
-//    private JButton button12;
+    private JButton button1 = new JButton();
+    private JButton button2 = new JButton();
+    private JButton button3 = new JButton();
+    private JButton button4 = new JButton();
+    private JButton button5 = new JButton();
+    private JButton button6 = new JButton();
+    private JButton button7 = new JButton();
+    private JButton button8 = new JButton();
+    private JButton button9 = new JButton();
+    private JButton button10 = new JButton();
+    private JButton button11 = new JButton();
+    private JButton button12 = new JButton();
     
     private JButton[][] buttonArray;
      /**
@@ -329,7 +360,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	/** A top level pane for holding the rules of the game */
 	protected JScrollPane infoPane;
 		
-	protected Image[] beans, hand;
+	protected Image[] beans = new Image[48];
+	
+	protected Image[] hand;
 
 	private JButton computerChoice;
 	
@@ -356,6 +389,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	private boolean buttonClicked = false;
 
 	private boolean isComputer;
+	
+	
 	
     /** Forces all required images to be loaded and available. */
     public void loadImages() {
@@ -411,10 +446,15 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	 *  @param hand  An array of the two images used to draw a hand, holding beans, on the screen.
 	 */
 	public MainWindow( ) {
+		
 		super( "Mancala Family Games" );	// For an application
 		loadImages();
+		setupButton();
 		
 		theProgram = this;
+		
+		
+
 		
 
 			theProgram.initPanesAndGui( beans, hand );
@@ -423,11 +463,109 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	}
 
 
+	public void setupButton(){
+		button1.setLocation(215, 490);
+		button1.setPreferredSize(new Dimension(210,240));
+		//button1.setContentAreaFilled(false);;
+		//button1.setBorderPainted(false);
+		button1.setToolTipText("FUCK");
+	}
+	
 	/** The menu choices available for how quickly to make the animation. */
 	protected static final String[] speeds = {"Very Slow", "Slow", "Normal", "Fast", "Very Fast"};
 
 	/** The menu choices available for what levels of computer opponent to use. */
 	protected static final String[] opponent = {"Random Play", "Beginner", "Intermediate", "Very Good", "Genius"};
+	
+	public void setupArrays(){
+		coordinateArray[0][0]=110;
+		coordinateArray[0][1]=370;
+		coordinateArray[0][2]=320;
+		coordinateArray[0][3]=610;
+		coordinateArray[1][0]=360;
+		coordinateArray[1][1]=370;
+		coordinateArray[1][2]=570;
+		coordinateArray[1][3]=610;
+		coordinateArray[2][0]=600;
+		coordinateArray[2][1]=370;
+		coordinateArray[2][2]=820;
+		coordinateArray[2][3]=610;
+		coordinateArray[3][0]=840;
+		coordinateArray[3][1]=370;
+		coordinateArray[3][2]=1060;
+		coordinateArray[3][3]=610;
+		coordinateArray[4][0]=1090;
+		coordinateArray[4][1]=370;
+		coordinateArray[4][2]=1300;
+		coordinateArray[4][3]=610;
+		coordinateArray[5][0]=1340;
+		coordinateArray[5][1]=370;
+		coordinateArray[5][2]=1550;
+		coordinateArray[5][3]=610;
+		
+		coordinateArray[6][0]=110;
+		coordinateArray[6][1]=640;
+		coordinateArray[6][2]=320;
+		coordinateArray[6][3]=870;
+		coordinateArray[7][0]=360;
+		coordinateArray[7][1]=640;
+		coordinateArray[7][2]=570;
+		coordinateArray[7][3]=870;
+		coordinateArray[8][0]=600;
+		coordinateArray[8][1]=640;
+		coordinateArray[8][2]=820;
+		coordinateArray[8][3]=870;
+		coordinateArray[9][0]=840;
+		coordinateArray[9][1]=640;
+		coordinateArray[9][2]=1060;
+		coordinateArray[9][3]=870;
+		coordinateArray[10][0]=1090;
+		coordinateArray[10][1]=640;
+		coordinateArray[10][2]=1300;
+		coordinateArray[10][3]=870;
+		coordinateArray[11][0]=1340;
+		coordinateArray[11][1]=640;
+		coordinateArray[11][2]=1550;
+		coordinateArray[11][3]=870;
+
+		
+		File file[] = new File[8];
+		file[0] = new File("src/Bean-01.gif");
+		file[1] = new File("src/Bean-02.gif");
+		file[2] = new File("src/Bean-03.gif");
+		file[3] = new File("src/Bean-04.gif");
+		file[4] = new File("src/Bean-05.gif");
+		file[5] = new File("src/Bean-06.gif");
+		file[6] = new File("src/Bean-07.gif");
+		file[7] = new File("src/Bean-08.gif");
+		
+		Random r = new Random();
+		
+		try {
+			for(int i = 0; i < 48; i++){
+				int fileIndex;
+				fileIndex= r.nextInt(8);
+				bean[i] = ImageIO.read(file[fileIndex]);
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int index = 0;
+		
+		for(int i = 0; i < 12; i++){
+			for(int j = 0; j < GameManager.getNum(i); j++){
+				coordX[index] = r.nextInt(coordinateArray[i][2] - coordinateArray[i][0] - 50) + coordinateArray[i][0] + 50;
+				coordY[index] = r.nextInt(coordinateArray[i][3] - coordinateArray[i][1] - 50) + coordinateArray[i][1] + 50;
+				
+				index++;
+				}
+			
+		}
+
+	}
 	
 	/**
 	 * Create the menu pane. Add all the menus, then add the menu items,
@@ -486,9 +624,18 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 							//drawingPane.add(computerChoice);
 							//drawingPane.add(playerChoice);
 							
+							Graphics g =  drawingPane.getGraphics();
+							
+							setupArrays();
+							paint(g);
 							GenerateBoard();
-							drawingPane.repaint();
-							drawingPane.revalidate();
+						
+							
+							
+							
+							//setupBeans();
+							//drawingPane.repaint();
+							//drawingPane.revalidate();
 			
 						}
 				
@@ -669,7 +816,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		menuBarPane.add(gameOptions, "Center");
 		
 		JPanel buttonPanel = new JPanel( new FlowLayout() );
-		
+	
 
 		menuBarPane.add( buttonPanel, "East");
 	}
@@ -691,14 +838,28 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			setBounds(0,0,screenSize.width, screenSize.height);
 			setVisible(true);
 		
+			
 			wariBoard = new ImageIcon("src/Wari Board.png");
 			Image wariBoardImg = wariBoard.getImage();
-			Image newWariBoardImg = wariBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			Image newWariBoardImg =  wariBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			
 			wariBoard = new ImageIcon(newWariBoardImg);
+			
 			JLabel clickableArea = new JLabel(wariBoard);
+			//clickableArea.setOpaque(true);
+			//clickableArea.setVisible(false);
 			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
 			clickableArea.addMouseListener(ml);
+			
+			//Graphics g = null;
+			
+			
+			
+			//paint(g);
+			
 			drawingPane.add(clickableArea);
+			
+			
 			
 	/*		ImageIcon bean = new ImageIcon("src/Bean-01.gif");
 			Image beanImg = bean.getImage();
@@ -709,14 +870,55 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			
 
 //			drawingPane.add(beanLabel);
-			drawingPane.repaint();
-			drawingPane.revalidate();
+			//drawingPane.repaint();
+			//drawingPane.revalidate();
+			
+			/*
+			Graphics2D g2d = (Graphics2D) drawingPane.getGraphics();
+
+			int index = 0;
+			
+			Random r = new Random();
+			for(int i = 0; i < 12; i++){
+				for(int j = 0; j < GameManager.getNum(i); j++){
+					g2d.drawImage(bean[index], coordX[index], coordY[index], 60, 60, this);
+					
+					index++;
+					}
+				
+			}
+			*/
+			
+			//drawingPane.repaint();
+			//drawingPane.revalidate();
+
 			numOfRows = gameBoard.getNumRows();
 			
 			numOfColumns = gameBoard.getNumColumns();
 			
 			//clickableArea
 		}
+	}
+	
+	@Override
+	public void paint(Graphics g){
+		super.paint(g);
+		Graphics2D g2d = (Graphics2D)g;
+
+		int index = 0;
+		
+		Random r = new Random();
+		for(int i = 0; i < 12; i++){
+			for(int j = 0; j < GameManager.getNum(i); j++){
+				g2d.drawImage(bean[index], coordX[index], coordY[index], 60, 60, this);
+				
+				index++;
+				}
+			
+		}
+		
+		//g2d.dispose();
+		
 	}
 	
 	protected void AnalyzeClick(int mouseX, int mouseY)
@@ -726,77 +928,219 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		// Wari and the like
 		if(numOfRows == 2)
 		{
-			if(mouseY <= 1020)
+			if(mouseY <= 640)
 			{
-				if(mouseX <= 580)
+				if(mouseX <= 320)
 				{
 					System.out.println("You Clicked: 1,1");
 					gameManager.moveSeeds(1, 1);
-					
+					move(1,1);
 				}
-				if(mouseX > 580 && mouseX <= 1195)
+				if(mouseX > 360 && mouseX <= 570)
 				{
 					System.out.println("You Clicked: 1,2");
 					gameManager.moveSeeds(1,2);
+					move(1,2);
 				}
-				if(mouseX > 1195 && mouseX <= 1773)
+				if(mouseX > 600 && mouseX <= 820)
 				{
 					System.out.println("You Clicked: 1,3");
 					gameManager.moveSeeds(1,3);
+					move(1,3);
 				}
 				
-				if(mouseX > 1773 && mouseX <= 2368)
+				if(mouseX > 840 && mouseX <= 1060 )
 				{
 					System.out.println("You Clicked: 1,4");
 					gameManager.moveSeeds(1,4);
+					move(1,4);
 				}
-				if(mouseX > 2368 && mouseX <= 2960)
+				if(mouseX > 1090 && mouseX <= 1300)
 				{
 					System.out.println("You Clicked: 1,5");
 					gameManager.moveSeeds(1,5);
+					move(1,5);
 				}
-				if(mouseX > 2960)
+				if(mouseX > 1340)
 				{
 					System.out.println("You Clicked: 1,6");
 					gameManager.moveSeeds(1,6);
+					move(1,6);
 				}
 			}
-			if(mouseY > 1020)
+			if(mouseY > 640)
 			{
-				if(mouseX <= 580)
+				if(mouseX <= 320)
 				{
 					System.out.println("You Clicked: 2,1");
 					gameManager.moveSeeds(2,1);
+					move(2,1);
 				}
-				if(mouseX > 580 && mouseX <= 1195)
+				if(mouseX > 360 && mouseX <= 570)
 				{
 					System.out.println("You Clicked: 2,2");
 					gameManager.moveSeeds(2,2);
+					move(2,2);
 				}
-				if(mouseX > 1195 && mouseX <= 1773)
+				if(mouseX > 600 && mouseX <= 820)
 				{
 					System.out.println("You Clicked: 2,3");
 					gameManager.moveSeeds(2,3);
+					move(2,3);
 				}
 				
-				if(mouseX > 1773 && mouseX <= 2368)
+				if(mouseX > 840 && mouseX <= 1060)
 				{
 					System.out.println("You Clicked: 2,4");
 					gameManager.moveSeeds(2,4);
+					move(2,4);
 				}
-				if(mouseX > 2368 && mouseX <= 2960)
+				if(mouseX > 1090 && mouseX <= 1300)
 				{
 					System.out.println("You Clicked: 2,5");
 					gameManager.moveSeeds(2,5);
+					move(2,5);
 				}
-				if(mouseX > 2960)
+				if(mouseX > 1340)
 				{
 					System.out.println("You Clicked: 2,6");
-					gameManager.moveSeeds(2, 6);
+					gameManager.moveSeeds(2,6);
+					move(2,6);
 				}
 			}
 		}
 	}
+	
+	public void move(int x, int y){
+		int startX = x;
+		int syartY = y;
+		
+		int coordIndex = (x-1)*6 + y - 1;
+		int j = 0;
+		
+		for(int i = 0; i < 48; i++){
+			if(coordinateArray[coordIndex][0] < coordX[i] && coordX[i] < coordinateArray[coordIndex][2]){
+				if(coordinateArray[coordIndex][1] < coordY[i] && coordY[i] < coordinateArray[coordIndex][3]){
+					j++;
+				}
+			}
+		}
+		
+		int[] toGo = new int[j];
+		
+		int toGoIndex = 0;
+		for(int i = 0; i < 48; i++){
+			if(coordinateArray[coordIndex][0] < coordX[i] && coordX[i] < coordinateArray[coordIndex][2]){
+				if(coordinateArray[coordIndex][1] < coordY[i] && coordY[i] < coordinateArray[coordIndex][3]){
+					toGo[toGoIndex] = i;
+					toGoIndex++;
+				}
+			}
+		}
+		
+		int[] binIndex = new int[j];
+		
+		for(int i = 0; i < toGo.length; i++){
+			if(x == 1){
+				if(y < 6)
+					y++;
+				else
+					x++;
+			}
+			else{
+				if(y > 1)
+					y--;
+				else
+					x--;
+			}
+			binIndex[i] = coordIndex;
+			anime(toGo[i], x, y);
+		}
+		
+		if(startX == 1){
+			for(int i = 0; i < binIndex.length; i ++){
+				if(binIndex[i] > 5){
+					result(binIndex[i]);
+				}
+			}
+		}
+		else{
+			for(int i = 0; i < binIndex.length; i ++){
+				if(binIndex[i] < 6){
+					result(binIndex[i]);
+				}
+			}
+		}
+		
+		
+	}
+	
+	public void anime(int index, int x, int y){
+		int startX = coordX[index];
+		int startY = coordY[index];
+		
+		int coordIndex = (x-1)*6+y-1;
+		Random r = new Random();
+		
+		
+		int endX = r.nextInt(coordinateArray[coordIndex][2] - coordinateArray[coordIndex][0] - 50) + coordinateArray[coordIndex][0] + 50;
+		int endY = r.nextInt(coordinateArray[coordIndex][3] - coordinateArray[coordIndex][1] - 50) + coordinateArray[coordIndex][1] + 50;
+		
+		int speedX = (startX - endX)/50;
+		int speedY = (startY - endY)/50;
+		
+		
+		Graphics2D g2d = (Graphics2D) drawingPane.getGraphics();
+		Graphics g = drawingPane.getGraphics();
+		
+		for(int i = 0; i < 50; i++){
+			coordX[index] = coordX[index] + speedX;
+			coordX[index] = coordY[index] + speedY;
+			paint(g);
+			//g2d.drawImage(bean[index], startX, startY, 60, 60, this);
+			
+			try {  
+                Thread.sleep(5);
+            } catch (InterruptedException e) {  
+                e.printStackTrace();  
+            }
+            
+			
+		}
+	}
+	
+	public void result(int coordIndex){
+		int j = 0;
+		for(int i = 0; i < 48; i++){
+			if(coordinateArray[coordIndex][0] < coordX[i] && coordX[i] < coordinateArray[coordIndex][2]){
+				if(coordinateArray[coordIndex][1] < coordY[i] && coordY[i] < coordinateArray[coordIndex][3]){
+					j++;
+				}
+			}
+		}
+		
+		int[] toGo = new int[j];
+		
+		int toGoIndex = 0;
+		for(int i = 0; i < 48; i++){
+			if(coordinateArray[coordIndex][0] < coordX[i] && coordX[i] < coordinateArray[coordIndex][2]){
+				if(coordinateArray[coordIndex][1] < coordY[i] && coordY[i] < coordinateArray[coordIndex][3]){
+					toGo[toGoIndex] = i;
+					toGoIndex++;
+				}
+			}
+		}
+		
+		if(1 < j && j < 4){
+			for(int i = 0; i < toGo.length; i ++){
+				coordX[toGo[i]] = 7500;
+				coordY[toGo[i]] = 7500;
+			}
+		}
+		Graphics g = drawingPane.getGraphics();
+		paint(g);
+	}
+	
 	 //Takes in where the user clicked, the screen size and the board details and returns the hole the user clicked on
 	 protected int[] clickHole(int mouseX, int mouseY, Dimension screenSize, int verticalOffset, int horizontalOffset, int verticalBorder, int horizontalBorder, boolean endBins, int numRows, int numHoles){
 		double holeWidth;
@@ -830,6 +1174,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		result[1]=colNumber;
 		return result;
 	}
+	 
 
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
@@ -878,6 +1223,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		drawingPane.repaint();
 		drawingPane.revalidate();
 	}
+	
+
 
 	/** A scrolling text field in which we can hold the field with instructions for playing a particular game. */
 	protected JScrollPane scrollPane;
@@ -936,7 +1283,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		setVisible(true);
 		
 		addComponentListener( new ComponentAdapter( ) 
-				{	    public void componentResized(ComponentEvent e) {
+				{	    @Override
+				public void componentResized(ComponentEvent e) {
 							theProgram.setSize(
 									Math.max(theProgram.getWidth(),696),
 									Math.max(theProgram.getHeight(),600)
@@ -954,6 +1302,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	 * appropriate request.
 	 * @param e The event that has requested a user interface generated action
 	 */
+	@Override
 	public void actionPerformed(ActionEvent e) {	
 		String theCommand = e.getActionCommand();
 		
