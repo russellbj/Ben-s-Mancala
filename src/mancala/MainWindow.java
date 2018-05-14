@@ -814,6 +814,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			tie = new JButton("TIE");
 			sidePane.add(tie, BorderLayout.SOUTH);
 			
+			
 	/*		ImageIcon bean = new ImageIcon("src/Bean-01.gif");
 			Image beanImg = bean.getImage();
 			Image newBeanImg = beanImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
@@ -888,6 +889,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			
 			tie = new JButton("TIE");
 			sidePane.add(tie, BorderLayout.SOUTH);
+			
 		}
 	}
 	
@@ -1092,6 +1094,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			//tie JButton created and added to bottom panel
 			tie = new JButton("TIE");
 			sidePane.add(tie, BorderLayout.SOUTH);
+			
+			
 		}
 	/**
 	 *  Create the drawing pane, containing the main canvas for drawing, along with
@@ -1158,7 +1162,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				+ "\n\nRules:"
 				+ "\n    The six holes on the bottom are yours, and the others are controlled by another player. You will move first. \n" 
 				+ "\n    Each hole has been filled by four beans.\n"
-				+ "\n    Click on a hole (that is not empty!) and “sow” the beans counter clockwise around the board.\n"
+				+ "\n    Click on a hole (that is not empty!) and â€œsowâ€� the beans counter clockwise around the board.\n"
 				+ getWariCapture()
 				+ "\n\n    The goal of the game is to Goal is to capture more seeds than the other player. The game ends when you cannot move, or your opponent cannot move, which happens when all of the pits are empty, and it is their turn.\n"
 				+ "\n    If gameplay is looping, click the declare tie button, and the seeds on the board will not be counted by either player.\n");
@@ -1186,7 +1190,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 	public String getWariCapture(){
 		String captureCond;
-		captureCond = "\n    A capture is made when the last bean sown lands in an opponents pit that has one or two beans in it, so the resulting number would be two or three. You then “capture” all seeds in that bin, as well as all opponent bins in a row counting back from the current pit, if they also now contain two or three beans.";
+		captureCond = "\n    A capture is made when the last bean sown lands in an opponents pit that has one or two beans in it, so the resulting number would be two or three. You then â€œcaptureâ€� all seeds in that bin, as well as all opponent bins in a row counting back from the current pit, if they also now contain two or three beans.";
 		return captureCond;
 	}
 
@@ -1255,6 +1259,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	 * appropriate request.
 	 * @param e The event that has requested a user interface generated action
 	 */
+	
+	
 	public void actionPerformed(ActionEvent e) {	
 		String theCommand = e.getActionCommand();
 		
