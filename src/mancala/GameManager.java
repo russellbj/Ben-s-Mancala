@@ -14,6 +14,25 @@ public class GameManager{
 	private static boolean hasEndBins;
 	private static boolean counterclockwise;
 	public static Rules rules;
+	public static Scoring scoring;
+	public static int currPlayer;
+	
+	public static int findScore(int index)
+	{
+		return scoring.wariScore(boardArray, index);
+	}
+	
+	public static int getPlayerTwoScore() {
+		return playerTwoScore;
+	}
+
+	public static int getPlayerOneScore() {
+		return playerOneScore;
+	}
+
+	public static int playerTwoScore;
+	public static int playerOneScore;
+	
 
 	public static void setup(GameEnum gameEnum)
 	{
@@ -140,6 +159,7 @@ public class GameManager{
 
 					}
 				}
+				
 			}
 			else if(counterclockwise==false){
 				if(currRow % 2 == 1){
@@ -190,7 +210,20 @@ public class GameManager{
 					}
 				}
 			}
+		
+			
 		}
+		if(currPlayer == 1)
+		{
+			playerOneScore = findScore(index);
+			currPlayer = 2;
+		}
+		else {
+			playerTwoScore = findScore(index);
+			currPlayer =1;
+		}
+		
+		System.out.println(currPlayer);
 		printBoard();
 	}
 
@@ -211,5 +244,10 @@ public class GameManager{
 			instance = new GameManager();
 		}
 		return instance;
+	}
+
+	public void setBoardArray(int[] boardState) {
+		boardArray = boardState;
+
 	}
 }

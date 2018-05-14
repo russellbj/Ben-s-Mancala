@@ -50,6 +50,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 /* Class & object data, other than the GUI elements */
 	
+	protected Border blackline, raisedbevel, loweredbevel, empty;
+	
 	protected Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	protected double activeHeight = screenSize.height * 0.845;
@@ -67,6 +69,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected double verticalOffset = activeHeight * 0.0429;
 		
 	protected double horizontalOffset = activeWidth * 0.022758010819808574;
+	
+	protected static int currPlayer = 1;
 	
 	protected static int playerOneScore;
 	
@@ -91,6 +95,8 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	protected static int numOfRows;
 	
 	protected static int numOfColumns;
+	
+	protected static Scoring scoring;
 	
 	/*
 	 * GUI Elements
@@ -922,7 +928,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		System.out.println(clickableWidth);
 		if(numOfRows == 2)
 		{
-			if(mouseY <= (midpoint))
+			if(mouseY <= (midpoint) && currPlayer == 1)
 			{
 				if(mouseX <= leftBorder + (clickableWidth/6))
 				{
@@ -956,8 +962,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					System.out.println("You Clicked: 1,6");
 					gameManager.moveSeeds(1,6);
 				}
+				currPlayer = 2;
 			}
-			if(mouseY > (midpoint))
+			else if(mouseY > (midpoint) && currPlayer == 2)
 			{
 				if(mouseX <= leftBorder + (clickableWidth/6))
 				{
@@ -990,7 +997,22 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					System.out.println("You Clicked: 2,6");
 					gameManager.moveSeeds(2, 6);
 				}
+				currPlayer = 1;
 			}
+			
+			playerOneScore = gameManager.getPlayerOneScore();
+
+			playerTwoScore = gameManager.getPlayerTwoScore();
+			
+			score.setText("Player 1 Score: " + playerOneScore
+					+ "\nPlayer 2 Score: " + playerTwoScore
+					+ "\n\nRules:"
+					+ "\n    The six holes on the bottom are yours, and the others are controlled by another player. You will move first. \n" 
+					+ "\n    Each hole has been filled by four beans.\n"
+					+ "\n    Click on a hole (that is not empty!) and “sow� the beans counter clockwise around the board.\n"
+					+ getWariCapture()
+					+ "\n\n    The goal of the game is to Goal is to capture more seeds than the other player. The game ends when you cannot move, or your opponent cannot move, which happens when all of the pits are empty, and it is their turn.\n"
+					+ "\n    If gameplay is looping, click the declare tie button, and the seeds on the board will not be counted by either player.\n");
 		}
 	}
 	 //Takes in where the user clicked, the screen size and the board details and returns the hole the user clicked on
@@ -1066,7 +1088,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 
 
 		protected void allPanes(){
-			Border blackline, raisedbevel, loweredbevel, empty;
+	
 			blackline = BorderFactory.createLineBorder(Color.black);
 			
 			topPane = new JPanel();
@@ -1158,7 +1180,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 				+ "\n\nRules:"
 				+ "\n    The six holes on the bottom are yours, and the others are controlled by another player. You will move first. \n" 
 				+ "\n    Each hole has been filled by four beans.\n"
-				+ "\n    Click on a hole (that is not empty!) and “sow” the beans counter clockwise around the board.\n"
+				+ "\n    Click on a hole (that is not empty!) and “sow� the beans counter clockwise around the board.\n"
 				+ getWariCapture()
 				+ "\n\n    The goal of the game is to Goal is to capture more seeds than the other player. The game ends when you cannot move, or your opponent cannot move, which happens when all of the pits are empty, and it is their turn.\n"
 				+ "\n    If gameplay is looping, click the declare tie button, and the seeds on the board will not be counted by either player.\n");
@@ -1186,7 +1208,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 	public String getWariCapture(){
 		String captureCond;
-		captureCond = "\n    A capture is made when the last bean sown lands in an opponents pit that has one or two beans in it, so the resulting number would be two or three. You then “capture” all seeds in that bin, as well as all opponent bins in a row counting back from the current pit, if they also now contain two or three beans.";
+		captureCond = "\n    A capture is made when the last bean sown lands in an opponents pit that has one or two beans in it, so the resulting number would be two or three. You then capture all seeds in that bin, as well as all opponent bins in a row counting back from the current pit, if they also now contain two or three beans.";
 		return captureCond;
 	}
 
