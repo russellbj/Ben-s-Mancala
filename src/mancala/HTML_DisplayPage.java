@@ -1,4 +1,4 @@
-package quickStartMenu;
+package mancala;
 
 /**
  * 
