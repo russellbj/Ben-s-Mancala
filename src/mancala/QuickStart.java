@@ -29,15 +29,17 @@ public class QuickStart {
 		run();
 //		openInBrowser();
 //		version1();
+		Thread.sleep(10000);
 		System.out.println("Finished Running");
+		System.exit(0);
 	}
 
 	// Runs the Quick Start Menu
 	public static void run() throws InterruptedException {
 		while (keepRunning == true) {
-			// Display the page the user is on then automatically go to the next page after 7 seconds.
+			// Display the page the user is on then automatically go to the next page after 10 seconds.
 			HTML_DisplayPage.displayURL("files/page" + pageNumber + ".html");
-			Thread.sleep(7000);
+			Thread.sleep(10000);
 			next();
 		}
 	}
@@ -62,7 +64,7 @@ public class QuickStart {
 		}
 	}
 
-	// Use this method if you want to open the Quick Start Menu in the Computer's default web browser.
+	// Use this method if you want to open the Quick Start Menu in the computer's default web browser.
 	// Works on Windows, but the file path must be changed based on the computer running the program.
 	// Whether this code works on Mac is unknown.
 	public static void openInBrowser() throws IOException, URISyntaxException {
@@ -89,11 +91,11 @@ public class QuickStart {
 			if (input == 1) {
 				next();
 
-				// User selects back.
+			// User selects back.
 			} else if (input == 2) {
 				back();
 
-				// An invalid option is selected.
+			// An invalid option is selected.
 			} else {
 				System.out.println("Invalid option");
 			}
