@@ -519,7 +519,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 								gameFactory = new GameBoardFactory(GameEnum.SONGO);
 							}
 							gameBoard = gameFactory.GameBoardFactory(0);
-							gameManager.setup(gameBoard.getGameEnum());
+							gameManager.setup(gameBoard.getGameEnum(),gameBoard);
 							introLabel.setVisible(false);
 							introLabel.setEnabled(false);
 							drawingPane.remove(introLabel);

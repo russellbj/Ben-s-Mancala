@@ -28,7 +28,8 @@ public class GameDriver {
 		//totalPoints = P1.displayCount() + P2.displayCount();
 		GameBoard gameBoard = new GameBoard(GameEnum.WARI);
 //		gameBoard.transformXYtoIndex(5, 1);
-        gameBoard.realSetBoardState(gameBoard.getBoardStateArray(), 5, 14 );
+        //gameBoard.realSetBoardState(gameBoard.getBoardStateArray(), 5, 14 );
+		gameBoard.realSetBoardState(5,14);
 		gui = new MainWindow();
 		while(true){
 			Thread.sleep(1); 

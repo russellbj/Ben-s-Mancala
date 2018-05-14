@@ -10,7 +10,7 @@ import javax.swing.*;
  * Holds all the game types.
  * Sets the current game type.
  * 
- * @author MancalaTeam
+ * @author Joel, Robbie
  * 
  * Methods to make:
  * ReadGameList()

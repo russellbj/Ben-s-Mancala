@@ -44,8 +44,8 @@ public class GameBoard {
     }
 
 
-    public void realSetBoardState(Integer[] board, Integer boardPosition, Integer newValue) {
-        board = boardStateArray.clone();
+    public void realSetBoardState(Integer boardPosition, Integer newValue) {
+        Integer[] board = boardStateArray.clone();
         System.out.println(board.toString());
         board[boardPosition] = newValue;
         boardStateArray = board.clone();

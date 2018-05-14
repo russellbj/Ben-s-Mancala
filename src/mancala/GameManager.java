@@ -13,9 +13,11 @@ public class GameManager{
 	private static int initialSeedsPerBin;
 	private static boolean hasEndBins;
 	private static boolean counterclockwise;
+	private static MoveManager mm;
+	private static GameBoard board;
 	public static Rules rules;
 
-	public static void setup(GameEnum gameEnum)
+	public static void setup(GameEnum gameEnum, GameBoard b)
 	{
 		rules=new Rules(name);
 		boardType = gameEnum.getBoardType();
@@ -33,8 +35,23 @@ public class GameManager{
 		initialSeedsPerBin = gameEnum.getInitialSeedsPerBin();
 		counterclockwise=rules.getCounterclockwise();
 		boardArray = new int[numOfHoles];
+		board=b;
 		setupBoardArray();
 		printBoard();
+		switch(name.toLowerCase()){
+		case "wari":
+			mm=new MoveManager(numOfColumns,numOfRows);
+			break;
+		case "oware 1":
+			mm=new MoveManager(numOfColumns,numOfRows);
+			break;
+		case "vai lung thlan":
+			mm=new VaiLungThlanMoveManager(numOfColumns,numOfRows);
+			break;
+		case "songo":
+			mm=new SongoMoveManager(numOfColumns,numOfRows);
+			break;
+		}
 	}
 
 	public static void printBoard(){	
@@ -81,7 +98,8 @@ public class GameManager{
 		index = (rowsToAdd + y) - 1;
 
 		int seedsLeftToMove = boardArray[index];
-		boardArray[index] = 0;
+		mm.move(x, y, board);
+		/**boardArray[index] = 0;
 
 		int currRow = x;
 
@@ -190,7 +208,7 @@ public class GameManager{
 					}
 				}
 			}
-		}
+		}*/
 		printBoard();
 	}
 
