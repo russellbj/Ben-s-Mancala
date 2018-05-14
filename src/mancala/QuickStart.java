@@ -1,5 +1,7 @@
 package mancala;
 
+import java.util.Scanner;
+
 /**
  * 
  * @author Eric Salvi
@@ -14,11 +16,21 @@ public class QuickStart {
 	static int pageNumber = 0;
 
 	// Allows the Quick Start Menu to run on its own.
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int input = 0;
 		run();
+		System.out.println("Type any number and press the Enter key to close the program");
+		input = sc.nextInt();
+		if (input == 0) {
+			System.exit(0);
+		} else {
+			System.exit(0);
+		}
+		
 	}
 
-	// Opens the first page.
+	// Starts up the Quick Start Menu.
 	public static void run() {
 		HTML_DisplayPage.displayURL("files/page" + pageNumber + ".html");
 	}
