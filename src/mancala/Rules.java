@@ -36,7 +36,8 @@ public class Rules {
 			+ "2 6 5 false VAI_LUNG_THLAN false;"
 			+ "2 7 5 false SONGO false;"
 			+ "2 5 10 false ADJI_BOTO true;"
-			+ "2 6 4 false QELAT true";
+			+ "2 6 4 false QELAT true;"
+			+ "2 5 9 false ESON_XORGUL true";
 	
 	/**
 	 * Sets up the rules class.

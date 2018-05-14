@@ -56,6 +56,9 @@ public class GameManager{
 			break;
 		case "qelat 1":
 			mm=new QelatMoveManager(numOfColumns,numOfRows);
+			break;
+		case "eson xorgul":
+			mm=new EsonXorgulMoveManager(numOfColumns,numOfRows);
 		}
 	}
 

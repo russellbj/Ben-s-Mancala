@@ -167,3 +167,11 @@ class QelatMoveManager extends VaiLungThlanMoveManager{
 			clockwiseMove(x,y,gb);
 	}
 }
+
+class EsonXorgulMoveManager extends VaiLungThlanMoveManager{
+	private int numColumns, numRows;
+	public EsonXorgulMoveManager(int numColumns, int numRows) {
+		super(numColumns, numRows);
+		// TODO Auto-generated constructor stub
+	}
+}
