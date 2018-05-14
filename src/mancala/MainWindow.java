@@ -518,6 +518,10 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 								System.out.println("Songo");
 								gameFactory = new GameBoardFactory(GameEnum.SONGO);
 							}
+							else if(e.getActionCommand().equals("Adji Boto")){
+								System.out.println("Adji Boto");
+								gameFactory = new GameBoardFactory(GameEnum.ADJI_BOTO);
+							}
 							gameBoard = gameFactory.GameBoardFactory(0);
 							gameManager.setup(gameBoard.getGameEnum(),gameBoard);
 							introLabel.setVisible(false);
@@ -535,6 +539,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 					});
 			if ( ignoreDiacriticals.compare(gameName,"F" ) < 0) {
 				gameAlphaAE.add( gameMenuItem );
+				if(gameMenuItem.getText().equals("Adji Boto")){
+					gameMenuItem.setEnabled(true);
+				}
+				else{
+					gameMenuItem.setEnabled(false);
+				}
 			} else if ( ignoreDiacriticals.compare(gameName,"M" ) < 0) {
 				gameAlphaFL.add( gameMenuItem );
 			} else if ( ignoreDiacriticals.compare(gameName,"P" ) < 0) {
@@ -563,7 +573,6 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		}
 		gameAlphabetical = new JMenu("Alphabetical");
 		gameAlphabetical.add(gameAlphaAE);
-		gameAlphaAE.setEnabled(false);
 		gameAlphabetical.add(gameAlphaFL);
 		gameAlphaFL.setEnabled(false);
 		gameAlphabetical.add(gameAlphaMO);
@@ -848,6 +857,28 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			Image newSongoBoardImg = songoBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
 			ImageIcon songoBoard = new ImageIcon(newSongoBoardImg);
 			clickableArea = new JLabel(songoBoard);
+			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
+			clickableArea.addMouseListener(ml);
+			drawingPane.add(clickableArea);
+			topPane.add(clickableArea);
+			drawingPane.repaint();
+			drawingPane.revalidate();
+			numOfRows = gameBoard.getNumRows();
+			numOfColumns = gameBoard.getNumColumns();
+			break;
+		case "Adji Boto":
+
+			System.out.print("Adji Boto");
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+			
+			setBounds(0,0,screenSize.width, screenSize.height);
+			setVisible(true);
+		
+			wariBoard = new ImageIcon("src/Wari Board.png");
+			Image adjiBotoBoardImg = wariBoard.getImage(); //NEEDS TO HAVE 5 COLUMNS
+			Image newadjiBotoBoardImg = adjiBotoBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			ImageIcon adjiBotoBoard = new ImageIcon(newadjiBotoBoardImg);
+			clickableArea = new JLabel(adjiBotoBoard);
 			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
 			clickableArea.addMouseListener(ml);
 			drawingPane.add(clickableArea);

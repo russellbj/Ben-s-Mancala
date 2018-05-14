@@ -15,8 +15,8 @@ public class MoveManager{
 		Integer[] board=gb.getBoardStateArray();
 		int rowsToAdd = (numColumns) * (x-1);
 		int index = (rowsToAdd + y) - 1;
-		int seedsLeftToMove = board[index];
-		board[index]=0;
+		int seedsLeftToMove = pickUpSeeds(board[index]);
+		board[index]-=seedsLeftToMove;
 		int currRow=x;
 		while(seedsLeftToMove>0){
 			if(x%2==1){
@@ -56,6 +56,9 @@ public class MoveManager{
 		for(int i=0;i<board.length;i++){
 			gb.realSetBoardState(i, board[i]);
 		}
+	}
+	public int pickUpSeeds(int seedsInHole){
+		return seedsInHole;
 	}
 }
 
@@ -128,6 +131,18 @@ class SongoMoveManager extends VaiLungThlanMoveManager{
 	}
 	public boolean checkCanMove(int currIndex, int startIndex){
 		return currIndex!=startIndex;
+	}
+	
+}
+
+class AdjiBotoMoveManager extends MoveManager{
+	private int numColumns, numRows;
+	public AdjiBotoMoveManager(int numColumns, int numRows) {
+		super(numColumns, numRows);
+		// TODO Auto-generated constructor stub
+	}
+	public int pickUpSeeds(int seedsInHole){
+		return seedsInHole-1;
 	}
 	
 }

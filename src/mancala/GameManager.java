@@ -51,6 +51,9 @@ public class GameManager{
 		case "songo":
 			mm=new SongoMoveManager(numOfColumns,numOfRows);
 			break;
+		case "adji boto":
+			mm=new AdjiBotoMoveManager(numOfColumns,numOfRows);
+			break;
 		}
 	}
 
