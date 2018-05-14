@@ -59,6 +59,9 @@ public class GameManager{
 			break;
 		case "eson xorgul":
 			mm=new EsonXorgulMoveManager(numOfColumns,numOfRows);
+			break;
+		case "torguz xorgol":
+			mm=new TorguzXorgolMoveManager(numOfColumns,numOfRows);
 		}
 	}
 

@@ -80,44 +80,46 @@ class VaiLungThlanMoveManager extends MoveManager {
 		int rowsToAdd = (numColumns) * (x-1);
 		int index = (rowsToAdd + y) - 1;
 		int startingIndex=index;
-		int seedsLeftToMove = board[index];
+		int seedsLeftToMove = pickUpSeeds(board[index]);
 		board[index]=0;
 		int currRow=x;
-		if(currRow % 2 == 1){
-			if(index < numColumns -1){
-				index++;
-				int newVal = board[index];
-				if(checkCanScore(index,startingIndex))
-					newVal++;
-				board[index] = newVal;
-				seedsLeftToMove--;
-			}
-			else if(index >= numColumns -1){
-				if(currRow != numRows){
-					currRow++;
+		while(seedsLeftToMove>0){
+			if(currRow % 2 == 1){
+				if(index < numColumns -1){
+					index++;
+					int newVal = board[index];
+					if(checkCanScore(index,startingIndex))
+						newVal++;
+					board[index] = newVal;
+					seedsLeftToMove--;
 				}
-				else
-					currRow = 1;
-				index = (numRows-1)*numColumns+numColumns;
-
+				else if(index >= numColumns -1){
+					if(currRow != numRows){
+						currRow++;
+					}
+					else
+						currRow = 1;
+					index = (numRows-1)*numColumns+numColumns;
+	
+				}
+	
 			}
-
-		}
-		else if(currRow % 2 == 0){
-			if(index >(currRow-1)*numColumns){
-				index--;
-				int newVal = board[index];
-				if(checkCanScore(index,startingIndex))
-					newVal++;
-				board[index] = newVal;
-				seedsLeftToMove--;
-			}
-			else{
-				if(currRow != numRows)
-					currRow++;
-				else
-					currRow = 1;
-				index = -1;
+			else if(currRow % 2 == 0){
+				if(index >(currRow-1)*numColumns){
+					index--;
+					int newVal = board[index];
+					if(checkCanScore(index,startingIndex))
+						newVal++;
+					board[index] = newVal;
+					seedsLeftToMove--;
+				}
+				else{
+					if(currRow != numRows)
+						currRow++;
+					else
+						currRow = 1;
+					index = -1;
+				}
 			}
 		}
 		for(int i=0;i<board.length;i++){
@@ -173,5 +175,16 @@ class EsonXorgulMoveManager extends VaiLungThlanMoveManager{
 	public EsonXorgulMoveManager(int numColumns, int numRows) {
 		super(numColumns, numRows);
 		// TODO Auto-generated constructor stub
+	}
+}
+
+class TorguzXorgolMoveManager extends VaiLungThlanMoveManager{
+	private int numColumns, numRows;
+	public TorguzXorgolMoveManager(int numColumns, int numRows) {
+		super(numColumns, numRows);
+		// TODO Auto-generated constructor stub
+	}
+	public int pickUpSeeds(int seedsInHole){
+		return seedsInHole-1;
 	}
 }

@@ -530,6 +530,10 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 								System.out.println("Eson Xorgul");
 								gameFactory = new GameBoardFactory(GameEnum.ESON_XORGUL);
 							}
+							else if(e.getActionCommand().equals("Torguz Xorgol")){
+								System.out.println("Torguz Xorgol");
+								gameFactory = new GameBoardFactory(GameEnum.TORGUZ_XORGOL);
+							}
 							gameBoard = gameFactory.GameBoardFactory(0);
 							gameManager.setup(gameBoard.getGameEnum(),gameBoard);
 							introLabel.setVisible(false);
@@ -573,6 +577,9 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			} else {
 				gameAlphaPZ.add( gameMenuItem );
 				if(gameMenuItem.getText().equals("Songo")){
+					gameMenuItem.setEnabled(true);
+				}
+				if(gameMenuItem.getText().equals("Torguz Xorgol")){
 					gameMenuItem.setEnabled(true);
 				}
 				else if(gameMenuItem.getText().equals("Wari")){
@@ -894,6 +901,72 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			Image newadjiBotoBoardImg = adjiBotoBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
 			ImageIcon adjiBotoBoard = new ImageIcon(newadjiBotoBoardImg);
 			clickableArea = new JLabel(adjiBotoBoard);
+			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
+			clickableArea.addMouseListener(ml);
+			drawingPane.add(clickableArea);
+			topPane.add(clickableArea);
+			drawingPane.repaint();
+			drawingPane.revalidate();
+			numOfRows = gameBoard.getNumRows();
+			numOfColumns = gameBoard.getNumColumns();
+			break;
+		case "Qelat":
+
+			System.out.print("Qelat");
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+			
+			setBounds(0,0,screenSize.width, screenSize.height);
+			setVisible(true);
+		
+			wariBoard = new ImageIcon("src/Wari Board.png");
+			Image qelatBoardImg = wariBoard.getImage();
+			Image newQelatBoardImg = qelatBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			ImageIcon qelatBoard = new ImageIcon(newQelatBoardImg);
+			clickableArea = new JLabel(qelatBoard);
+			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
+			clickableArea.addMouseListener(ml);
+			drawingPane.add(clickableArea);
+			topPane.add(clickableArea);
+			drawingPane.repaint();
+			drawingPane.revalidate();
+			numOfRows = gameBoard.getNumRows();
+			numOfColumns = gameBoard.getNumColumns();
+			break;
+		case "Eson Xorgul":
+
+			System.out.print("Eson Xorgul");
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+			
+			setBounds(0,0,screenSize.width, screenSize.height);
+			setVisible(true);
+		
+			wariBoard = new ImageIcon("src/Wari Board.png");
+			Image esonXorgulBoardImg = wariBoard.getImage(); //NEEDS TO HAVE 5 COLUMNS
+			Image newEsonXorgulBoardImg = esonXorgulBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			ImageIcon esonXorgulBoard = new ImageIcon(newEsonXorgulBoardImg);
+			clickableArea = new JLabel(esonXorgulBoard);
+			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
+			clickableArea.addMouseListener(ml);
+			drawingPane.add(clickableArea);
+			topPane.add(clickableArea);
+			drawingPane.repaint();
+			drawingPane.revalidate();
+			numOfRows = gameBoard.getNumRows();
+			numOfColumns = gameBoard.getNumColumns();
+			break;
+		case "Torguz Xorgol":
+
+			System.out.print("Torguz Xorgol");
+			numOfSeedsPerHole = gameBoard.getInitialSeedsPerBin();
+			
+			setBounds(0,0,screenSize.width, screenSize.height);
+			setVisible(true);
+		
+			wariBoard = new ImageIcon("src/Wari Board.png");
+			Image torguzXorgolBoardImg = wariBoard.getImage(); //NEEDS TO HAVE 9 COLUMNS
+			Image newTorguzXorgolBoardImg = torguzXorgolBoardImg.getScaledInstance(screenSize.width-250, screenSize.height-100, Image.SCALE_SMOOTH);
+			ImageIcon torguzXorgolBoard = new ImageIcon(newTorguzXorgolBoardImg);
+			clickableArea = new JLabel(torguzXorgolBoard);
 			clickableArea.setBounds(0, 0, screenSize.width-250, screenSize.height-100);
 			clickableArea.addMouseListener(ml);
 			drawingPane.add(clickableArea);

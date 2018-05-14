@@ -37,7 +37,8 @@ public class Rules {
 			+ "2 7 5 false SONGO false;"
 			+ "2 5 10 false ADJI_BOTO true;"
 			+ "2 6 4 false QELAT true;"
-			+ "2 5 9 false ESON_XORGUL true";
+			+ "2 5 9 false ESON_XORGUL true;"
+			+ "2 9 9 false TORGUZ_XORGOL true";
 	
 	/**
 	 * Sets up the rules class.
