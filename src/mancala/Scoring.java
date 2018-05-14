@@ -7,7 +7,7 @@ public class Scoring
 	
 	public static int wariScore(int[] boardState, int index)
 	{
-		System.out.println(boardState[index]);
+	
 		if (boardState[index] == 2)
 		{
 			System.out.println("Score");

@@ -223,7 +223,7 @@ public class GameManager{
 			currPlayer =1;
 		}
 		
-		System.out.println(currPlayer);
+	
 		printBoard();
 	}
 

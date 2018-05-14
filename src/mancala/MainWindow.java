@@ -899,7 +899,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 	
 	protected void AnalyzeClick(int mouseX, int mouseY)
 	{
-		System.out.println("Click 0: " + mouseX + ", " + mouseY);
+		System.out.println("Click: " + mouseX + ", " + mouseY);
 
 		double clickableWidth = rightBorder - leftBorder;
 		double clickableHeight = bottomBorder - topBorder;
@@ -925,7 +925,7 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 		/**
 		 *  2 ROW, NO END-BIN GAMES
 		 */
-		System.out.println(clickableWidth);
+
 		if(numOfRows == 2)
 		{
 			if(mouseY <= (midpoint) && currPlayer == 1)
