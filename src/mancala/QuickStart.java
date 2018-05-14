@@ -49,6 +49,7 @@ public class QuickStart {
 	public static void back() {
 		if (pageNumber == 0) {
 			HTML_DisplayPage.displayURL("files/Exit.html");
+			pageNumber = 9;
 		} else {
 			pageNumber--;
 			HTML_DisplayPage.displayURL("files/page" + pageNumber + ".html");
