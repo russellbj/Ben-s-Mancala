@@ -2,9 +2,9 @@ package mancala;
 
 /**
  * 
- * @author Darrah Chavey with minor adjustments by Eric Salvi
+ * @author Darrah Chavey and Eric Salvi
  *
- * This class opens an HTML page in a frame.
+ * This class opens an HTML page in a frame and listens for whether to go to the next or previous page.
  * 
  */
 
@@ -88,10 +88,18 @@ public class HTML_DisplayPage extends JFrame implements KeyListener {
 // Key Listener methods
 	
 	/** 
+	 * If the right arrow is pressed, opens the next page.
+	 * If the left arrow is pressed, opens the previouse page.
 	 * The key listener is installed to listen to a command to close the window (cmd-W or ctrl-W).
 	 */
 	public void keyPressed(KeyEvent e) { 
-		// Required for Key Listener. We ignore it.
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_RIGHT) {
+			QuickStart2.next();
+		}
+		if (key == KeyEvent.VK_LEFT) {
+			QuickStart2.back();
+		}
 	}
 	public void keyReleased(KeyEvent e) {
 		keyTyped(e);
