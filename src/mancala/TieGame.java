@@ -17,8 +17,6 @@ public class TieGame {
 	}
 
 	ArrayList<int[]> prevStates = new ArrayList<int[]>();
-	
-
 	boolean tieConditionMet = false;
 
 	boolean tieGame(int [] gameBoard){
@@ -27,27 +25,29 @@ public class TieGame {
 
 		for(int i = 0; i < prevStates.size(); i++) {
 			if (prevStates.get(i).equals(gameBoard)){
-				count = 0;
+				
+				JFrame recurring = new JFrame();
+				
+				int b=JOptionPane.showConfirmDialog(recurring,"This state has ben reached before, you may be in a loop. Do you want to declare this game a tie and end the game");  
+				if(b==JOptionPane.YES_OPTION){
+					tieConditionMet = true;
+				}else if(b==JOptionPane.NO_OPTION || b==JOptionPane.CANCEL_OPTION ){
+					recurring.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					tieConditionMet = false;
+				}
 				break;
-			}else {
-				//
+			}else if(i == prevStates.size()) {
 				prevStates.add(gameBoard);
-				count++;
 			}
 		}
-
-		if (count == limit) {
-			tieConditionMet = true;
-		}else if(count < limit){
-			tieConditionMet = false;
-		}
-		return tieConditionMet;
+		return tieConditionMet;	
 	}
+		
 
 	boolean buttonTie() {
 		boolean tieChoice = false;
 		JFrame alert = new JFrame();
-		int a=JOptionPane.showConfirmDialog(alert,"Do you want to declare this game a tie/end the game");  
+		int a = JOptionPane.showConfirmDialog(alert,"Do you want to declare this game a tie/end the game");  
 		if(a==JOptionPane.YES_OPTION){
 			tieChoice = true;
 		}else if(a==JOptionPane.NO_OPTION || a==JOptionPane.CANCEL_OPTION ){

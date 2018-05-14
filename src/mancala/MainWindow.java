@@ -813,6 +813,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			
 			tie = new JButton("TIE");
 			sidePane.add(tie, BorderLayout.SOUTH);
+			tie.addActionListener(new ActionListener(){
+				TieGame tiePress = new TieGame();
+				public void actionPerformed(ActionEvent e) {
+					tiePress.buttonTie();
+				}
+			});
 			
 			
 	/*		ImageIcon bean = new ImageIcon("src/Bean-01.gif");
@@ -890,6 +896,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			tie = new JButton("TIE");
 			sidePane.add(tie, BorderLayout.SOUTH);
 			
+			tie.addActionListener(new ActionListener(){
+				TieGame tiePress = new TieGame();
+				public void actionPerformed(ActionEvent e) {
+					tiePress.buttonTie();
+				}
+			});
 		}
 	}
 	
@@ -1094,7 +1106,12 @@ public class MainWindow extends JFrame implements WindowListener, ActionListener
 			//tie JButton created and added to bottom panel
 			tie = new JButton("TIE");
 			sidePane.add(tie, BorderLayout.SOUTH);
-			
+			tie.addActionListener(new ActionListener(){
+				TieGame tiePress = new TieGame();
+				public void actionPerformed(ActionEvent e) {
+					boolean tied = tiePress.buttonTie();
+				}
+			});
 			
 		}
 	/**
