@@ -11,10 +11,12 @@ public class MoveManager{
 		this.numColumns=numColumns;
 		this.numRows=numRows;
 	}
-	public void move(int x, int y, GameBoard gb){
-		counterClockwiseMove(x,y,gb);
+	public int[] move(int x, int y, GameBoard gb, int[] score){
+		int endingIndex=counterClockwiseMove(x,y,gb);
+		score=capture(x,endingIndex,gb,score);
+		return score;
 	}
-	public void counterClockwiseMove(int x, int y, GameBoard gb){
+	public int counterClockwiseMove(int x, int y, GameBoard gb){
 		Integer[] board=gb.getBoardStateArray();
 		int rowsToAdd = (numColumns) * (x-1);
 		int index = (rowsToAdd + y) - 1;
@@ -59,9 +61,36 @@ public class MoveManager{
 		for(int i=0;i<board.length;i++){
 			gb.realSetBoardState(i, board[i]);
 		}
+		return index;
 	}
 	public int pickUpSeeds(int seedsInHole){
 		return seedsInHole;
+	}
+	public int[] capture(int row, int endingIndex, GameBoard gb, int[] score){
+		Integer[] board=gb.getBoardStateArray();
+		if(board[endingIndex]<2||board[endingIndex]>3)
+			return score;
+		int endOfOpponentSide;
+		if(row==1)
+			endOfOpponentSide=0;
+		else
+			endOfOpponentSide=numRows*numColumns-1;
+		int currIndex=endingIndex;
+		boolean endOfStreak=false;
+		while(currIndex!=endOfOpponentSide&&!endOfStreak){
+			if(board[endingIndex]==2||board[endingIndex]==3){
+				score[row-1]+=board[endingIndex];
+				gb.realSetBoardState(endingIndex, 0);
+			}
+			else{
+				endOfStreak=true;
+			}
+			if(row==1)
+				currIndex--;
+			else
+				currIndex++;
+		}
+		return score;
 	}
 }
 

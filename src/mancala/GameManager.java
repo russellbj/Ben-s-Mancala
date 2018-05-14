@@ -3,6 +3,7 @@ package mancala;
 
 public class GameManager{
 	private static int[] boardArray;
+	private static int[] score;
 	private static GameManager instance;
 	private static BoardTypes boardType;
 	private static int numOfColumns;
@@ -36,6 +37,7 @@ public class GameManager{
 		counterclockwise=rules.getCounterclockwise();
 		boardArray = new int[numOfHoles];
 		board=b;
+		score=new int[2];
 		setupBoardArray();
 		printBoard();
 		switch(name.toLowerCase()){
@@ -109,7 +111,7 @@ public class GameManager{
 		index = (rowsToAdd + y) - 1;
 
 		int seedsLeftToMove = boardArray[index];
-		mm.move(x, y, board);
+		score=mm.move(x, y, board, score);
 		/**boardArray[index] = 0;
 
 		int currRow = x;
