@@ -11,6 +11,11 @@ import javax.swing.JOptionPane;
 
 public class TieGame {
 
+	
+	public TieGame() {
+		
+	}
+
 	ArrayList<int[]> prevStates = new ArrayList<int[]>();
 	
 
