@@ -7,9 +7,14 @@ package mancala;
  */
 public class MoveManager{
 	private int numColumns, numRows;
+	private int[] captureOn, secondaryCaptureOn;
 	public MoveManager(int numColumns, int numRows){
 		this.numColumns=numColumns;
 		this.numRows=numRows;
+		captureOn=new int[2];
+		captureOn[0]=2;
+		captureOn[1]=3;
+		secondaryCaptureOn=captureOn;
 	}
 	public int[] move(int x, int y, GameBoard gb, int[] score){
 		int endingIndex=counterClockwiseMove(x,y,gb);
@@ -68,8 +73,10 @@ public class MoveManager{
 	}
 	public int[] capture(int row, int endingIndex, GameBoard gb, int[] score){
 		Integer[] board=gb.getBoardStateArray();
-		if(board[endingIndex]<2||board[endingIndex]>3)
-			return score;
+		for(int i=0;i<captureOn.length;i++){
+			if(captureOn[i]==board[endingIndex])
+				return score;
+		}
 		int endOfOpponentSide;
 		if(row==1)
 			endOfOpponentSide=0;
@@ -78,33 +85,58 @@ public class MoveManager{
 		int currIndex=endingIndex;
 		boolean endOfStreak=false;
 		while(currIndex!=endOfOpponentSide&&!endOfStreak){
-			if(board[endingIndex]==2||board[endingIndex]==3){
+			for(int i=0;i<secondaryCaptureOn.length;i++){
+				if(secondaryCaptureOn[i]==board[endingIndex])
+					endOfStreak=true;
+			}
+			if(!endOfStreak){
 				score[row-1]+=board[endingIndex];
 				gb.realSetBoardState(endingIndex, 0);
 			}
-			else{
-				endOfStreak=true;
-			}
-			if(row==1)
-				currIndex--;
-			else
-				currIndex++;
+			currIndex=moveWithCapture(currIndex,row);
 		}
 		return score;
+	}
+	public int moveWithCapture(int currIndex, int row){
+		if(row==1)
+			currIndex--;
+		else
+			currIndex++;
+		return currIndex;
+	}
+}
+
+class OwareMoveManager extends MoveManager{
+	private int numColumns, numRows;
+	private int[] captureOn, secondaryCaptureOn;
+	public OwareMoveManager(int numColumns, int numRows){
+		super(numColumns,numRows);
+		captureOn=new int[3];
+		captureOn[0]=2;
+		captureOn[1]=3;
+		captureOn[2]=4;
+		secondaryCaptureOn=captureOn;
 	}
 }
 
 class VaiLungThlanMoveManager extends MoveManager {
 	private int numColumns, numRows;
+	private int[] captureOn, secondaryCaptureOn;
 	public VaiLungThlanMoveManager(int numColumns, int numRows) {
 		super(numColumns, numRows);
 		// TODO Auto-generated constructor stub
+		captureOn=new int[1];
+		captureOn[0]=0;
+		secondaryCaptureOn=new int[1];
+		secondaryCaptureOn[0]=1;
 	}
 	
-	public void move(int x, int y, GameBoard gb){
-		clockwiseMove(x,y,gb);
+	public int[] move(int x, int y, GameBoard gb, int[] score){
+		int endingIndex=clockwiseMove(x,y,gb);
+		score=capture(x,endingIndex,gb,score);
+		return score;
 	}
-	public void clockwiseMove(int x, int y, GameBoard gb){
+	public int clockwiseMove(int x, int y, GameBoard gb){
 		Integer[] board=gb.getBoardStateArray();
 		int rowsToAdd = (numColumns) * (x-1);
 		int index = (rowsToAdd + y) - 1;
@@ -154,17 +186,30 @@ class VaiLungThlanMoveManager extends MoveManager {
 		for(int i=0;i<board.length;i++){
 			gb.realSetBoardState(i, board[i]);
 		}
+		return index;
 	}
 	public boolean checkCanScore(int currIndex, int startIndex){
 		return true;
+	}
+	public int moveWithCapture(int currIndex, int row){
+		if(row==1)
+			currIndex++;
+		else
+			currIndex--;
+		return currIndex;
 	}
 }
 
 class SongoMoveManager extends VaiLungThlanMoveManager{
 	private int numColumns, numRows;
+	private int[] capture, secondaryCapture;
 	public SongoMoveManager(int numColumns, int numRows) {
 		super(numColumns, numRows);
 		// TODO Auto-generated constructor stub
+		capture=new int[2];
+		capture[0]=2;
+		capture[1]=4;
+		secondaryCapture=capture;
 	}
 	public boolean checkCanScore(int currIndex, int startIndex){
 		return currIndex!=startIndex;
@@ -173,9 +218,15 @@ class SongoMoveManager extends VaiLungThlanMoveManager{
 
 class AdjiBotoMoveManager extends MoveManager{
 	private int numColumns, numRows;
+	private int[] capture, secondaryCapture;
 	public AdjiBotoMoveManager(int numColumns, int numRows) {
 		super(numColumns, numRows);
 		// TODO Auto-generated constructor stub
+		capture=new int[3];
+		capture[0]=1;
+		capture[1]=3;
+		capture[2]=5;
+		secondaryCapture=capture;
 	}
 	public int pickUpSeeds(int seedsInHole){
 		return seedsInHole-1;

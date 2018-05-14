@@ -45,7 +45,7 @@ public class GameManager{
 			mm=new MoveManager(numOfColumns,numOfRows);
 			break;
 		case "oware 1":
-			mm=new MoveManager(numOfColumns,numOfRows);
+			mm=new OwareMoveManager(numOfColumns,numOfRows);
 			break;
 		case "vai lung thlan":
 			mm=new VaiLungThlanMoveManager(numOfColumns,numOfRows);
