@@ -1,7 +1,7 @@
 package mancala;
 
 /**
- * @author Papa B., Nisha Bhatta, 
+ * @author Papa B., Nisha Bhatta, Dimitrius King
  * 
  */
 import static org.junit.Assert.*;
@@ -23,9 +23,16 @@ public class TieGameTest extends TieGame {
 		}else {
 			System.out.println("false");
 		}
-
-		fail("Not yet implemented"); 
 	}
+	
+	@Test
+	public void testButtonTie() {
+		boolean testChoice = buttonTie();
+		assertFalse(testChoice);
+		assertTrue(testChoice);
+	}
+
+	
 	
 	//TODO
 	
